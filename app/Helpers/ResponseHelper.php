@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Helpers;
+
+use Exception;
+
 class ResponseHelper
 {
     public static function success($data, $message = 'Operation successful', $status = 200)
@@ -12,12 +15,12 @@ class ResponseHelper
         ], $status);
     }
 
-    public static function error($message = 'An error occurred', $status = 500, $errors = [])
+    public static function error($message = 'An error occurred', Exception $e,$status = 500)
     {
         return response()->json([
-            'status' => $status,
+            'status' => $e->getCode() ? $e->getCode() : $status,
             'message' => $message,
-            'errors' => $errors,
-        ], $status);
+            'errors' => $e->getMessage(),
+        ], $e->getCode() ? $e->getCode() : $status);
     }
 }
