@@ -65,5 +65,8 @@ class AuthService implements AuthServiceInterface
         ];
     }
 
-    
+    public function logout()
+    {
+        Auth::logout();
+    }
 }

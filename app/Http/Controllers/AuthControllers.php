@@ -18,10 +18,10 @@ class AuthControllers extends Controller
     public function __construct(AuthService $authService)
     {
         $this->authService = $authService; 
-//auth:api yêu cầu người dùng phải được xác thực thông qua guard api. 
+// "auth:api": yêu cầu người dùng phải được xác thực thông qua guard api. 
 // Người dùng cần có token hợp lệ để truy cập các phương thức được bảo vệ bởi middleware này.
 // Áp dụng: Middleware này áp dụng cho tất cả các phương thức trong controller,
-//  ngoại trừ các phương thức user và logout.
+//  " ['except' => ['register','login']":  ngoại trừ các phương thức user và logout.
         $this->middleware('auth:api', ['except' => ['register','login']]);
     }
     public function register(Request $request){
@@ -33,7 +33,7 @@ class AuthControllers extends Controller
         }
     }
  
-    protected function login(Request $request)
+    public function login(Request $request)
     {
          try {
             $response = $this->authService->login($request);
@@ -42,13 +42,15 @@ class AuthControllers extends Controller
             return ResponseHelper::error('An error occurred while login the user.',$th);
          }
     }
-      
-
-    // protected function logout()
-    // {
-    //     Auth::logout();
-    //     return response()->json(['message' => 'Logged out']);
-    // }
+    public function logout()
+    { 
+        try {
+            $this->authService->logout();
+            return  ResponseHelper::success(null,'Logged out',200);
+           } catch (\Throwable $th) {
+            return  ResponseHelper::error('Error logout', $th);
+           }
+    }
 
     // protected function resetPasswordPost() {
     //     $email = request()->input('email');
