@@ -17,8 +17,7 @@ class AuthControllers extends Controller
 
     public function __construct(AuthService $authService)
     {
-        $this->authService = $authService;
-
+        $this->authService = $authService; 
 //auth:api yêu cầu người dùng phải được xác thực thông qua guard api. 
 // Người dùng cần có token hợp lệ để truy cập các phương thức được bảo vệ bởi middleware này.
 // Áp dụng: Middleware này áp dụng cho tất cả các phương thức trong controller,
@@ -28,42 +27,22 @@ class AuthControllers extends Controller
     public function register(Request $request){
         try {
             $response = $this->authService->register($request);
-            return ResponseHelper::success($response);
-        } catch (ValidationException $e) { // catch ngoại lệ validation
-            return ResponseHelper::error('Validation error', 422, $e->getMessage());
+            return ResponseHelper::success($response,'User created successfully');
         } catch (\Exception $e) { //catch error
-            return ResponseHelper::error('An error occurred while creating the user.', 500, $e->getMessage());
+            return ResponseHelper::error('An error occurred while creating the user.',$e,203);
         }
     }
-   
-
-    protected function credentials($req)
-    {        
-        return ['email' => $req->email, 'password' => $req->password ];
-    }
-
-    // protected function login(Request $req)
-    // {
-    //     if (!$token = auth()->attempt($this->credentials($req))) {
-    //         return response()->json(['message' => 'Invalid credentials'], 400);
-    //     }
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'user' => $this->getUser(),
-    //         'authorization' => [
-    //             'access_token' => $token,
-    //             'token_type' => 'bearer',
-    //         ]
-    //     ]);
-    // }
-     
-    protected function getUser()
+ 
+    protected function login(Request $request)
     {
-        $user = Auth::user();
-        return [
-            "user"=> $user 
-        ];
+         try {
+            $response = $this->authService->login($request);
+            return ResponseHelper::success($response,'User login successfully');
+         } catch (\Throwable $th) {
+            return ResponseHelper::error('An error occurred while login the user.',$th);
+         }
     }
+      
 
     // protected function logout()
     // {

@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Repository\Interfaces\UserRepositoryInterface;
 use App\Repository\Repositories\UserRepository;
 use App\Services\AuthService;
-use App\Services\AuthServiceInterface;
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
