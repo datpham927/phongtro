@@ -3,10 +3,22 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof RouteNotFoundException) {
+            return response()->json([
+                'message' => 'Cannot access'
+            ], 404);
+        }
+
+        return parent::render($request, $exception);
+    }
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -45,4 +57,5 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
 }

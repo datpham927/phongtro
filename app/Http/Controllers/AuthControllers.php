@@ -33,8 +33,7 @@ class AuthControllers extends Controller
         }
     }
  
-    public function login(Request $request)
-    {
+    public function login(Request $request) {
          try {
             $response = $this->authService->login($request);
             return ResponseHelper::success($response,'User login successfully');
@@ -42,14 +41,21 @@ class AuthControllers extends Controller
             return ResponseHelper::error('An error occurred while login the user.',$th);
          }
     }
-    public function logout()
-    { 
+    public function logout() { 
         try {
             $this->authService->logout();
             return  ResponseHelper::success(null,'Logged out',200);
            } catch (\Throwable $th) {
             return  ResponseHelper::error('Error logout', $th);
            }
+    } 
+    public function refreshToken() { 
+        try {
+            $response = $this->authService->refreshToken();
+            return  ResponseHelper::success($response,'Refresh token successfully',200);
+        } catch (\Throwable $th) {
+            return  ResponseHelper::error('Error logout', $th);
+        }
     }
 
     // protected function resetPasswordPost() {
