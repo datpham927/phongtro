@@ -19,10 +19,11 @@ return new class extends Migration
             $table->string('zalo')->nullable(); // Cho phép giá trị NULL
             $table->string('facebook')->nullable(); // Cho phép giá trị NULL
             $table->string('password');
+            $table->string('password_reset_token')->nullable();
+            $table->date('password_token_expires')->nullable();
             $table->string('avatar')->nullable(); // Cho phép giá trị NULL
             $table->enum('type', ['admin', 'hire', 'lease']); // Enum với các giá trị hợp lệ
             $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }

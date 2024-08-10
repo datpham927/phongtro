@@ -40,11 +40,23 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->user->find($id);
     }
-
+    public function findUserByEmail($email)
+    {
+        return $this->user::where('email', $email)->first();
+    }
+    
     public function findByIdAndDelete($id)
     {
         $user = $this->user->findOrFail($id);
         $user->delete();
         return $user;
     }
+    public function findUserByToken($token) {
+        $user = $this->user
+            ->where('password_reset_token', $token)
+            ->whereDate('password_token_expires', '>=', now())
+            ->first();
+        return $user;
+    }
+    
 }

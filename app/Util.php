@@ -2,31 +2,36 @@
 
 namespace App;
 
-use Mail;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class Util {
 
- 
-  
-    public static function sentMail($type, $email, $token, $user = null) {
-        $body = str_replace('{app_url}', env('APP_URL'), env("MAIL_$type"));
-        $body = str_replace('{app_name}', env('APP_NAME'), $body);
-        $body = str_replace('{token}', $token, $body);
-        if ($user) {
-            $body = str_replace('{user}', $user, $body);
+
+    // self::staticMethod() được sử dụng để gọi phương thức 
+    // tĩnh staticMethod từ bên trong lớp MyClass mà không 
+    // cần tạo một đối tượng của lớp.
+    public static function formatDateStr($value, $type = null) {
+        switch ($type) {
+            case 'time':
+                return self::getTime($value)->format('H:i:s');
+            case 'date':
+                return self::getDate($value)->format('Y-m-d');
+            default:
+                return self::getDateTime($value)->format('H:i:s Y-m-d');
         }
-        $subject = ($type == 'WELCOME' ? 'Login Information' : ($type == 'RESET' ? 'Reset Password' : env('APP_NAME') . ' message'));
-        
-        // Mail::raw($body, function ($message) use($type, $email, $subject) {
-        //     $message->from(env('MAIL_SENDER'))->to($email)->subject($subject);
-        // });
-        /* You need to complete the SMTP Server configuration before you can sent mail
-       
-        */
     }
- 
- 
+    
+    private static function getTime($value) {
+        return new DateTime($value);
+    }
+
+    private static function getDate($value) {
+        return new DateTime($value);
+    }
+
+    private static function getDateTime($value) {
+        return new DateTime($value);
+    }
 }

@@ -19,3 +19,5 @@ Route::post('/user/register', [ AuthControllers::class, 'register' ]);
 Route::post('/user/login', [ AuthControllers::class, 'login' ]);
 Route::get('/user/logout', [ AuthControllers::class, 'logout' ]);
 Route::get('/user/refresh_token', [ AuthControllers::class, 'refreshToken' ]);
+Route::post('/user/reset_password_post', [ AuthControllers::class, 'resetPasswordPost' ]);
+Route::post('/user/{token}/change_password', [ AuthControllers::class, 'changePasswordPost' ]);

@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
+use App\Mail\AuthMail;
 use App\Repository\Interfaces\UserRepositoryInterface;
 use App\Services\Interfaces\AuthServiceInterface;
+use App\Util;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 class AuthService implements AuthServiceInterface
 {
     protected $userRepository;
@@ -39,9 +39,8 @@ class AuthService implements AuthServiceInterface
         // Băm mật khẩu trước khi lưu trữ vào cơ sở dữ liệu
         $requestData['password'] = Hash::make($requestData['password']);
         // Tạo người dùng mới thông qua repository
+        unset($requestData['confirm_password']);
         $user = $this->userRepository->create($requestData);
-        // Ghi log sự kiện đăng ký người dùng mới
-        Log::info('User registered', ['user_id' => $user->id]);
         // Tạo token cho người dùng mới
          $token = Auth::login($user);
         // Trả về thông tin người dùng và token
@@ -56,7 +55,7 @@ class AuthService implements AuthServiceInterface
         // Xác thực thông tin đăng nhập
         $validator = Validator::make($credentials, [
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:6',
         ]);
         // Nếu xác thực thất bại, ném ra ngoại lệ
         if ($validator->fails()) {
@@ -72,7 +71,6 @@ class AuthService implements AuthServiceInterface
     // Phương thức để đăng xuất người dùng
     public function logout()
     {
-        Cache::put('ffff', 'anh yêu em', now()->addMinutes(10));
         // Các access_token sau khi làm mới hoặc đăng xuất 
         // sẽ được thêm vào danh sách đen để tránh việc sử dụng 
         $token = Auth::getToken();
@@ -123,6 +121,42 @@ class AuthService implements AuthServiceInterface
     {
         return Cache::has('access_token-blacklist:' . $token);
     }
+    public function resetPasswordPost($request){
 
-   
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+        ]);
+        if ($validator->fails()) { throw new ValidationException($validator);  }    
+        $email = request()->input('email');
+        $user =$this->userRepository->findUserByEmail($email);
+        if ($user) {
+            $data["token"] = Str::random(40);
+            $data["expire"] =now()->addMinutes(5);
+            $user->update([ 'password_reset_token' => $data["token"]  ,
+               "password_token_expires"=> $data["expire"]
+         ]);
+            Mail::to($email)->cc(env("MAIL_SENDER"))->send(new AuthMail($data));
+           return true;
+        }
+        return  false;
+    } 
+    
+    public function changePasswordPost($request, $token) {
+        $user = $this->userRepository->findUserByToken($token);
+        if (!$user) {
+            return false;
+        }
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:6',
+        ]);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+        $user->update([
+            'password' => Hash::make($request->input('password')),
+            'password_reset_token' => null,
+            "password_token_expires"=> null,
+        ]);
+        return true;
+    }
 }
