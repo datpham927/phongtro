@@ -8,4 +8,5 @@ interface AuthServiceInterface
     public function login($request);
     public function  logout();
     public function refreshToken();
+    public function resetPasswordPost($request);
 }
