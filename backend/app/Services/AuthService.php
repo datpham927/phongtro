@@ -31,6 +31,7 @@ class AuthService implements AuthServiceInterface
             'id' => 'required|uuid',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'type' => 'required',
             'password' => 'required|string|min:6',
             'confirm_password' => 'required|same:password',
         ]);
