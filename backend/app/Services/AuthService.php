@@ -116,14 +116,12 @@ class AuthService implements AuthServiceInterface
          // Đưa token vào danh sách đen với thời gian sống bằng thời gian sống của token (TTL)
         Cache::put('access_token-blacklist:' . $token, true, Auth::factory()->getTTL() * 60);
     }
-
     // Phương thức kiểm tra xem token có nằm trong danh sách đen không
     private function isTokenBlacklisted($token)
     {
         return Cache::has('access_token-blacklist:' . $token);
     }
     public function resetPasswordPost($request){
-
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
         ]);

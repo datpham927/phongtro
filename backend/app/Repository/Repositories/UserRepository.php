@@ -14,14 +14,10 @@ class UserRepository implements UserRepositoryInterface
         $this->user = $user;
     }
 
-    public function getAllWithPaginate($limit)
+  
+    public function findAll($limit, $sort, $page, $filter, $select = null) 
     {
-        return $this->user->latest()->paginate($limit);
-    }
-
-    public function getAll()
-    {
-        return $this->user->all();
+    
     }
 
     public function create( $data)

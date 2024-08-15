@@ -5,7 +5,7 @@ namespace App\Repository\Interfaces;
 
 interface BaseRepositoryInterface
 {
-    function getAll();
+    function findAll($limit=5, $sort, $page,array $filter=null, $select=null);
     function create(array $data);
     function findByIdAndUpdate($id, array $data, $options = []);
     function findById($id,$option = null);
