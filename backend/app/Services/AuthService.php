@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Mail\AuthMail;
 use App\Repository\Interfaces\UserRepositoryInterface;
 use App\Services\Interfaces\AuthServiceInterface;
-use App\Util;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

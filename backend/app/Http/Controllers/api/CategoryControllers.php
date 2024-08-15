@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
-use CategoryService;
+use App\Services\Interfaces\CategoryServiceInterface;
 use Illuminate\Http\Request;
 
 class CategoryControllers extends Controller
@@ -13,7 +13,7 @@ class CategoryControllers extends Controller
      * Display a listing of the resource.
      */
     private  $categoryService;
-    public function __construct(CategoryService $categoryService)
+    public function __construct(CategoryServiceInterface $categoryService)
     {
         $this->categoryService = $categoryService;  
     }
@@ -36,19 +36,19 @@ class CategoryControllers extends Controller
         }
     }
  
-         public function update(Request $request, string $id)
+         public function update(Request $request, string $cid)
     {
         try {
-            $response= $this->categoryService->update($request,$id);
+            $response= $this->categoryService->update($request,$cid);
             return ResponseHelper::success($response,"Update successfully",200);
         } catch (\Throwable $th) {
             return ResponseHelper::error("Update error",$th);
         }
     }
-    public function destroy(string $id)
+    public function destroy(string $cid)
     {
         try {
-            $this->categoryService->destroy($id);
+            $this->categoryService->destroy($cid);
             return ResponseHelper::success(null,"Destroy successfully",200);
         } catch (\Throwable $th) {
             return ResponseHelper::error("Destroy error",$th);
