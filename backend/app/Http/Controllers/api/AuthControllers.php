@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller; 
-use App\Services\AuthService;  
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Throwable; 
 class AuthControllers extends Controller
