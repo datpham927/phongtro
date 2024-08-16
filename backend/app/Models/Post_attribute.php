@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post_attribute extends Model
 {
+    protected $keyType = 'string';
+    public $incrementing = false;
+    protected $guarded = [];
     use HasFactory;
 }

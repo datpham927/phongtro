@@ -57,5 +57,7 @@ class UserRepository implements UserRepositoryInterface
             ->first();
         return $user;
     }
+
+    
     
 }

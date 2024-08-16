@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary(); // UUID làm khóa chính
             $table->string('name');
             $table->string('title')->nullable();
+            $table->string('slug')->nullable();
             $table->string('sub_title')->nullable();
             $table->timestamps();
         });

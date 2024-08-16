@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Repository\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\CategoryServiceInterface;
+use App\Util;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
@@ -23,11 +24,12 @@ class CategoryService implements CategoryServiceInterface
     }
     public function create($request){
             $requestData = $request->all();
-            $requestData['id'] = (string) Str::uuid();
+            $requestData['id'] =  Util::uuid();
+            $requestData['slug'] =Util::slug($request->input('name'));
             $validator = Validator::make($requestData, [
-                'id' => 'required|uuid',
                 'name' => 'required|string|max:255|unique:categories',
                 'title' => 'required|string|max:255',
+                'slug' => 'required|string|max:255',
                 'sub_title' => 'required|string|max:255',
             ]);
             // Nếu xác thực thất bại, ném ra ngoại lệ
@@ -37,9 +39,11 @@ class CategoryService implements CategoryServiceInterface
    
     public function update($request, $id){
         $requestData = $request->all();
+        $requestData['slug'] =Util::slug($request->input('name'));
         $validator = Validator::make($requestData, [ 
             'name' => 'required|string|max:255|unique:categories',
             'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
             'sub_title' => 'required|string|max:255',
         ]);
         // Nếu xác thực thất bại, ném ra ngoại lệ

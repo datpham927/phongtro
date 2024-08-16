@@ -17,11 +17,12 @@ return new class extends Migration
             $table->string('city_name');
             $table->string('district_name');
             $table->string('ward_name');
-            $table->string('city_code');
-            $table->string('district_code');
-            $table->string('ward_code');
+            $table->string('city_slug');
+            $table->string('district_slug');
+            $table->string('ward_slug');
             $table->string('address_detail');
             $table->text('map');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->timestamps();
         });
     }
