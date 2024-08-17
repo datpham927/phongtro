@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Services\Interfaces\PostServiceInterface;
+use Illuminate\Http\Request;
 
 class PostControllers extends Controller
 {
@@ -14,6 +15,15 @@ class PostControllers extends Controller
     {
         $this->postService = $postService;  
     }  
+
+    public function getAll(Request $request) {
+        try {
+            $response = $this->postService->getAll($request);
+            return ResponseHelper::success($response, "Successfully", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Error", $th);
+        }
+    }
     public function create(StorePostRequest $request) {
         try {
             $response = $this->postService->create($request);
@@ -22,7 +32,7 @@ class PostControllers extends Controller
             return ResponseHelper::error("Create error", $th);
         }
     }
-    public function update(StorePostRequest $request,$pid) {
+    public function update(Request $request,$pid) {
         try {
             $response = $this->postService->update($request,$pid);
             return ResponseHelper::success($response, "Update successfully", 200);

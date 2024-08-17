@@ -66,9 +66,9 @@ class PostRepository implements PostRepositoryInterface
     // Eager load các mối quan hệ cần thiết
     $post = $this->post->with([
         'address',      // Quan hệ với bảng 'post_addresses'
-        'areas',        // Quan hệ với bảng 'post_areas'
-        'prices',       // Quan hệ với bảng 'post_prices'
-        'attributes',   // Quan hệ với bảng 'post_attributes'
+        'area',        // Quan hệ với bảng 'post_areas'
+        'price',       // Quan hệ với bảng 'post_prices'
+        'attribute',   // Quan hệ với bảng 'post_attributes'
         'images',       // Quan hệ với bảng 'post_images'
         'category'      // Quan hệ với bảng 'categories'
     ])->find($pid);

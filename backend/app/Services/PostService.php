@@ -19,12 +19,12 @@ class PostService implements PostServiceInterface
         $this->postRepository = $postRepository;
     }
     public function getAll($request){
-            // $limit=$request['limit'];
-            // $page=$request['page'];
-            // $sort=$request['sort'];
-            // $filter=[];
-            // $select=null;
-        //  return $this->postRepository->findAll($limit, $sort, $page,$filter, $select);
+            $limit=$request['limit'];
+            $page=$request['page'];
+            $sort=$request['sort'];
+            $filter=[];
+            $select=null;
+         return $this->postRepository->findAll($limit, $sort, $page,$filter, $select);
     }
     public function create($request){
         $validatedData = $request->validated();
@@ -57,7 +57,7 @@ class PostService implements PostServiceInterface
     public function update($request, $id)
 {
     // Lấy dữ liệu đã được validate từ request
-    $validatedData = $request->validated();
+    $validatedData = $request->all();
     // Tìm bài post cần cập nhật
     $post = $this->postRepository->findById($id);
     if (!$post) {
@@ -84,8 +84,7 @@ class PostService implements PostServiceInterface
         $this->createPostPrice($validatedData["price"], $id);
     }
     if (!empty($validatedData["attribute"])) {
-        Post_attribute::where('post_id', $id)->delete();
-        $this->createPostAttribute($validatedData["attribute"], $id);
+        Post_attribute::where('post_id', $id)->update($validatedData["attribute"]);
     }
     if (!empty($validatedData["address"])) {
         Post_address::where('post_id', $id)->delete();

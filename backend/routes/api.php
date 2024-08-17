@@ -25,9 +25,9 @@ Route::prefix('v1/category')->group(function () {
 });
 
 Route::prefix('v1/post')->group(function () {
-    // Route::get('/all', [PostControllers::class, 'getAll']) ;
+    Route::get('/all', [PostControllers::class, 'getAll']) ;
     Route::post('/add', [PostControllers::class, 'create']) ;
     Route::post('/{pid}/update', [PostControllers::class, 'update']) ;
-    Route::delete('/{pid}/destroy', [PostControllers::class, 'destroy']) ;
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']) ;
+    Route::delete('/{pid}/delete', [PostControllers::class, 'destroy']) ;
 });
