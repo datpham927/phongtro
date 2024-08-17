@@ -1,23 +1,33 @@
 <?php
 
-use App\Http\Controllers\AuthControllers;
-use Illuminate\Http\Request;
+use App\Http\Controllers\api\AuthControllers;
+use App\Http\Controllers\api\CategoryControllers;
+use App\Http\Controllers\api\PostControllers;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+  
+// Nhóm các route liên quan đến người dùng
+Route::prefix('v1/user')->group(function () {
+    Route::post('/register', [AuthControllers::class, 'register']) ;
+    Route::post('/login', [AuthControllers::class, 'login']) ;
+    Route::get('/logout', [AuthControllers::class, 'logout'])  ;
+    Route::get('/refresh_token', [AuthControllers::class, 'refreshToken']) ;
+    Route::post('/reset_password', [AuthControllers::class, 'resetPasswordPost']) ;
+    Route::post('/{token}/change_password', [AuthControllers::class, 'changePasswordPost']);
+});
 
-Route::post('/user/register', [ AuthControllers::class, 'register' ]);
-Route::post('/user/login', [ AuthControllers::class, 'login' ]);
-Route::get('/user/logout', [ AuthControllers::class, 'logout' ]);
-Route::get('/user/refresh_token', [ AuthControllers::class, 'refreshToken' ]);
-Route::post('/user/reset_password_post', [ AuthControllers::class, 'resetPasswordPost' ]);
-Route::post('/user/{token}/change_password', [ AuthControllers::class, 'changePasswordPost' ]);
+// Nhóm các route liên quan đến danh mục
+Route::prefix('v1/category')->group(function () {
+    Route::get('/all', [CategoryControllers::class, 'getAll']) ;
+    Route::post('/add', [CategoryControllers::class, 'create']) ;
+    Route::post('/{cid}/update', [CategoryControllers::class, 'update']) ;
+    Route::delete('/{cid}/destroy', [CategoryControllers::class, 'destroy']) ;
+});
+
+Route::prefix('v1/post')->group(function () {
+    Route::get('/all', [PostControllers::class, 'getAll']) ;
+    Route::post('/add', [PostControllers::class, 'create']) ;
+    Route::post('/{pid}/update', [PostControllers::class, 'update']) ;
+    Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']) ;
+    Route::delete('/{pid}/delete', [PostControllers::class, 'destroy']) ;
+});

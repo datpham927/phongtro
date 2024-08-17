@@ -2,12 +2,17 @@
 
 namespace App;
 
-use DateTime;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use DateTime; 
+use Illuminate\Support\Str;
 
 class Util {
-
+    
+    public static function slug($value) {
+        return (string) Str::of($value)->slug('-');
+    }
+    public static function uuid() {
+        return (string) Str::uuid();
+    }
 
     // self::staticMethod() được sử dụng để gọi phương thức 
     // tĩnh staticMethod từ bên trong lớp MyClass mà không 
@@ -34,4 +39,8 @@ class Util {
     private static function getDateTime($value) {
         return new DateTime($value);
     }
+
+   
+
+   
 }

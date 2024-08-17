@@ -4,6 +4,7 @@ namespace App\Repository\Repositories;
 
 use App\Models\User;
 use App\Repository\Interfaces\UserRepositoryInterface;
+use Exception;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -14,14 +15,10 @@ class UserRepository implements UserRepositoryInterface
         $this->user = $user;
     }
 
-    public function getAllWithPaginate($limit)
+  
+    function findAll($limit=5, $sort, $page=1,array $filter=null, $select=null)
     {
-        return $this->user->latest()->paginate($limit);
-    }
-
-    public function getAll()
-    {
-        return $this->user->all();
+    
     }
 
     public function create( $data)
@@ -31,7 +28,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function findByIdAndUpdate($id,  $data, $options = [])
     {
-        $user = $this->user->findOrFail($id);
+        $user=$this->findById($id);
+        if(! $user)throw new Exception("User does not exist!",404);
         $user->update($data);
         return $user;
     }
@@ -47,7 +45,8 @@ class UserRepository implements UserRepositoryInterface
     
     public function findByIdAndDelete($id)
     {
-        $user = $this->user->findOrFail($id);
+        $user=$this->findById($id);
+        if(! $user)throw new Exception("User does not exist!",404);
         $user->delete();
         return $user;
     }
@@ -58,5 +57,7 @@ class UserRepository implements UserRepositoryInterface
             ->first();
         return $user;
     }
+
+    
     
 }
