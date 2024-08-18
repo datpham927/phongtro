@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
 use App\Helpers\ResponseHelper;
-use App\Http\Controllers\Controller; 
-use App\Services\AuthService;
+use App\Http\Controllers\Controller;  
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;
 use Throwable; 
 class AuthControllers extends Controller
@@ -12,7 +12,7 @@ class AuthControllers extends Controller
     protected $redirectTo = '/home';
     protected $authService;
 
-    public function __construct(AuthService $authService)
+    public function __construct(AuthServiceInterface $authService)
     {
         $this->authService = $authService; 
 // "auth:api": yêu cầu người dùng phải được xác thực thông qua guard api. 
@@ -74,7 +74,6 @@ class AuthControllers extends Controller
             if ($response) {
                 return ResponseHelper::success(null, 'Password changed successfully');
             }
-            
             return ResponseHelper::error('Password change failed', null, 400);
         } catch (Throwable $th) {
             return ResponseHelper::error('An unexpected error occurred', $th);

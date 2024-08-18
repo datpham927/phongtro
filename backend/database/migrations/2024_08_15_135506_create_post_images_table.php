@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary(); // UUID làm khóa chính
             $table->uuid('post_id');
             $table->string('url');  
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->timestamps();
         });
     }

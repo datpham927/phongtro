@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
@@ -26,6 +26,9 @@ class CategoryControllers extends Controller
             return ResponseHelper::error("Error",$th);
         }
     } 
+
+    
+     
     public function create(Request $request)
     {
         try {

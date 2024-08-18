@@ -12,14 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('post_attributes', function (Blueprint $table) {
-            $table->uuid('id')->primary(); // UUID làm khóa chính
+            // UUID làm khóa chính
+            $table->uuid('id')->primary();
+            // Khóa ngoại UUID cho bảng 'posts'
             $table->uuid('post_id');
-            $table->string('target');  
-            $table->string('type');   
-            $table->date('expire');  
-            $table->string('rental_area');  
+            // Các trường khác
+            $table->string('target');
+            $table->string('type_post');
+            $table->string('expire');
+            // Thời gian tạo và cập nhật
             $table->timestamps();
+            // Định nghĩa khóa ngoại
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
         });
+        
     }
 
     /**
