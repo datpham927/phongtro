@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use DateTime; 
 use Illuminate\Support\Str;
 
@@ -13,7 +14,25 @@ class Util {
     public static function uuid() {
         return (string) Str::uuid();
     }
-
+    public static function extractNumber($input)
+    {
+        preg_match('/(\d+)(?=\D)/', $input, $matches);
+        // Lấy số từ kết quả
+        $number = $matches[0] ?? null;
+        return $number; 
+    }
+    public static function getRandomDateFromNow() {
+        // Ngày hiện tại
+        $now = Carbon::now();
+        // Ngày tối đa có thể tạo ra (sau $days ngày từ bây giờ)
+        $endDate = $now->copy()->addDays(90);
+        // Ngày bắt đầu để tạo ngày ngẫu nhiên (ngày hiện tại cộng thêm 30 ngày)
+        $startDate = $now->copy()->addDays(30);
+        // Tạo một ngày ngẫu nhiên trong khoảng từ $startDate đến $endDate
+        $randomTimestamp = mt_rand($startDate->timestamp, $endDate->timestamp);
+        $randomDate = Carbon::createFromTimestamp($randomTimestamp);
+        return $randomDate->toDateString();
+    }
     // self::staticMethod() được sử dụng để gọi phương thức 
     // tĩnh staticMethod từ bên trong lớp MyClass mà không 
     // cần tạo một đối tượng của lớp.

@@ -3,8 +3,10 @@
 use App\Http\Controllers\api\AuthControllers;
 use App\Http\Controllers\api\CategoryControllers;
 use App\Http\Controllers\api\PostControllers;
+use App\Http\Controllers\CrawlerControllers;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/crawler', [CrawlerControllers::class, 'crawler'])->name('crawler.index');
   
 // Nhóm các route liên quan đến người dùng
 Route::prefix('v1/user')->group(function () {

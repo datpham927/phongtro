@@ -65,7 +65,7 @@ class PostRepository implements PostRepositoryInterface
     if (!$post) {  throw new \Exception("Post does not exist!", 404); }
     // Eager load các mối quan hệ cần thiết
     $post = $this->post->with([
-        'address',      // Quan hệ với bảng 'post_addresses'
+        'address',      // Quan hệ với bảng 'post_address'
         'area',        // Quan hệ với bảng 'post_areas'
         'price',       // Quan hệ với bảng 'post_prices'
         'attribute',   // Quan hệ với bảng 'post_attributes'

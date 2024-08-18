@@ -55,14 +55,10 @@ class PostService implements PostServiceInterface
     }
     // -------------------
     public function update($request, $id)
-{
-    // Lấy dữ liệu đã được validate từ request
-    $validatedData = $request->all();
-    // Tìm bài post cần cập nhật
+{ 
+    $validatedData = $request->all(); 
     $post = $this->postRepository->findById($id);
-    if (!$post) {
-        throw new Exception("Post does not exist!", 404);
-    }
+    if (!$post) {  throw new Exception("Post does not exist!", 404);}
     $dataPost = [
         "slug" => Util::slug($validatedData["title"]),
         "title" => $validatedData["title"],
