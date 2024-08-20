@@ -2,10 +2,12 @@
 
 namespace App\Repository\Repositories;
 
+use App\Http\Resources\PostDetailResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Repository\Interfaces\PostRepositoryInterface;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -30,7 +32,7 @@ class PostRepository implements PostRepositoryInterface
     // Apply select columns if specified
     if ($select) { $query->select($select);}
     // Execute the query and return the results
-    return $query->get() ?: null; // Return the result set or null if no results found
+    return PostResource::collection($query->get());   // Return the result set or null if no results found
 }
 
     
@@ -57,7 +59,7 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     } 
     
-    public function findByIdAndGetDetail($pid)
+    public function findPostDetailById ($pid)
 {
     // Tìm bài post trước để kiểm tra sự tồn tại
     $post = $this->post->find($pid);
@@ -65,7 +67,7 @@ class PostRepository implements PostRepositoryInterface
     if (!$post) {  throw new \Exception("Post does not exist!", 404); }
     // Eager load các mối quan hệ cần thiết
     $post = $this->post->with([
-        'address',      // Quan hệ với bảng 'post_addresses'
+        'address',      // Quan hệ với bảng 'post_address'
         'area',        // Quan hệ với bảng 'post_areas'
         'price',       // Quan hệ với bảng 'post_prices'
         'attribute',   // Quan hệ với bảng 'post_attributes'
@@ -73,7 +75,44 @@ class PostRepository implements PostRepositoryInterface
         'category'      // Quan hệ với bảng 'categories'
     ])->find($pid);
     // Trả về resource mới với bài post đã load các mối quan hệ
-    return new PostResource($post);
+    return new PostDetailResource($post);
+}
+public function search($limit = 5, $sort = 'asc', $page = 1, array $filters = []) {
+    // Khởi tạo query builder
+    $query = $this->post->newQuery();
+
+    // Áp dụng bộ lọc theo category_id nếu có
+    if (!empty($filters['category_id'])) {
+        $query->where('category_id', $filters['category_id']);
+    }
+    // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
+    if (!empty($filters['city_slug']) && !empty($filters['district_slug']) && !empty($filters['ward_slug'])) {
+        $query->whereHas('address', function($query) use ($filters) {
+                $query->where('city_slug', $filters['city_slug'])
+                ->where('district_slug', $filters['district_slug'])
+                ->where('ward_slug', $filters['ward_slug']);
+        });
+    }
+    // Áp dụng bộ lọc theo khoảng giá nếu có
+    if (!empty($filters['price_from']) && !empty($filters['price_to'])) {
+        $query->whereHas('price', function($query) use ($filters) {
+            $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
+        });
+    }
+    // Áp dụng bộ lọc theo khoảng diện tích nếu có
+    if (!empty($filters['area_from']) && !empty($filters['area_to'])) {
+        $query->whereHas('area', function($query) use ($filters) {
+            $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
+        });
+    }
+    // Áp dụng sắp xếp
+    $sortby = $sort === 'ctime' ? 'desc' : 'asc';
+    $query->orderBy('posts.created_at', $sortby);
+    // Áp dụng phân trang
+    $skip = ($page - 1) * $limit;
+    if ($limit > 0) { $query->skip($skip)->take($limit); }
+    // Thực thi truy vấn và trả về kết quả dưới dạng resource
+    return PostResource::collection($query->get());
 }
 
 }

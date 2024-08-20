@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary(); // UUID làm khóa chính
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
             $table->string('sub_title')->nullable();

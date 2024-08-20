@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\api\AuthControllers;
 use App\Http\Controllers\api\CategoryControllers;
+use App\Http\Controllers\api\AddressControllers;
 use App\Http\Controllers\api\PostControllers;
+use App\Http\Controllers\CrawlerControllers;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/crawler', [CrawlerControllers::class, 'crawler'])->name('crawler.index');
   
 // Nhóm các route liên quan đến người dùng
 Route::prefix('v1/user')->group(function () {
@@ -30,4 +33,10 @@ Route::prefix('v1/post')->group(function () {
     Route::post('/{pid}/update', [PostControllers::class, 'update']) ;
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']) ;
     Route::delete('/{pid}/delete', [PostControllers::class, 'destroy']) ;
+    Route::get('/search', [PostControllers::class, 'searchPost']) ;
+});
+
+Route::prefix('v1/address')->group(function () {
+    Route::get('/{city_lug}/all_district_by_city', [AddressControllers::class, 'getAllDistrict']) ;
+    Route::get('/{district_lug}/all_ward_by_district', [AddressControllers::class, 'getAllWard']) ;
 });

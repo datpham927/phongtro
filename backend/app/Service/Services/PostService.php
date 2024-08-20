@@ -1,13 +1,14 @@
 <?php
-namespace App\Services;
+namespace App\Service\Services;
 
+use App\Models\Post;
 use App\Models\Post_address;
 use App\Models\Post_area;
 use App\Models\Post_attribute;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Repository\Interfaces\PostRepositoryInterface;
-use App\Services\Interfaces\PostServiceInterface;
+use App\Service\Interfaces\PostServiceInterface;
 use App\Util;
 use Exception;
 
@@ -18,11 +19,14 @@ class PostService implements PostServiceInterface
     {
         $this->postRepository = $postRepository;
     }
-    public function getAll($request){
+    public function findAll($request){
             $limit=$request['limit'];
             $page=$request['page'];
             $sort=$request['sort'];
             $filter=[];
+            if($request['category_id']){
+                $filter ["category_id"]=$request['category_id'];
+            }
             $select=null;
          return $this->postRepository->findAll($limit, $sort, $page,$filter, $select);
     }
@@ -50,19 +54,15 @@ class PostService implements PostServiceInterface
            $this->createPostAttribute($attribute,$postId);
            $this->createPostPrice($price,$postId);
            $this->createPostArea($area,$postId); 
-           $this->createPostAddress($address,$postId); 
+           $this->createAddress($address,$postId); 
            return $post;
     }
     // -------------------
     public function update($request, $id)
-{
-    // Lấy dữ liệu đã được validate từ request
-    $validatedData = $request->all();
-    // Tìm bài post cần cập nhật
+{ 
+    $validatedData = $request->all(); 
     $post = $this->postRepository->findById($id);
-    if (!$post) {
-        throw new Exception("Post does not exist!", 404);
-    }
+    if (!$post) {  throw new Exception("Post does not exist!", 404);}
     $dataPost = [
         "slug" => Util::slug($validatedData["title"]),
         "title" => $validatedData["title"],
@@ -88,24 +88,21 @@ class PostService implements PostServiceInterface
     }
     if (!empty($validatedData["address"])) {
         Post_address::where('post_id', $id)->delete();
-        $this->createPostAddress($validatedData["address"], $id);
+        $this->createAddress($validatedData["address"], $id);
     }
     return $post;
-}
+    }
     public function destroy($id){
          // Có định nghĩa khóa ngoại nên các table kia sẽ tự động xóa
         //  $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
          $this->postRepository->findByIdAndDelete($id);
     }
 
-    public function getDetailPost($pid){
-          return $this->postRepository->findByIdAndGetDetail($pid);
-    }
+    public function findDetailPost($pid){
+          return $this->postRepository->findPostDetailById ($pid);
+    } 
 
-
-     // -----------------
-
-
+     // ----------------- 
 
      public function createPostImage($images,$pid){
         foreach($images as $img){
@@ -131,7 +128,7 @@ class PostService implements PostServiceInterface
         $attribute["id"]=Util::uuid();
         Post_attribute::create($attribute);
     }
-    public function createPostAddress($address,$pid){
+    public function createAddress($address,$pid){
         $address["post_id"]=$pid;
         $address["id"]=Util::uuid();
         $address["city_slug"]= Util::slug($address[ "city_name"] );
@@ -139,6 +136,22 @@ class PostService implements PostServiceInterface
         $address["ward_slug"]= Util::slug($address[ "ward_name"] );
         Post_address::create($address);
     }
+    public function searchPost($request)
+    {
+        $filters = $request->only([
+            'category_id',
+            'city_slug',
+            'district_slug',
+            'ward_slug',
+            'price_from',
+            'price_to',
+            'area_from',
+            'area_to'
+        ]);
+        $limit=$request['limit'];
+        $page=$request['page'];
+        $sort=$request['sort'];
+        return  $this->postRepository->search($limit, $sort , $page ,$filters );
 
-
+    }
 }

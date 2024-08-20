@@ -5,7 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
-use App\Services\Interfaces\PostServiceInterface;
+use App\Service\Interfaces\PostServiceInterface;
 use Illuminate\Http\Request;
 
 class PostControllers extends Controller
@@ -18,7 +18,7 @@ class PostControllers extends Controller
 
     public function getAll(Request $request) {
         try {
-            $response = $this->postService->getAll($request);
+            $response = $this->postService->findAll($request);
             return ResponseHelper::success($response, "Successfully", 200);
         }  catch (\Throwable $th) {
             return ResponseHelper::error("Error", $th);
@@ -50,11 +50,20 @@ class PostControllers extends Controller
     }
     public function getDetailPost($pid) {
         try {
-            $response = $this->postService->getDetailPost($pid);
+            $response = $this->postService->findDetailPost($pid);
             return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
             return ResponseHelper::error("Create error", $th);
         }
     }
-     
+
+    public function searchPost(Request $request) {
+        try {
+            $response = $this->postService->searchPost($request);
+            return ResponseHelper::success($response, "Successfully", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Error", $th);
+        }
+    }
+    //  ----------------------
 }

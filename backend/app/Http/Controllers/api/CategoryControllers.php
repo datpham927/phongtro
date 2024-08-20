@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Services\Interfaces\CategoryServiceInterface;
+use App\Service\Interfaces\CategoryServiceInterface;
 use Illuminate\Http\Request;
 
 class CategoryControllers extends Controller
@@ -20,7 +20,7 @@ class CategoryControllers extends Controller
     public function getAll(Request $request )
     { 
         try {
-            $response= $this->categoryService->getAll($request);
+            $response= $this->categoryService->findAll($request);
             return ResponseHelper::success($response,"Successfully",200);
         } catch (\Throwable $th) {
             return ResponseHelper::error("Error",$th);
@@ -56,7 +56,11 @@ class CategoryControllers extends Controller
         } catch (\Throwable $th) {
             return ResponseHelper::error("Destroy error",$th);
         }
-    }
+    } 
+
+    // ----------------------
+
+      
     
    
 }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id')->primary(); // UUID làm khóa chính
+            $table->uuid('user_id');
             $table->string('title');
             $table->string('thumb')->nullable();
             $table->string('slug')->nullable();
