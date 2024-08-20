@@ -1,7 +1,7 @@
 <?php
-namespace App\Services;
+namespace App\Service\Services;
 use App\Repository\Interfaces\CategoryRepositoryInterface;
-use App\Services\Interfaces\CategoryServiceInterface;
+use App\Service\Interfaces\CategoryServiceInterface;
 use App\Util;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -14,7 +14,7 @@ class CategoryService implements CategoryServiceInterface
     {
         $this->categoryRepository = $categoryRepository;
     }
-    public function getAll($request){
+    public function findAll($request){
             $limit=$request['limit'];
             $page=$request['page'];
             $sort=$request['sort'];

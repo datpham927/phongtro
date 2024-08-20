@@ -2,6 +2,7 @@
 
 namespace App\Repository\Repositories;
 
+use App\Http\Resources\PostDetailResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Repository\Interfaces\PostRepositoryInterface;
@@ -30,7 +31,7 @@ class PostRepository implements PostRepositoryInterface
     // Apply select columns if specified
     if ($select) { $query->select($select);}
     // Execute the query and return the results
-    return $query->get() ?: null; // Return the result set or null if no results found
+    return PostResource::collection($query->get()); ; // Return the result set or null if no results found
 }
 
     
@@ -57,7 +58,7 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     } 
     
-    public function findByIdAndGetDetail($pid)
+    public function findPostDetailById ($pid)
 {
     // Tìm bài post trước để kiểm tra sự tồn tại
     $post = $this->post->find($pid);
@@ -73,7 +74,8 @@ class PostRepository implements PostRepositoryInterface
         'category'      // Quan hệ với bảng 'categories'
     ])->find($pid);
     // Trả về resource mới với bài post đã load các mối quan hệ
-    return new PostResource($post);
+    return new PostDetailResource($post);
 }
-
+     
+ 
 }

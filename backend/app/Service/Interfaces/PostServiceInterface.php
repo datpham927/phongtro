@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Services\Interfaces;
+namespace App\Service\Interfaces;
 
 interface PostServiceInterface
 {
 
-    public function getAll($request);
+    public function findAll($request);
     public function create($request);
-    public function getDetailPost($pid);
+    public function findDetailPost($pid);
     public function update($request, $id);
     public function destroy($id);
-
-    
 
 }

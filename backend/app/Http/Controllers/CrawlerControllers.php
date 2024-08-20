@@ -29,12 +29,12 @@ class CrawlerControllers extends Controller
         //     'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
         // ],  
       
-         [
-            'url' => 'https://phongtro123.com/cho-thue-mat-bang',
-            'name' => 'Cho Thuê Mặt Bằng',
-            'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
-        ],  
+        //  [
+        //     'url' => 'https://phongtro123.com/cho-thue-mat-bang',
+        //     'name' => 'Cho Thuê Mặt Bằng',
+        //     'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+        //     'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
+        // ],  
         [
             'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
             'name' => 'Tìm Người Ở Ghép',
@@ -63,6 +63,7 @@ class CrawlerControllers extends Controller
             $category = Category::create([
                 'id'=>Util::uuid(),
                 'name' => $categoryLink["name"],
+                'slug' => Util::slug($categoryLink["name"]),
                 'title' => $categoryLink["title"],
                 'sub_title' =>$categoryLink["sub_title"]
             ]);
@@ -90,7 +91,7 @@ class CrawlerControllers extends Controller
         // Khởi tạo đối tượng Crawler với HTML
         $crawler = new Crawler($html);
         // Lọc các phần tử có lớp 'post-item tin-vip'
-        $posts = $crawler->filter('.post-item.tin-vip');
+        $posts = $crawler->filter('.post-item');
         // Mảng lưu trữ các liên kết bài viết
         $postLinks = [];
         // Kiểm tra xem có phần tử nào được lọc không

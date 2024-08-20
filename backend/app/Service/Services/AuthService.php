@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Service\Services;
 
 use App\Mail\AuthMail;
 use App\Repository\Interfaces\UserRepositoryInterface;
-use App\Services\Interfaces\AuthServiceInterface;
+use App\Service\Interfaces\AuthServiceInterface;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
