@@ -10,5 +10,8 @@ interface PostServiceInterface
     public function findDetailPost($pid);
     public function update($request, $id);
     public function destroy($id);
+    public function searchPost($request);
+
+    
 
 }

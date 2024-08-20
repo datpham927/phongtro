@@ -1,6 +1,7 @@
 <?php
 namespace App\Service\Services;
 
+use App\Models\Post;
 use App\Models\Post_address;
 use App\Models\Post_area;
 use App\Models\Post_attribute;
@@ -134,5 +135,23 @@ class PostService implements PostServiceInterface
         $address["district_slug"]= Util::slug($address[ "district_name"] );
         $address["ward_slug"]= Util::slug($address[ "ward_name"] );
         Post_address::create($address);
+    }
+    public function searchPost($request)
+    {
+        $filters = $request->only([
+            'category_id',
+            'city_slug',
+            'district_slug',
+            'ward_slug',
+            'price_from',
+            'price_to',
+            'area_from',
+            'area_to'
+        ]);
+        $limit=$request['limit'];
+        $page=$request['page'];
+        $sort=$request['sort'];
+        return  $this->postRepository->search($limit, $sort , $page ,$filters );
+
     }
 }

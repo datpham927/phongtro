@@ -33,6 +33,7 @@ Route::prefix('v1/post')->group(function () {
     Route::post('/{pid}/update', [PostControllers::class, 'update']) ;
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']) ;
     Route::delete('/{pid}/delete', [PostControllers::class, 'destroy']) ;
+    Route::get('/search', [PostControllers::class, 'searchPost']) ;
 });
 
 Route::prefix('v1/address')->group(function () {
