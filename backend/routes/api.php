@@ -5,16 +5,18 @@ use App\Http\Controllers\api\CategoryControllers;
 use App\Http\Controllers\api\AddressControllers;
 use App\Http\Controllers\api\PostControllers;
 use App\Http\Controllers\CrawlerControllers;
+use App\Http\Middleware\Login;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/crawler', [CrawlerControllers::class, 'crawler'])->name('crawler.index');
   
 // Nhóm các route liên quan đến người dùng
+Route::middleware(Login::class)->post('v1/user/logout', [AuthControllers::class, 'logout']);
+
 Route::prefix('v1/user')->group(function () {
     Route::post('/register', [AuthControllers::class, 'register']) ;
     Route::post('/login', [AuthControllers::class, 'login']) ;
-    Route::get('/logout', [AuthControllers::class, 'logout'])  ;
-    Route::get('/refresh_token', [AuthControllers::class, 'refreshToken']) ;
+    Route::post('/refresh_token', [AuthControllers::class, 'refreshToken']) ;
     Route::post('/reset_password', [AuthControllers::class, 'resetPasswordPost']) ;
     Route::post('/{token}/change_password', [AuthControllers::class, 'changePasswordPost']);
 });
