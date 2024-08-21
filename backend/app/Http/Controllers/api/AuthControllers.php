@@ -15,11 +15,11 @@ class AuthControllers extends Controller
     public function __construct(AuthServiceInterface $authService)
     {
         $this->authService = $authService; 
-// "auth:api": yêu cầu người dùng phải được xác thực thông qua guard api. 
-// Người dùng cần có token hợp lệ để truy cập các phương thức được bảo vệ bởi middleware này.
-// Áp dụng: Middleware này áp dụng cho tất cả các phương thức trong controller,
-// "['except' => ['register','login']":  ngoại trừ các phương thức user và logout.
-        $this->middleware('auth:api', ['except' => ['register','login','resetPasswordPost','changePasswordPost']]);
+     // "auth:api": yêu cầu người dùng phải được xác thực thông qua guard api. 
+     // Người dùng cần có token hợp lệ để truy cập các phương thức được bảo vệ bởi middleware này.
+     // Áp dụng: Middleware này áp dụng cho tất cả các phương thức trong controller,
+     // "['except' => ['register','login']":  ngoại trừ các phương thức user và logout.
+        // $this->middleware('auth:api', ['except' => ['register','login','resetPasswordPost','changePasswordPost']]);
     }
     public function register(Request $request){
         try {
@@ -38,23 +38,22 @@ class AuthControllers extends Controller
             return ResponseHelper::error('An error occurred while login the user.',$th);
          }
     }
-    public function logout() { 
+    public function logout(Request $request) { 
         try {
-            $this->authService->logout();
+            $this->authService->logout($request);
             return  ResponseHelper::success(null,'Logged out',200);
            } catch (Throwable $th) {
             return  ResponseHelper::error('Error logout', $th);
            }
     } 
-    public function refreshToken() { 
+    public function refreshToken(Request $request) { 
         try {
-            $response = $this->authService->refreshToken();
+            $response = $this->authService->refreshToken($request);
             return  ResponseHelper::success($response,'Refresh token successfully',200);
         } catch (Throwable $th) {
             return  ResponseHelper::error('Error logout', $th);
         }
     }
-
     protected function resetPasswordPost(Request $request) {
          try {
              $response= $this->authService->resetPasswordPost($request);
