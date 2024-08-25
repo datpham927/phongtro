@@ -1,6 +1,4 @@
-const { autoId } = require("./autoId");
-
-const prices = [
+export const dataPrice = [
   {
     min: 0,
     max: 1,
@@ -43,7 +41,7 @@ const prices = [
   },
 ];
 
-const areas = [
+export const dataArea = [
   {
     min: 0,
     max: 20,
@@ -75,13 +73,4 @@ const areas = [
     value: "Trên 90m",
   },
 ];
-
-const dataPrice = prices.map((item) => ({
-  ...item,
-  code: autoId(item.value),
-}));
-const dataArea = areas.map((item) => ({
-  ...item,
-  code: autoId(item.value),
-}));
-module.exports = { dataPrice, dataArea };
+ 

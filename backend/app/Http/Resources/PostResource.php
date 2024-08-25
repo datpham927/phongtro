@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -14,25 +13,40 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $address   = $this->address;
-        $area    = $this->area;
-        $price    = $this->price;
+        $address = $this->address;
+        $area = $this->area;
+        $price = $this->price;
+        $user = $this->user;
+        $images = $this->images;
         return [
-            'id'            => $this->id,
-            'title'    => $this->title,
-            'thumb'     => $this->thumb,
-            'slug'         => $this->slug,
-            'description'         => $this->description,
+            'id' => $this->id,
+            'title' => $this->title,
+            'thumb' => $this->thumb,
+            'slug' => $this->slug,
+            'description' => $this->description,
             'address' => [
-                'city_name'      =>$address?->city_name,
-                'district_name'      =>$address?->district_name,
-                'ward_name'          =>$address?->ward_name,
-                'city_slug'         =>$address?->city_slug,
-                'district_slug'       =>$address?->district_slug,
-                'ward_slug'  =>$address?->ward_slug,
+                'city_name' => $address?->city_name,
+                'district_name' => $address?->district_name,
+                'ward_name' => $address?->ward_name,
+                'city_slug' => $address?->city_slug,
+                'district_slug' => $address?->district_slug,
+                'ward_slug' => $address?->ward_slug,
             ],
-            'area'  =>$area?->value,
-            'price' =>$price?->value
+            'area' => [
+                'order' => $area?->order,
+                'value' => $area?->value,
+            ],
+            'price' => [
+                'order' => $price?->order,
+                'value' => $price?->value,
+            ],
+            'user' => [
+                'name' => $user?->name,
+                'phone' => $user?->phone,
+                'avatar' => $user?->avatar,
+            ],
+            "images"=>  $images
         ];
     }
 }
+

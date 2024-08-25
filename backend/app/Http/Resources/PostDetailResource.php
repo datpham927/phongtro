@@ -18,6 +18,7 @@ class PostDetailResource extends JsonResource
         $area    = $this->area;
         $price    = $this->price;
         $attribute    = $this->attribute;
+
         return [
             'id'            => $this->id,
             'title'    => $this->title,
@@ -47,6 +48,7 @@ class PostDetailResource extends JsonResource
                 'expire'      =>$attribute?->expire,
                 'created_at'      =>$attribute?->created_at,
             ],
+          
         ];
     }
 }

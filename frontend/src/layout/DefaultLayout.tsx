@@ -1,29 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import HeaderComponent from '../components/HeaderComponent';
 import FooterComponent from '../components/FooterComponent';
-import SearchComponent from '../components/SearchComponent';
-import ProvinceComponent from '../components/ProvinceComponent';
+import { Auth } from '../feature';
+import NavigateComponent from '../components/NavigateComponent';
+import { apiGetDetailUser } from '../services/apiUser';
+import { setIsLoginSuccess } from '../redux/auth/authSlice';
+import { setDetailUser } from '../redux/user/userSlice';
+import { useAppDispatch } from '../redux/hooks';
 interface DefaultLayoutProps {
   children: React.ReactNode;
 }
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+  const dispatch= useAppDispatch()
+
+  useEffect(() => {
+    const fetchApiDetailUser = async () => {
+
+        const res = await apiGetDetailUser();
+      alert("Sss")
+
+        if (res.status) {
+            dispatch(setIsLoginSuccess(true));
+            dispatch(setDetailUser(res.data));
+        }
+    };
+    const access_token = localStorage.getItem('access_token');
+    access_token && fetchApiDetailUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
   return (
     <div className="h-full">
     <HeaderComponent />
-    <div className="w-[1100px] mx-auto">
-    <SearchComponent/>
-    <ProvinceComponent />
-      <div className="flex my-5 gap-4">
-        <div className="w-[70%]">
-         {children}
-        </div>
-        <div className="w-[30%]">
-        </div>
+    <NavigateComponent/>
+    <div className="w-[1100px] mx-auto"> 
+         {children} 
       </div>
     <FooterComponent/>
-
-    </div>
-    
+    <Auth/>
   </div>
   )
 };

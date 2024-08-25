@@ -11,6 +11,7 @@ export default {
         "red-custom": "#f73859",
         "blue-custom": "#1266dd",
         secondary: "#65676b",
+        overlay: "rgba(0, 0, 0, 0.53)",
       },
       boxShadow: {
         custom: " 0 0 10px 1px rgb(0 0 0 / 10%)",

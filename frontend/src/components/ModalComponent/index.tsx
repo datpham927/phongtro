@@ -123,8 +123,7 @@ function ModalComponent({
                      e.stopPropagation();
                      setHideModal(false);
                   }}
-               >
-                  <ion-icon name="arrow-back-outline"></ion-icon>
+               >  <ion-icon name="arrow-back-outline"></ion-icon>
                </div>
                <span className="text-sm font-medium">{name}</span>
             </div>

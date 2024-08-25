@@ -21,7 +21,7 @@ class Login
     public function handle(Request $request, Closure $next): Response
     {
         $authorizationHeader = $request->header('Authorization');
-
+        $userId = $request->header('client_id');
         if (!$authorizationHeader || !str_starts_with($authorizationHeader, 'Bearer ')) {
             return response()->json(['status' => 401, 'message' => 'Authorization header not found or invalid'], 401);
         }
@@ -36,7 +36,6 @@ class Login
             return response()->json(['status' => 401, 'message' => 'Failed to decode token'], 401);
         }
 
-        $userId = $request->input('client_id');
         $findUser = User::find($decodedToken->user_id);
 
         if (!$findUser) {
@@ -46,10 +45,8 @@ class Login
         if ($userId != $findUser->id) {
             return response()->json(['status' => 403, 'message' => 'Invalid user'], 403);
         }
-
         // Add user ID to request
-        $request->attributes->set('user_id', $findUser->id);
-
+        $request["user_id"]= $findUser->id;
         return $next($request);
     }
 }
