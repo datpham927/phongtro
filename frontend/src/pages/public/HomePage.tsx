@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import SearchComponent from '../components/SearchComponent'
-import ProvinceComponent from '../components/ProvinceComponent'
-import ItemNavbarComponent from '../components/ItemNavbarComponent'
-import { dataArea, dataPrice } from '../utils/data' 
-import ListComponent from '../components/ListComponent' 
-import { IPost } from '../interfaces/Post'
-import { getAllPost } from '../services/apiPost'
+import { IPost } from '../../interfaces/Post'
+import { getAllPost } from '../../services/apiPost'
+import SearchComponent from '../../components/SearchComponent'
+import ProvinceComponent from '../../components/ProvinceComponent'
+import ListComponent from '../../components/ListComponent'
+import ItemNavbarComponent from '../../components/ItemNavbarComponent'
+import { dataArea, dataPrice } from '../../utils/data'
+ 
 
 const HomePage:React.FC = () => { 
       const [listPosts, setListPost]=useState<IPost[]>([])

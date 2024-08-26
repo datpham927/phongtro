@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUserDetail } from '../../interfaces/UserDetail';
 
 // Define the initial state using the UserDetail type
-const initialState: IUserDetail = {
+const initialState: IUserDetail|any= {
     id: "",
     name: "",
     phone: "",
@@ -18,7 +18,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setDetailUser: (state, action: PayloadAction<IUserDetail>) => {
+        setDetailUser: (state, action) => {
             const { id, name, phone, email, zalo, facebook, avatar, type } = action.payload;
             state.id = id;
             state.name = name;

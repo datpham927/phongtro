@@ -6,6 +6,7 @@ import NavigateComponent from '../components/NavigateComponent';
 import { apiGetDetailUser } from '../services/apiUser';
 import { setIsLoginSuccess } from '../redux/auth/authSlice';
 import { setDetailUser } from '../redux/user/userSlice';
+import { ToastContainer } from 'react-toastify';
 import { useAppDispatch } from '../redux/hooks';
 interface DefaultLayoutProps {
   children: React.ReactNode;
@@ -15,10 +16,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
 
   useEffect(() => {
     const fetchApiDetailUser = async () => {
-
         const res = await apiGetDetailUser();
-      alert("Sss")
-
         if (res.status) {
             dispatch(setIsLoginSuccess(true));
             dispatch(setDetailUser(res.data));
@@ -28,7 +26,20 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     access_token && fetchApiDetailUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
-
+const toastContainer = (
+  <ToastContainer
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+  />
+);
   return (
     <div className="h-full">
     <HeaderComponent />
@@ -38,6 +49,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
       </div>
     <FooterComponent/>
     <Auth/>
+    {toastContainer}
   </div>
   )
 };

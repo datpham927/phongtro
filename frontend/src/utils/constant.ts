@@ -1,6 +1,6 @@
 export const PATH = {
   HOME: "/",
-  HOME__PAGE: ":page",
+  HOME__PAGE: ":slug",
   LOGIN: "/login",
   REGISTER: "/register", 
   SYSTEM: "/he-thong",

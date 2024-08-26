@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
 // import { setPostFilterCode } from "../redux/postSlice/postSlice";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -10,7 +9,7 @@ const NavigateComponent = () => {
   const [fixedNavigate, setFixedNavigate] = useState(false);
 
   useEffect(() => {
-    const handleOnScroll = (e) => {
+    const handleOnScroll = (e:any) => {
       setFixedNavigate(true);
       console.log(e?.target?.scrollHeight);
     };
@@ -39,10 +38,7 @@ const NavigateComponent = () => {
           Trang chủ
         </NavLink>
         {categories?.map((e) => (
-          <NavLink
-            // to={`${ PATH.HOME__PAGE  +"/"+e.slug}?page=1`}
-            className={({ isActive }) => (isActive ? active : notActive)}
-          >
+          <NavLink to={`/${e.slug}`} className={({ isActive }) => (isActive ? active : notActive)}>
             {e.name}
           </NavLink>
           ))}   

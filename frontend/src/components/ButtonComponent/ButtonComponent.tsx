@@ -3,7 +3,7 @@ import React, { memo } from "react";
 interface ButtonComponentProps {
   text: string;
   className?: string; // Optional prop
-  onClick?: (e: { preventDefault: () => void; }) => Promise<void> // Corrected type
+  onClick?: (e: { preventDefault: () => void; }) => Promise<void>| any// Corrected type
 }
 
 const ButtonComponent: React.FC<ButtonComponentProps> = ({
