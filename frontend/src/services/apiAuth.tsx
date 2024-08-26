@@ -25,9 +25,9 @@ import { axiosJWT, httpRequest } from "../utils/httpRequest";
 //     }
 // };
 
-const apiRegister = async (name: string,email: string, password: string, type:string) => {
+const apiRegister = async ( data:any) => {
     try {
-        const res = await axiosJWT.post('auth/register', {name, email, password ,type});
+        const res = await axiosJWT.post('auth/register',data);
         return res.data;
     } catch (error) {
         return {

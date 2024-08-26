@@ -46,7 +46,6 @@ function HeaderComponent() {
   //   han
   //   // toastMessage("Đăng xuất thành công");
   // }
-
   
   return (
     <div>

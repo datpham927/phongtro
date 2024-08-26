@@ -27,14 +27,14 @@ const Auth: React.FC = () => {
                 <Overlay className="z-[1000]" onClick={handleClose}>
                     <div onClick={handleOpen} className="relative w-[800px] h-auto ">
                         <div className="flex w-full h-full bg-white m-auto rounded-lg items-center overflow-hidden">
-                            <div className="flex flex-col gap-2 mobile:w-full w-4/6 p-10 ">
+                            <div className="flex flex-col gap-2 mobile:w-full w-4/6 px-10 py-6">
                                 {featureAuth == 0 ? <Register /> : featureAuth == 1 ? <Login /> : <Forgot />}
                             </div>
                             <Right />
                         </div>
                         {/* -------------- */}
                         <div
-                            // onClick={handleClose}
+                            onClick={handleClose}
                             className="absolute right-[-13px] top-[-13px] bg-blue-custom w-10 h-10 flex justify-center items-center rounded-full bg-primary text-white"
                         >
                             <CloseIcon fontSize="medium" />

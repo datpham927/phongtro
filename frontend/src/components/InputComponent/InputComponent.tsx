@@ -19,11 +19,12 @@ const InputComponent: React.FC<InputComponentProps> = ({
   onChange,
   name,
   invalidFields = [],
-}) => {
+}) => {  
   return (
-    <>
+    <div className="w-full my-2">
       <input
-        className="outline-none text-base bg-primary-bg p-2 rounded-md my-2"
+
+        className="outline-none w-full text-sm bg-primary-bg p-2 rounded-md "
         type={type}
         placeholder={placeholder}
         onChange={onChange}
@@ -31,11 +32,11 @@ const InputComponent: React.FC<InputComponentProps> = ({
       />
       {invalidFields.length > 0 &&
         invalidFields.some((e) => e.name === name) && (
-          <span className="my-1 text-xs text-red-custom">
+          <span className="my-1 text-sm text-red-custom">
             {invalidFields.find((e) => e.name === name)?.message}
           </span>
         )}
-    </>
+    </div>
   );
 };
 

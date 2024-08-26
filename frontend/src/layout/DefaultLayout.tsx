@@ -25,23 +25,10 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     const access_token = localStorage.getItem('access_token');
     access_token && fetchApiDetailUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
-const toastContainer = (
-  <ToastContainer
-      position="top-center"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-  />
-);
+}, []); 
   return (
-    <div className="h-full">
+      <>
+      <div className="h-full">
     <HeaderComponent />
     <NavigateComponent/>
     <div className="w-[1100px] mx-auto"> 
@@ -49,8 +36,9 @@ const toastContainer = (
       </div>
     <FooterComponent/>
     <Auth/>
-    {toastContainer}
   </div>
+</>
+
   )
 };
 
