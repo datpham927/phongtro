@@ -83,9 +83,9 @@ const apiLogout = async () => {
     }
 };
 
-const apiRefreshToken = async () => {
+const apiRefreshToken = async (refreshToken:any) => {
     try {
-        const res = await axiosJWT.post('auth/refresh_token', { withCredentials: true });
+        const res = await axiosJWT.post('auth/refresh_token', {"refresh_token":refreshToken });
         return res.data;
     } catch (error) {
         console.log(error);

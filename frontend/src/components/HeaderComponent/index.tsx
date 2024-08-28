@@ -33,7 +33,7 @@ function HeaderComponent() {
   const handleLogout = async () => {
         const res = await apiLogout();
         if (!res.status) return;
-        localStorage.removeItem('access_token');
+        localStorage.clear();
         dispatch(setDetailUser({}));
         dispatch(setIsLoginSuccess(false));
         window.location.reload();

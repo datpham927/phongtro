@@ -13,7 +13,7 @@ class UserService implements UserServiceInterface
         $this->userRepository = $userRepository;
     }
     public function findUser($user_id){ 
-        $user=$this->userRepository->findById($user_id);
+         $user=$this->userRepository->findById($user_id);
          return new UserResource( $user);
     }
  

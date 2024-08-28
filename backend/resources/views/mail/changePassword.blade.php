@@ -10,8 +10,9 @@
 <body>
 <div style="width: 100%;">
     <p>Hiệu lực trong 5 phút</p>
-    <a href="{{ env('APP_CLIENT_URL') }}/{{ $data['token'] }}">Nhấn vào đây để thay đổi mật khẩu!</a>
+    <a href="{{ config('app.client_url') }}reset/{{ $data['token'] }}">Nhấn vào đây để thay đổi mật khẩu!</a>
 </div>
+
 
 </body>
 

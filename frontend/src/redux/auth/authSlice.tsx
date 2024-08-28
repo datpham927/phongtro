@@ -6,7 +6,7 @@ interface AuthInitialState {
 }
 
 const initialState: AuthInitialState = {
-    isLogged :false, 
+    isLogged: localStorage.getItem('authState') === 'true',
 };
 
 export const authSlice = createSlice({
@@ -16,8 +16,10 @@ export const authSlice = createSlice({
     reducers: {
         setIsLoginSuccess: (state, action) => {
             state.isLogged = action.payload;
+            localStorage.setItem('authState', action.payload.toString()); // Convert boolean to string
         },
-    },
+    }
+    
 });
 
 export const {   setIsLoginSuccess } = authSlice.actions;
