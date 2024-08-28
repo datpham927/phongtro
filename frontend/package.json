@@ -20,6 +20,7 @@
     "axios": "^1.7.4",
     "html-react-parser": "^5.1.12",
     "ionicons": "^7.4.0",
+    "js-cookie": "^3.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",

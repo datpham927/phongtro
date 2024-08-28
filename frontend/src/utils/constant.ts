@@ -1,7 +1,7 @@
 export const PATH = {
   HOME: "/",
   HOME__PAGE: ":slug",
-  LOGIN: "/login",
+  RESET_PASSWORD: "/reset/:token",
   REGISTER: "/register", 
   SYSTEM: "/he-thong",
   CREATE_POST: "tao-moi-bai-dang",

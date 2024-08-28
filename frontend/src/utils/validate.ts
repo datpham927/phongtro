@@ -18,6 +18,14 @@ const validate = (
 
   valueFormArray.forEach(([key, value]) => {
     switch (key) {
+      case "email": {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+            invalidFields.push({ name:key, message: 'Email không hợp lệ' });
+            error = false;
+        }
+        break;
+      }
       case "phone": {
         if (!/^\d+$/.test(value)) {
           invalidFields.push({

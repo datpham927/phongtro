@@ -6,7 +6,6 @@ import NavigateComponent from '../components/NavigateComponent';
 import { apiGetDetailUser } from '../services/apiUser';
 import { setIsLoginSuccess } from '../redux/auth/authSlice';
 import { setDetailUser } from '../redux/user/userSlice';
-import { ToastContainer } from 'react-toastify';
 import { useAppDispatch } from '../redux/hooks';
 interface DefaultLayoutProps {
   children: React.ReactNode;
@@ -15,6 +14,8 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   const dispatch= useAppDispatch()
 
   useEffect(() => {
+
+  
     const fetchApiDetailUser = async () => {
         const res = await apiGetDetailUser();
         if (res.status) {
@@ -26,6 +27,8 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     access_token && fetchApiDetailUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []); 
+
+
   return (
       <>
       <div className="h-full">

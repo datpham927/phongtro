@@ -27,7 +27,7 @@ class Login
         }
         $accessToken = str_replace('Bearer ', '', $authorizationHeader);
         try {
-            $decodedToken = JWT::decode($accessToken, new Key(env('JWT_SECRET_ACCESS_TOKEN'), 'HS256'));
+            $decodedToken = JWT::decode($accessToken, new Key(config('jwt.access_token_secret'), 'HS256'));
         } catch (\Firebase\JWT\ExpiredException $e) {
             return response()->json(['status' => 401, 'message' => 'Token has expired'], 401);
         } catch (\Firebase\JWT\SignatureInvalidException $e) {
@@ -35,13 +35,10 @@ class Login
         } catch (\Exception $e) {
             return response()->json(['status' => 401, 'message' => 'Failed to decode token'], 401);
         }
-
         $findUser = User::find($decodedToken->user_id);
-
         if (!$findUser) {
             return response()->json(['status' => 404, 'message' => 'User not found'], 404);
         }
-
         if ($userId != $findUser->id) {
             return response()->json(['status' => 403, 'message' => 'Invalid user'], 403);
         }
