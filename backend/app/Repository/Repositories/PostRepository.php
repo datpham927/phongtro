@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Repository\Interfaces\PostRepositoryInterface;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -31,7 +32,7 @@ class PostRepository implements PostRepositoryInterface
     // Apply select columns if specified
     if ($select) { $query->select($select);}
     // Execute the query and return the results
-    return PostResource::collection($query->get()); ; // Return the result set or null if no results found
+    return PostResource::collection($query->get());   // Return the result set or null if no results found
 }
 
     
@@ -76,6 +77,42 @@ class PostRepository implements PostRepositoryInterface
     // Trả về resource mới với bài post đã load các mối quan hệ
     return new PostDetailResource($post);
 }
-     
- 
+public function search($limit = 5, $sort = 'asc', $page = 1, array $filters = []) {
+    // Khởi tạo query builder
+    $query = $this->post->newQuery();
+
+    // Áp dụng bộ lọc theo category_id nếu có
+    if (!empty($filters['category_id'])) {
+        $query->where('category_id', $filters['category_id']);
+    }
+    // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
+    if (!empty($filters['city_slug']) && !empty($filters['district_slug']) && !empty($filters['ward_slug'])) {
+        $query->whereHas('address', function($query) use ($filters) {
+                $query->where('city_slug', $filters['city_slug'])
+                ->where('district_slug', $filters['district_slug'])
+                ->where('ward_slug', $filters['ward_slug']);
+        });
+    }
+    // Áp dụng bộ lọc theo khoảng giá nếu có
+    if (!empty($filters['price_from']) && !empty($filters['price_to'])) {
+        $query->whereHas('price', function($query) use ($filters) {
+            $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
+        });
+    }
+    // Áp dụng bộ lọc theo khoảng diện tích nếu có
+    if (!empty($filters['area_from']) && !empty($filters['area_to'])) {
+        $query->whereHas('area', function($query) use ($filters) {
+            $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
+        });
+    }
+    // Áp dụng sắp xếp
+    $sortby = $sort === 'ctime' ? 'desc' : 'asc';
+    $query->orderBy('posts.created_at', $sortby);
+    // Áp dụng phân trang
+    $skip = ($page - 1) * $limit;
+    if ($limit > 0) { $query->skip($skip)->take($limit); }
+    // Thực thi truy vấn và trả về kết quả dưới dạng resource
+    return PostResource::collection($query->get());
+}
+
 }

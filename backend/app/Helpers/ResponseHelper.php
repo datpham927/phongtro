@@ -9,7 +9,7 @@ class ResponseHelper
 {
     public static function success($data, $message = 'Operation successful', $status = 200)
     {
-        $response = [  'status' => $status, 'message' => $message];
+        $response = [  'status' => true, 'message' => $message];
         if (!is_null($data)) { $response['data'] = $data; }
         return response()->json($response, 200);
     }
@@ -18,9 +18,9 @@ class ResponseHelper
         $statusCode = $status;
         $errors = null;
         if ($e) { $errors = $e->getMessage(); $statusCode = $e->getCode()?$e->getCode() : $status; }
-        $response = [ 'status' => $statusCode, 'message' => $message];
+        $response = [ 'status' => false, 'message' => $message];
         if ($errors) {$response['errors'] = $errors;};
-        return response()->json($response, $status);
+        return response()->json($response, $statusCode);
     }
     
     

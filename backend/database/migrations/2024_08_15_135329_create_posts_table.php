@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->uuid('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -56,5 +56,14 @@ class PostControllers extends Controller
             return ResponseHelper::error("Create error", $th);
         }
     }
+
+    public function searchPost(Request $request) {
+        try {
+            $response = $this->postService->searchPost($request);
+            return ResponseHelper::success($response, "Successfully", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Error", $th);
+        }
+    }
     //  ----------------------
 }
