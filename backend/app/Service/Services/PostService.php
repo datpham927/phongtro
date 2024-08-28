@@ -29,6 +29,8 @@ class PostService implements PostServiceInterface
             }
             $select=null;
          return $this->postRepository->findAll($limit, $sort, $page,$filter, $select);
+        // return Post::with('user')->get();
+    
     }
     public function create($request){
         $validatedData = $request->validated();
@@ -152,6 +154,5 @@ class PostService implements PostServiceInterface
         $page=$request['page'];
         $sort=$request['sort'];
         return  $this->postRepository->search($limit, $sort , $page ,$filters );
-
     }
 }

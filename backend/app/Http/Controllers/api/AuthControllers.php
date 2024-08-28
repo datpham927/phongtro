@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Throwable; 
 class AuthControllers extends Controller
 {
-    protected $redirectTo = '/home';
     protected $authService;
 
     public function __construct(AuthServiceInterface $authService)

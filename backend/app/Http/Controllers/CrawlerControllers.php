@@ -35,13 +35,13 @@ class CrawlerControllers extends Controller
         //     'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
         //     'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
         // ],  
+        // [
+        //     'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
+        //     'name' => 'Tìm Người Ở Ghép',
+        //     'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
+        //     'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
+        // ],
         [
-            'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
-            'name' => 'Tìm Người Ở Ghép',
-            'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
-            'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
-        ],
-          [///
             'url' => 'https://phongtro123.com/cho-thue-can-ho',
             'name' => 'Cho Thuê Căn Hộ',
             'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
@@ -50,7 +50,7 @@ class CrawlerControllers extends Controller
     ];
     
     public $users=[
-        "56bbecc1-fbf7-4871-8d64-0f85b69411f6",
+        "1f2efcd2-d886-4643-a9e5-f1beb8df0c21",
         "78733a14-7b26-4da0-83c5-77f4032ecfab",
         "cf7066ea-3425-43bd-acb0-5ce512a7998e",
         "f2728809-6b77-47c6-8a59-c6497717995a"

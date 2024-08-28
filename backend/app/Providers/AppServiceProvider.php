@@ -14,10 +14,12 @@ use App\Service\Interfaces\AuthServiceInterface;
 use App\Service\Interfaces\CategoryServiceInterface;
 use App\Service\Interfaces\AddressServiceInterface;
 use App\Service\Interfaces\PostServiceInterface;
+use App\Service\Interfaces\UserServiceInterface;
 use App\Service\Services\AddressService;
 use App\Service\Services\PostService;
 use App\Service\Services\AuthService;
 use App\Service\Services\CategoryService;
+use App\Service\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CategoryServiceInterface::class,CategoryService::class);
         $this->app->bind(PostServiceInterface::class,PostService::class);
         $this->app->bind(AddressServiceInterface::class,AddressService::class);
-
+        $this->app->bind(UserServiceInterface::class,UserService::class);
     }
 
     /**
