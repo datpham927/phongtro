@@ -21,12 +21,13 @@ const Login: React.FC = () => {
         if (res?.status) {
             localStorage.setItem('access_token', JSON.stringify(res.data.authorization.access_token));
             localStorage.setItem('client_id', JSON.stringify(res.data.user_id));
+            localStorage.setItem('refresh_token', JSON.stringify(res.data.authorization.refresh_token));
             // showNotification('Đăng nhập thành công!', true);
             dispatch(setOpenFeatureAuth(false));
             dispatch(setIsLoginSuccess(true));
             window.location.reload();
         } else {
-            setError('Tài khoản hoặc mật khẩu không chính xác!');
+            setError("Tài khoản hoặc mật khẩu không đúng");
         }
     };
 
@@ -48,7 +49,9 @@ const Login: React.FC = () => {
                             placeholder="dpshopvn@gmail.com"
                         />
                     </div>
-                    <InputPassWordComponent  value={password} onChange={(e)=>{setPassword(e.target.value); setError('')}}  placeholder="Nhập mật khẩu"/>
+                    <InputPassWordComponent name='password'  value={password} placeholder="Nhập mật khẩu"
+                     onChange={(e)=>{setPassword(e.target.value); setError('')}}  
+                     />
                     {error && <p className="text-red-400 text-sm">{error}</p>}
                 </div>
 

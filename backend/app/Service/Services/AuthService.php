@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -45,24 +46,19 @@ class AuthService implements AuthServiceInterface
         // xóa trường confirm_password
         unset($requestData['confirm_password']);
         $user = $this->userRepository->create($requestData);
-        // create accessToken
-         $accessToken = JWT::encode([
-            'user_id' => $user->id,
-            'email' => $user->email,
-            'exp' => time() + 60
-         ], env('JWT_SECRET_ACCESS_TOKEN'), 'HS256');
-        // create refreshToken
-        $refreshToken = JWT::encode([
-            'user_id' =>$user->id,
-            'email' => $user->email,
-        ], env('JWT_SECRET_REFRESH_TOKEN'), 'HS256');
-        // thêm vào database
-        RefreshToken::create([
+        // tạo token
+        $tokens= $this->createTokenPairs($user);
+        $accessToken=$tokens["access_token"];  
+        $refreshToken=$tokens["refresh_token"];
+          // thêm vào database
+          RefreshToken::create([
             'user_id' => $user->id,
             'refresh_token' => $refreshToken
         ]);
+
+       
         // Trả về thông tin người dùng và token
-        return $this->buildAuthResponse($user, $accessToken, $refreshToken);
+        return $this->buildAuthResponse($user,$accessToken,$refreshToken);
     }
 
     // Phương thức để đăng nhập người dùng
@@ -78,85 +74,60 @@ class AuthService implements AuthServiceInterface
         // Nếu xác thực thất bại, ném ra ngoại lệ
         if ($validator->fails()) { throw new ValidationException($validator);}
         // Thực hiện đăng nhập 
-        if (!Auth::attempt($credentials)) { throw new Exception('Invalid email or password', 403) ;} 
-        $refreshTokenDb = RefreshToken::where('user_id', Auth::user()->id)->first();
-        if ($refreshTokenDb) throw new Exception('You are logged in', 202); 
-        $accessToken = JWT::encode([
-            'user_id' => Auth::user()->id,
-            'email' => Auth::user()->email,
-            'exp' =>  time() + 60 *60*24*10
-        ],env('JWT_SECRET_ACCESS_TOKEN'), 'HS256');
-
-        $refreshToken = JWT::encode([
-            'user_id' => Auth::user()->id,
-            'email' => Auth::user()->email,
-        ], env('JWT_SECRET_REFRESH_TOKEN'), 'HS256');
-         // thêm vào database
-        RefreshToken::create([
-            'user_id' => Auth::user()->id,
+        if (!Auth::attempt($credentials)) { throw new Exception('Email hoặc mật khẩu không chính xác', 403) ;} 
+        $user=Auth::user();
+        $refreshTokenDb = RefreshToken::where('user_id',$user->id)->first();
+        if ($refreshTokenDb) throw new Exception('Tài khoản của bạn đã được đăng nhập', 202); 
+        // tạo token
+        $tokens= $this->createTokenPairs($user);
+        $accessToken=$tokens["access_token"];  
+        $refreshToken=$tokens["refresh_token"];
+        //   thêm vào database
+          RefreshToken::create([
+            'user_id' => $user->id,
             'refresh_token' => $refreshToken
         ]);
-
-        return $this->buildAuthResponse(Auth::user(), $accessToken, $refreshToken);
+       
+        // Trả về thông tin người dùng và token
+        return $this->buildAuthResponse($user,$accessToken,$refreshToken);
     }
     // Phương thức để đăng xuất người dùng
     public function logout($request) {
     // Lấy token từ header Authorization
     $token = $request->bearerToken();
     if (!$token) Throw new Exception('Token not provided',404); 
-    $decodedToken = JWT::decode($token, new Key(env('JWT_SECRET_ACCESS_TOKEN'), 'HS256'));
     // Tìm refresh token liên quan đến user_id
-    $refreshToken = RefreshToken::where('user_id', $decodedToken->user_id)->first();
+    $refreshToken = RefreshToken::where('user_id',  $request->user_id)->first();
     if ($refreshToken)  $refreshToken->delete();
-   
 }
     // Phương thức để làm mới token
     public function refreshToken($request)
     {
-        $requestToken = $request->input('refresh_token');
-        
+        $requestToken = $request->input('refresh_token') ;
         // Retrieve the refresh token from the database
         $refreshTokenDB = RefreshToken::where('refresh_token', $requestToken)->first();
-    
-        if (!$refreshTokenDB) {
-            throw new Exception('Refresh Token Not Found', 401);
-        }
-    
+        if (!$refreshTokenDB) { throw new Exception('Refresh Token Not Found', 401);  }
         // Retrieve the user associated with the refresh token
         $userDb = $this->userRepository->findById($refreshTokenDB->user_id);
-        
-        if (!$userDb) {
-            throw new Exception('User Not Found', 404);
-        }
-    
-        // Generate a new access token
-        $accessToken = JWT::encode([
-            'user_id' => $userDb->id,
-            'email' => $userDb->email,
-            'exp' => time() + 60 * 60 * 24 * 10 // Token valid for 10 days
-        ], env('JWT_SECRET_ACCESS_TOKEN'), 'HS256');
-    
-        // Generate a new refresh token
-        $refreshToken = JWT::encode([
-            'user_id' => $userDb->id,
-            'email' => $userDb->email
-        ], env('JWT_SECRET_REFRESH_TOKEN'), 'HS256');
-    
+        if (!$userDb) { throw new Exception('User Not Found', 404); }
+          // tạo token
+          $tokens= $this->createTokenPairs($userDb);
+          $accessToken=$tokens["access_token"];  
+          $refreshToken=$tokens["refresh_token"];
         // Update the refresh token in the database
-        $refreshTokenDB->update(['refresh_token' => $refreshToken]);
-    
-        // Build and return the authentication response
-        return $this->buildAuthResponse($userDb, $accessToken, $refreshToken);
+          $refreshTokenDB->update(['refresh_token' => $refreshToken]);
+        // Build and return the authentication response 
+        return $this->buildAuthResponse($userDb, $accessToken,$refreshToken);
     }
     // Phương thức xây dựng phản hồi chứa thông tin người dùng và token
-    private function buildAuthResponse($user, $access_token,$refresh_token) {
+    private function buildAuthResponse($user, $access_token,$refreshToken) {
         return [
             'user_id' => $user->id,
             'authorization' => [
                 'access_token' => $access_token,
-                'refresh_token' => $refresh_token,
+                "refresh_token"=>$refreshToken,
                 'token_type' => 'bearer',
-            ]
+            ],
         ];
     }
       public function resetPasswordPost($request){
@@ -166,16 +137,13 @@ class AuthService implements AuthServiceInterface
         if ($validator->fails()) { throw new ValidationException($validator);  }    
         $email = request()->input('email');
         $user =$this->userRepository->findUserByEmail($email);
-        if ($user) {
+        if (!$user) throw  new Exception("User not exits!",203) ;
             $data["token"] = Str::random(40);
             $data["expire"] =now()->addMinutes(5);
             $user->update([ 'password_reset_token' => $data["token"]  ,
                "password_token_expires"=> $data["expire"]
-         ]);
+             ]);
             Mail::to($email)->cc(env("MAIL_SENDER"))->send(new AuthMail($data));
-           return true;
-        }
-        return  false;
     } 
     
     public function changePasswordPost($request, $token) {
@@ -196,4 +164,34 @@ class AuthService implements AuthServiceInterface
         ]);
         return true;
     }
+
+
+
+    private function createTokenPairs($user) {
+        // Lấy thông tin secret từ file cấu hình
+        $accessTokenSecret = config('jwt.access_token_secret');
+        $refreshTokenSecret = config('jwt.refresh_token_secret');
+        // Kiểm tra nếu không lấy được secret
+        if (!$accessTokenSecret || !$refreshTokenSecret) {
+            throw new Exception('JWT secret keys are not properly configured.');
+        }
+        // Tạo access token với thời gian hết hạn là 10 ngày
+        $accessToken = JWT::encode([
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'exp' => time() + 10// 10 ngày
+        ], $accessTokenSecret, 'HS256');
+        $exp_rToken = time() + 60 * 24 * 60 * 60; // 60 ngày
+        $refreshToken = JWT::encode([
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'exp' => $exp_rToken
+        ], $refreshTokenSecret, 'HS256');
+        // Trả về mảng chứa access token và refresh token
+        return [
+            'access_token' => $accessToken,
+            'refresh_token' => $refreshToken
+        ];
+    }
+    
 }

@@ -22,7 +22,7 @@ class AuthControllers extends Controller
     }
     public function register(Request $request){
         try {
-            $response = $this->authService->register($request);
+            $response = $this->authService->register($request); 
             return ResponseHelper::success($response,'User created successfully');
         } catch (Throwable $th) { //catch error
             return ResponseHelper::error('An error occurred while creating the user.',$th,203);
@@ -31,8 +31,8 @@ class AuthControllers extends Controller
  
     public function login(Request $request) {
          try {
-            $response = $this->authService->login($request);
-            return ResponseHelper::success($response,'User login successfully');
+            $response = $this->authService->login($request); 
+            return ResponseHelper::success($response,'Login successfully');
          } catch (Throwable $th) {
             return ResponseHelper::error('An error occurred while login the user.',$th);
          }
@@ -47,19 +47,16 @@ class AuthControllers extends Controller
     } 
     public function refreshToken(Request $request) { 
         try {
-            $response = $this->authService->refreshToken($request);
-            return  ResponseHelper::success($response,'Refresh token successfully',200);
+            $response = $this->authService->refreshToken($request); 
+            return ResponseHelper::success($response,'Successfully');
         } catch (Throwable $th) {
-            return  ResponseHelper::error('Error logout', $th);
+            return  ResponseHelper::error('Error', $th);
         }
     }
     protected function resetPasswordPost(Request $request) {
          try {
-             $response= $this->authService->resetPasswordPost($request);
-             if($response) {
+              $this->authService->resetPasswordPost($request);
                 return ResponseHelper::success(null,'Email sent successfully');
-             }
-             return ResponseHelper::error('Email sent error',null,400);
          } catch (Throwable $th) {
             return ResponseHelper::error('Email sent error',$th);
          }

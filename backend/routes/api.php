@@ -19,7 +19,7 @@ Route::prefix('v1/auth')->group(function () {
     Route::post('/login', [AuthControllers::class, 'login']) ;
     Route::post('/refresh_token', [AuthControllers::class, 'refreshToken']) ;
     Route::post('/reset_password', [AuthControllers::class, 'resetPasswordPost']) ;
-    Route::post('/{token}/change_password', [AuthControllers::class, 'changePasswordPost']);
+    Route::put('/{token}/change_password', [AuthControllers::class, 'changePasswordPost']);
 });
 Route::middleware(Login::class)->prefix('v1/user')->group(function () {
     Route::get('/detail', [UserControllers::class, 'getUser']) ;

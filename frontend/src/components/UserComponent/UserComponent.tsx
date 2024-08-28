@@ -21,7 +21,7 @@ function UserComponent() {
         <span className="text-[12px] ">
           Mã tài khoản:
           <strong>
-            {user?.id?.match(/\d+(\.\d+)?/g) .join("") .slice(0, 5)}
+            {user?.id?.match(/\d+(\.\d+)?/g)?.join("") .slice(0, 5)}
           </strong>
         </span>
       </div>

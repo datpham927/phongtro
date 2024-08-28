@@ -7,11 +7,14 @@ use Throwable;
 
 class ResponseHelper
 {
+
+
+     
     public static function success($data, $message = 'Operation successful', $status = 200)
     {
         $response = [  'status' => true, 'message' => $message];
-        if (!is_null($data)) { $response['data'] = $data; }
-        return response()->json($response, 200);
+        if (!is_null($data)) { $response['data'] = $data; } 
+        return response()->json($response,  $status);
     }
 
     public static function error($message = 'An error occurred', Throwable $e = null, $status = 500){
