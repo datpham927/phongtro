@@ -18,8 +18,7 @@ class PostRepository implements PostRepositoryInterface
     }
      public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null){
     // Khởi tạo query builder
-    $query = $this->post->newQuery();
-
+    $query = $this->post->newQuery(); 
     // Áp dụng bộ lọc theo category_id nếu có
     if (!empty($filters['category_slug'])) {
         $query->whereHas('category', function($query) use ($filters) {
