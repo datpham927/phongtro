@@ -14,6 +14,7 @@ import { IFilterDouble } from '../../interfaces/filter';
 const HomePage:React.FC = () => { 
       const [listPosts, setListPost]=useState<IPost[]>([])
       const [totalPage, setTotalPage]=useState<number>(0)
+      const [totalPost, setTotalPost]=useState<number>(0) 
       const [currentPage, setCurrentPage]=useState<number|any>(1)
       const navigate=useNavigate()
       const params = useParams();
@@ -22,17 +23,19 @@ const HomePage:React.FC = () => {
 
 
    useEffect(()=>{
-    const { gia_tu, gia_den,dien_tich_tu,dien_tich_den, ...rest } = queries;
+    const { gia_tu, gia_den,dien_tich_tu,dien_tich_den,orderby, ...rest } = queries;
        const fetchApi= async()=>{
            const res = await getAllPost({...rest,category_slug:params.slug, limit:3,
             price_from:gia_tu,
             price_to:gia_den,
             area_from:dien_tich_tu,
             area_to:dien_tich_den,
+            sort:orderby
            })
          if(res.status){
              setListPost(res?.data?.posts)
              setTotalPage(res?.data?.totalPage)
+             setTotalPost(res?.data?.totalPosts)
          }
        }   
        fetchApi()
@@ -65,7 +68,7 @@ const handleCLickArea=(item: IFilterDouble)=>{
     <ProvinceComponent />
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
-          <ListPostComponent  data={listPosts} />
+          <ListPostComponent  data={listPosts} totalPost={totalPost}/>
           <PaginationComponent currentPage={currentPage}
                              setCurrentPage={setCurrentPage} 
                             totalPage={totalPage} />
