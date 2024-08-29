@@ -7,7 +7,7 @@ interface ListComponentProps {
   data: IPost[]; // Sửa lại để khai báo đúng kiểu dữ liệu
 }
 
-const ListComponent: React.FC<ListComponentProps> = ({ data }) => {
+const ListPostComponent: React.FC<ListComponentProps> = ({ data }) => {
   return (
     <div className="bg-white py-4 rounded-md shadow-custom">
       <div className="px-4">
@@ -28,4 +28,4 @@ const ListComponent: React.FC<ListComponentProps> = ({ data }) => {
   );
 };
 
-export default memo(ListComponent);
+export default memo(ListPostComponent);

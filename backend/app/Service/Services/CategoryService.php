@@ -20,7 +20,7 @@ class CategoryService implements CategoryServiceInterface
             $sort=$request['sort'];
             $filter=[];
             $select=null;
-         return $this->categoryRepository->findAll($limit, $sort, $page,$filter, $select);
+         return $this->categoryRepository->findAll($limit, $sort, $page,$filter);
     }
     public function create($request){
             $requestData = $request->all();

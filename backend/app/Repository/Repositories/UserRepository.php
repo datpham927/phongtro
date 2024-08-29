@@ -16,7 +16,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
   
-    function findAll($limit=5, $sort, $page=1,array $filter=null, $select=null)
+    function findAll($limit=5, $sort, $page=1,array $filters=null)
     {
     
     }

@@ -14,14 +14,14 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $this->category = $category;
     }
-    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filter = null, $select = null)
+    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null, $select = null)
 {
     $skip = ($page - 1) * $limit;
     $sortby = $sort === "ctime" ? 'desc' : 'asc'; // Sorting by creation time in descending order if 'ctime' is specified, otherwise ascending.
     // Start the query
     $query = $this->category::query(); // Using query() for more flexibility
-    // Apply filtering if any filters are provided
-    if ($filter) {  $query->where($filter);  }
+    // Apply filtersing if any filters are provided
+    if ($filters) {  $query->where($filters);  }
     // Apply sorting
     $query->orderBy('created_at', $sortby);
     // Apply pagination (skip and limit)
