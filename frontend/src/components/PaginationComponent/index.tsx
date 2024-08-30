@@ -20,23 +20,24 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurr
     };
 
     return (
-        <div className="flex w-4/12 mx-auto gap-4 justify-center my-10">
+        <div className="flex w-4/12 mx-auto gap-2 justify-center my-10">
             {/* ------------ left ------------- */}
             <PaginationItem
-                HandleOnClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)}
+                handleOnClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
                 currentPage={currentPage}
             >
-                <KeyboardArrowLeftIcon style={{ opacity: currentPage === 0 ? 0.4 : 1 }} />
+                <KeyboardArrowLeftIcon style={{ opacity: currentPage ===1 ? 0.4 : 1 }} />
+                Tháng trước
             </PaginationItem>
 
             {currentPage >= 3 && (
                 <div className="flex items-center">
-                    <MoreHorizIcon fontSize="small" style={{ opacity: 0.3 }} />
+                    <MoreHorizIcon fontSize="small" style={{ opacity: 0.3 }} /> 
                 </div>
             )}
 
             {pageDisplay().map(p => (
-                <PaginationItem key={p} HandleOnClick={() => setCurrentPage(p)} currentPage={currentPage}>
+                <PaginationItem key={p} handleOnClick={() => setCurrentPage(p)} currentPage={currentPage}>
                     {p}
                 </PaginationItem>
             ))}
@@ -48,14 +49,15 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurr
             )}
 
             {/* ------------ right ------------- */}
-            <PaginationItem HandleOnClick={() => setCurrentPage(totalPage)} currentPage={currentPage}>
+            <PaginationItem handleOnClick={() => setCurrentPage(totalPage)} currentPage={currentPage}>
                 {totalPage}
             </PaginationItem>
 
             <PaginationItem
-                HandleOnClick={() => currentPage < totalPage && setCurrentPage(currentPage + 1)}
+                handleOnClick={() => currentPage < totalPage && setCurrentPage(currentPage + 1)}
                 currentPage={currentPage}
             >
+                Tháng sau
                 <ChevronRightIcon style={{ opacity: currentPage === totalPage ? 0.4 : 1 }} />
             </PaginationItem>
         </div>

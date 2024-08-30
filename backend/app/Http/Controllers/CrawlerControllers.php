@@ -59,18 +59,18 @@ class CrawlerControllers extends Controller
     public function crawler(){
       try {
         DB::beginTransaction();
-        foreach ($this->categoryLinks as $categoryLink) {
-            $category = Category::create([
-                'id'=>Util::uuid(),
-                'name' => $categoryLink["name"],
-                'slug' => Util::slug($categoryLink["name"]),
-                'title' => $categoryLink["title"],
-                'sub_title' =>$categoryLink["sub_title"]
-            ]);
-        $this->crawlerListPost($categoryLink['url'], $category['id']);
-        }
-        //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "41780d41-b267-46ba-9bf1-9375d8169eea");
-        //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "41780d41-b267-46ba-9bf1-9375d8169eea");
+        // foreach ($this->categoryLinks as $categoryLink) {
+        //     $category = Category::create([
+        //         'id'=>Util::uuid(),
+        //         'name' => $categoryLink["name"],
+        //         'slug' => Util::slug($categoryLink["name"]),
+        //         'title' => $categoryLink["title"],
+        //         'sub_title' =>$categoryLink["sub_title"]
+        //     ]);
+        // $this->crawlerListPost($categoryLink['url'], $category['id']);
+        // }
+         $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "ba92001c-8c26-40db-a2ff-725cae55e995");
+         $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "ba92001c-8c26-40db-a2ff-725cae55e995");
       
          DB::commit();
         return response()->json([
