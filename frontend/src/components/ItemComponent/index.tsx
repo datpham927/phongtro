@@ -1,10 +1,11 @@
 import React, { memo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IPost } from "../../interfaces/Post";
 import parse from 'html-react-parser';
 const ItemComponent:React.FC<{ props: IPost; scrollIntoView?: boolean }> =  ({props})=> {
   const {address,area,description,id,price,images,thumb,title,user,slug}=props
   const [hoverHeart, setHoverHeart] = useState(false);
+  const params=useParams()
   return (
     <div className="flex border-solid border-t-[1px] border-red-custom p-4 bg-[#fff9f3]">
       <div className="block w-[280px] h-[240px] relative  shrink-0 rounded-md overflow-hidden cursor-pointer">
@@ -24,13 +25,13 @@ const ItemComponent:React.FC<{ props: IPost; scrollIntoView?: boolean }> =  ({pr
         </span>
       </div>
       <div className="ml-3 flex-1">
-        <Link to={`/${slug}/${id}`} className="text-orange-600 uppercase text-base font-semibold cursor-pointer hover:underline">
+        <Link to={`/tinh-thanh/${address.city_slug}/${address.district_slug}`} className="text-orange-600 uppercase text-base font-semibold cursor-pointer hover:underline">
           {title}
         </Link>
         <div className="flex justify-between my-2 ">
           <span className="text-green-500 text-lg">{price.value}</span>
           <span className="text-base">{area.value}</span>
-          <Link to={`/${address.district_slug}/${address.city_name}`} className="text-sm hover:underline">{address?.district_name+", " +address?.city_name}</Link>
+          <Link  to={`/${params.category_slug?params.category_slug:"tinh-thanh"}/${address.city_slug}/${address.district_slug}`} className="text-sm hover:underline">{address?.district_name+", " +address?.city_name}</Link>
         </div>
         <p className="text-sm text-gray-500 truncate-trailing line-clamp-3">{parse(description)}</p>
         <div className="flex justify-between  mt-3 ">

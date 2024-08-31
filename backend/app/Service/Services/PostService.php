@@ -30,39 +30,68 @@ class PostService implements PostServiceInterface
     
     }
     public function create($request){
-        $validatedData = $request->validated();
+         $validatedData = $request->validated();
+         $address=$validatedData["address"];
+         if (empty($address))  {Throw new Exception("Please enter complete information!",400);}
+        $foundAddress = Post_address::where([
+           "city_name"=> $address["city_name"], 
+           "district_name"=>  $address["district_name" ],
+           "ward_name"=>  $address["ward_name"] 
+        ])->first();
+        $addressId = '';
+        if (empty($foundAddress)) {
+            $addressId = $this->createAddress($address)->id; // Truy cập thuộc tính id của đối tượng được trả về bởi createAddress
+        } else {
+            $addressId = $foundAddress->id; // Truy cập thuộc tính id của đối tượng $foundAddress
+        }
 
-         $dataPost=[
+          $dataPost=[
             "id"=>Util::uuid(),
+            'address_id'=>$addressId,
             "slug"=>Util::slug($validatedData[ "title"] ),
             "title"=>  $validatedData[ "title"],
             "thumb"=>  $validatedData["thumb"],
             "description"=>  $validatedData["description"],
             "category_id"=>  $validatedData["category_id"]   
          ];
-         $post= $this->postRepository->create($dataPost);
+            $post= $this->postRepository->create($dataPost);
          $postId=$post["id"];
          $images=$validatedData["images"];
          $area=$validatedData["area"];
          $price=$validatedData["price"];
          $attribute=$validatedData["attribute"];
-         $address=$validatedData["address"];
-         if(empty($images)||empty($area)||empty($price)||empty($address)||empty($attribute))
+
+         if(empty($images)||empty($area)||empty($price)||empty($attribute))
            {Throw new Exception("Please enter complete information!",400);}
            $this->createPostImage($images,$postId);
            $this->createPostAttribute($attribute,$postId);
            $this->createPostPrice($price,$postId);
            $this->createPostArea($area,$postId); 
-           $this->createAddress($address,$postId); 
            return $post;
+
+
     }
     // -------------------
     public function update($request, $id)
 { 
     $validatedData = $request->all(); 
+    $address=$validatedData["address"];
+    if (empty($address))  {Throw new Exception("Please enter complete information!",400);}
+    $foundAddress = Post_address::where([
+        "city_name"=> $address["city_name"], 
+        "district_name"=>  $address["district_name" ],
+        "ward_name"=>  $address["ward_name"] 
+    ])->first();
+   $addressId = '';
+   if (empty($foundAddress)) {
+       $addressId = $this->createAddress($address)->id; // Truy cập thuộc tính id của đối tượng được trả về bởi createAddress
+   } else {
+       $addressId = $foundAddress->id; // Truy cập thuộc tính id của đối tượng $foundAddress
+   }
     $post = $this->postRepository->findById($id);
     if (!$post) {  throw new Exception("Post does not exist!", 404);}
     $dataPost = [
+        'address_id'=>$addressId,
         "slug" => Util::slug($validatedData["title"]),
         "title" => $validatedData["title"],
         "thumb" => $validatedData["thumb"],
@@ -84,11 +113,7 @@ class PostService implements PostServiceInterface
     }
     if (!empty($validatedData["attribute"])) {
         Post_attribute::where('post_id', $id)->update($validatedData["attribute"]);
-    }
-    if (!empty($validatedData["address"])) {
-        Post_address::where('post_id', $id)->delete();
-        $this->createAddress($validatedData["address"], $id);
-    }
+    } 
     return $post;
     }
     public function destroy($id){
@@ -127,13 +152,12 @@ class PostService implements PostServiceInterface
         $attribute["id"]=Util::uuid();
         Post_attribute::create($attribute);
     }
-    public function createAddress($address,$pid){
-        $address["post_id"]=$pid;
+    public function createAddress($address){
         $address["id"]=Util::uuid();
         $address["city_slug"]= Util::slug($address[ "city_name"] );
         $address["district_slug"]= Util::slug($address[ "district_name"] );
         $address["ward_slug"]= Util::slug($address[ "ward_name"] );
-        Post_address::create($address);
+       return Post_address::create($address);
     }
     
 }

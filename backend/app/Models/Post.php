@@ -14,7 +14,7 @@ class Post extends Model
 
     public function address()
     {
-        return $this->hasOne(Post_address::class, 'post_id', 'id');
+        return $this->belongsTo(Post_address::class, 'address_id', 'id');
     }
     public function user()
     {

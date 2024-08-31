@@ -11,4 +11,9 @@ class Post_address extends Model
     public $incrementing = false;
     protected $guarded = [];
     use HasFactory;
+
+    public function post()
+    {
+        return $this->hasOne(Post::class, 'id', 'post_id');
+    }
 }

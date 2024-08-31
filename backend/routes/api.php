@@ -44,5 +44,8 @@ Route::prefix('v1/post')->group(function () {
 
 Route::prefix('v1/address')->group(function () {
     Route::get('/{city_lug}/all_district_by_city', [AddressControllers::class, 'getAllDistrict']) ;
-    Route::get('/{district_lug}/all_ward_by_district', [AddressControllers::class, 'getAllWard']) ;
+    Route::get('/{city_lug}/{district_lug}/all_ward_by_district', [AddressControllers::class, 'getAllWard']) ;
+    Route::get('/{category_lug}/{city_lug}/all_district_by_city', [AddressControllers::class, 'getAllDistrictBelongCategory']) ;
+    Route::get('/{category_lug}/{city_lug}/{district_lug}/all_ward_by_district', [AddressControllers::class, 'getAllWardBelongCategory']) ;
+    Route::get('/{ward_slug}/get-address', [AddressControllers::class, 'getAddress']) ;
 });

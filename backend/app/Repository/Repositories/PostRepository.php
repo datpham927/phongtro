@@ -26,13 +26,23 @@ class PostRepository implements PostRepositoryInterface
         });
     }
     // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
-    if (!empty($filters['city_slug']) && !empty($filters['district_slug']) && !empty($filters['ward_slug'])) {
+    if (!empty($filters['city_slug']) || !empty($filters['district_slug']) || !empty($filters['ward_slug'])) {
         $query->whereHas('address', function($query) use ($filters) {
-                $query->where('city_slug', $filters['city_slug'])
-                ->where('district_slug', $filters['district_slug'])
-                ->where('ward_slug', $filters['ward_slug']);
+            // Kiểm tra city_slug và áp dụng điều kiện
+            if (!empty($filters['city_slug'])) {
+                $query->where('city_slug', $filters['city_slug']);
+            }
+            // Kiểm tra district_slug và áp dụng điều kiện
+            if (!empty($filters['district_slug'])) {
+                $query->where('district_slug', $filters['district_slug']);
+            }
+            // Kiểm tra ward_slug và áp dụng điều kiện
+            if (!empty($filters['ward_slug'])) {
+                $query->where('ward_slug', $filters['ward_slug']);
+            }
         });
-    } 
+    }
+    
 
     // Áp dụng bộ lọc theo khoảng giá nếu có
     if (!empty($filters['price_from']) && !empty($filters['price_to'])) {

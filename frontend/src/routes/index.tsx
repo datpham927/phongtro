@@ -3,6 +3,7 @@ import { PATH } from "../utils/constant";
 import HomePage from '../pages/public/HomePage';
 import ResetPassword from '../pages/public/ResetPassword';
 import { useAppSelector } from '../redux/hooks';
+import FilterPage from '../pages/public/FilterPage';
 
 const RouterPage = () => { 
   const { isLogged } = useAppSelector((state) => state.auth);
@@ -15,7 +16,12 @@ const RouterPage = () => {
       {/* Các route công khai */}
       <Route path={PATH.HOME} element={<HomePage />} />
       <Route path={PATH.HOME__PAGE} element={<HomePage />} />
+      <Route path={PATH.FILTER__PAGE} element={<FilterPage />} />
+      <Route path={PATH.CATEGORY_FILTER__PAGE} element={<FilterPage />} />
 
+
+
+      
       {/* Route yêu cầu chưa đăng nhập */}
       {!isLogged && <Route path={PATH.RESET_PASSWORD} element={<ResetPassword />} />}
     </Routes>

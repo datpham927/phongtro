@@ -41,12 +41,12 @@ class CrawlerControllers extends Controller
         //     'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
         //     'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
         // ],
-        [
-            'url' => 'https://phongtro123.com/cho-thue-can-ho',
-            'name' => 'Cho Thuê Căn Hộ',
-            'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
-        ], 
+        // [
+        //     'url' => 'https://phongtro123.com/cho-thue-can-ho',
+        //     'name' => 'Cho Thuê Căn Hộ',
+        //     'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
+        //     'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
+        // ], 
     ];
     
     public $users=[
@@ -69,8 +69,8 @@ class CrawlerControllers extends Controller
         //     ]);
         // $this->crawlerListPost($categoryLink['url'], $category['id']);
         // }
-         $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "ba92001c-8c26-40db-a2ff-725cae55e995");
-         $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "ba92001c-8c26-40db-a2ff-725cae55e995");
+         $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "60f0d6cc-e22d-440c-9a21-5721aecdaf38");
+         $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "60f0d6cc-e22d-440c-9a21-5721aecdaf38");
       
          DB::commit();
         return response()->json([
@@ -136,8 +136,44 @@ class CrawlerControllers extends Controller
         // $postLink $brand_id  $categoryId  
         $html=file_get_contents($postLink);   
         $crawler=new Crawler( $html);
+// ------------------ ADDRESS ------------------
+$addressDetail=$crawler->filter(".post-address")->text();
+$addressArray=explode(', ', $addressDetail);
+        if( count($addressArray)>3){
+        $address["id"]=Util::uuid(); 
+        $address["city_name"]=$addressArray[3];
+        $address["district_name"]= $addressArray[2];
+        $address["ward_name"]= $addressArray[1]; 
+        $address["city_slug"]= Util::slug($addressArray[3]);
+        $address["district_slug"]=Util::slug($addressArray[2]);
+        $address["ward_slug"]=Util::slug($addressArray[1]); 
+        $address["address_detail"]=explode(': ', $addressDetail)[1]; 
+        $address["map"]= $crawler->filter("#__maps_content")->html(); 
+        }else{
+        $address["id"]=Util::uuid(); 
+        $address["city_name"]= explode(', ', $addressDetail)[2];
+        $address["district_name"]= explode(', ', $addressDetail)[1];
+        $address["ward_name"]= explode(', ', $addressDetail)[0]; 
+        $address["city_slug"]= Util::slug(explode(', ', $addressDetail)[2]);
+        $address["district_slug"]=Util::slug(explode(', ', $addressDetail)[1]);
+        $address["ward_slug"]=Util::slug(explode(', ', $addressDetail)[0]); 
+        $address["address_detail"]=explode(': ', $addressDetail)[1]; 
+        $address["map"]= $crawler->filter("#__maps_content")->html(); 
+        }
+       $foundAddress = Post_address::where([
+          "city_name"=> $address["city_name"], 
+          "district_name"=>  $address["district_name" ],
+          "ward_name"=>  $address["ward_name"] 
+       ])->first();
+       $addressId = '';
+       if (empty($foundAddress)) {
+           $addressId = $this->createAddress($address)->id; // Truy cập thuộc tính id của đối tượng được trả về bởi createAddress
+       } else {
+           $addressId = $foundAddress->id; // Truy cập thuộc tính id của đối tượng $foundAddress
+       }
          // ------------------ POST ------------------
          $postData["id"]=Util::uuid();
+         $postData["address_id"]=$addressId ;
          $postData["user_id"]= $this->users[rand(0, 3)];
          $postData["category_id"]=$categoryId;
          $postData["title"]=$crawler->filter(".page-h1 a")->text();
@@ -167,7 +203,7 @@ class CrawlerControllers extends Controller
          //  dd($dataImages);
          // ------------------ PRICE ------------------
          $price["id"]=Util::uuid();
-         $price["order"]=Util::extractNumber($crawler->filter(".item.price span")->text());
+         $price["order"]=Util::extractNumber($crawler->filter(".item.price span")->text())||0;
          $price["value"]=$crawler->filter(".item.price span")->text();
           $price["post_id"]= $post["id"];
         //  dd( $price);
@@ -191,34 +227,13 @@ class CrawlerControllers extends Controller
          $attribute["post_id"]= $post["id"];
         //  dd( $attribute);
         Post_attribute::create($attribute);
-         // ------------------ ADDRESS ------------------
-         $addressDetail=$crawler->filter(".post-address")->text();
-         $addressArray=explode(', ', $addressDetail);
-         if( count($addressArray)>3){
-            $address["id"]=Util::uuid(); 
-            $address["city_name"]=$addressArray[3];
-            $address["district_name"]= $addressArray[2];
-            $address["ward_name"]= $addressArray[1]; 
-            $address["city_slug"]= Util::slug($addressArray[3]);
-            $address["district_slug"]=Util::slug($addressArray[2]);
-            $address["ward_slug"]=Util::slug($addressArray[1]); 
-            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-            $address["map"]= $crawler->filter("#__maps_content")->html(); 
-            $address["post_id"]= $post["id"];
-         }else{
-            $address["id"]=Util::uuid(); 
-            $address["city_name"]= explode(', ', $addressDetail)[2];
-            $address["district_name"]= explode(', ', $addressDetail)[1];
-            $address["ward_name"]= explode(', ', $addressDetail)[0]; 
-            $address["city_slug"]= Util::slug(explode(', ', $addressDetail)[2]);
-            $address["district_slug"]=Util::slug(explode(', ', $addressDetail)[1]);
-            $address["ward_slug"]=Util::slug(explode(', ', $addressDetail)[0]); 
-            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-            $address["map"]= $crawler->filter("#__maps_content")->html(); 
-            $address["post_id"]= $post["id"];
-         }
-        
-         Post_address::create($address);
+         
     }
-
+    public function createAddress($address){
+        $address["id"]=Util::uuid();
+        $address["city_slug"]= Util::slug($address[ "city_name"] );
+        $address["district_slug"]= Util::slug($address[ "district_name"] );
+        $address["ward_slug"]= Util::slug($address[ "ward_name"] );
+       return Post_address::create($address);
+    }
 }

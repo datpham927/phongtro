@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('post_addresses', function (Blueprint $table) {
-            $table->uuid('id')->primary(); // UUID làm khóa chính
-            $table->uuid('post_id');
+            $table->uuid('id')->primary(); // UUID as primary key
             $table->string('city_name');
             $table->string('district_name');
             $table->string('ward_name');
@@ -22,7 +21,6 @@ return new class extends Migration
             $table->string('ward_slug');
             $table->string('address_detail');
             $table->text('map');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->timestamps();
         });
     }

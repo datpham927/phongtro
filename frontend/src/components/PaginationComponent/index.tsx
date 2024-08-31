@@ -27,7 +27,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurr
                 currentPage={currentPage}
             >
                 <KeyboardArrowLeftIcon style={{ opacity: currentPage ===1 ? 0.4 : 1 }} />
-                Tháng trước
+                Trang trước
             </PaginationItem>
 
             {currentPage >= 3 && (
@@ -57,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage, currentPage, setCurr
                 handleOnClick={() => currentPage < totalPage && setCurrentPage(currentPage + 1)}
                 currentPage={currentPage}
             >
-                Tháng sau
+                Trang sau
                 <ChevronRightIcon style={{ opacity: currentPage === totalPage ? 0.4 : 1 }} />
             </PaginationItem>
         </div>

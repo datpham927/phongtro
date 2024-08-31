@@ -11,6 +11,7 @@ import { dataArea, dataPrice } from '../../utils/data'
 import PaginationComponent from '../../components/PaginationComponent'
 import { IFilterCategory, IFilterDouble } from '../../interfaces/filter';
 import { useAppSelector } from '../../redux/hooks';
+import WelcomeComponent from '../../components/WelcomeComponent';
 
 const HomePage:React.FC = () => { 
       const [listPosts, setListPost]=useState<IPost[]>([])
@@ -28,7 +29,7 @@ const HomePage:React.FC = () => {
    useEffect(()=>{
     const { gia_tu, gia_den,dien_tich_tu,dien_tich_den,orderby, ...rest } = queries;
        const fetchApi= async()=>{
-           const res = await getAllPost({...rest,category_slug:params.slug, limit:10,
+           const res = await getAllPost({...rest,category_slug:params.category_slug, limit:10,
             price_from:gia_tu,
             price_to:gia_den,
             area_from:dien_tich_tu,
@@ -42,7 +43,7 @@ const HomePage:React.FC = () => {
          }
        }   
        fetchApi()
-   },[queries.page,params.slug,location.search])
+   },[queries.page,params.category_slug,location.search])
   // cập nhật lại query
   useEffect(() => {
     const { page, ...queryParams } = queries;
