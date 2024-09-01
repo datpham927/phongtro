@@ -16,18 +16,18 @@ use Symfony\Component\DomCrawler\Crawler;
 class CrawlerControllers extends Controller
 {
    public  $categoryLinks = [
-        // [
-        //     'url' => 'https://phongtro123.com/cho-thue-phong-tro',
-        //     'name' => 'Cho Thuê Phòng Trọ',
-        //     'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
-        // ], 
-        //   [
-        //     'url' => 'https://phongtro123.com/nha-cho-thue',
-        //     'name' => 'Cho Thuê Nhà Nguyên Căn',
-        //     'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
-        // ],  
+        [
+            'url' => 'https://phongtro123.com/cho-thue-phong-tro',
+            'name' => 'Cho Thuê Phòng Trọ',
+            'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
+        ], 
+          [
+            'url' => 'https://phongtro123.com/nha-cho-thue',
+            'name' => 'Cho Thuê Nhà Nguyên Căn',
+            'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
+        ],  
       
         //  [
         //     'url' => 'https://phongtro123.com/cho-thue-mat-bang',
@@ -59,18 +59,18 @@ class CrawlerControllers extends Controller
     public function crawler(){
       try {
         DB::beginTransaction();
-        // foreach ($this->categoryLinks as $categoryLink) {
-        //     $category = Category::create([
-        //         'id'=>Util::uuid(),
-        //         'name' => $categoryLink["name"],
-        //         'slug' => Util::slug($categoryLink["name"]),
-        //         'title' => $categoryLink["title"],
-        //         'sub_title' =>$categoryLink["sub_title"]
-        //     ]);
-        // $this->crawlerListPost($categoryLink['url'], $category['id']);
-        // }
-         $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "60f0d6cc-e22d-440c-9a21-5721aecdaf38");
-         $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "60f0d6cc-e22d-440c-9a21-5721aecdaf38");
+        foreach ($this->categoryLinks as $categoryLink) {
+            $category = Category::create([
+                'id'=>Util::uuid(),
+                'name' => $categoryLink["name"],
+                'slug' => Util::slug($categoryLink["name"]),
+                'title' => $categoryLink["title"],
+                'sub_title' =>$categoryLink["sub_title"]
+            ]);
+        $this->crawlerListPost($categoryLink['url'], $category['id']);
+        }
+        //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "388b3a30-2e16-46db-b160-9f0a1a473f4f");
+        //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "388b3a30-2e16-46db-b160-9f0a1a473f4f");
       
          DB::commit();
         return response()->json([
@@ -140,25 +140,25 @@ class CrawlerControllers extends Controller
 $addressDetail=$crawler->filter(".post-address")->text();
 $addressArray=explode(', ', $addressDetail);
         if( count($addressArray)>3){
-        $address["id"]=Util::uuid(); 
-        $address["city_name"]=$addressArray[3];
-        $address["district_name"]= $addressArray[2];
-        $address["ward_name"]= $addressArray[1]; 
-        $address["city_slug"]= Util::slug($addressArray[3]);
-        $address["district_slug"]=Util::slug($addressArray[2]);
-        $address["ward_slug"]=Util::slug($addressArray[1]); 
-        $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-        $address["map"]= $crawler->filter("#__maps_content")->html(); 
+            $address["id"]=Util::uuid(); 
+            $address["city_name"]=$addressArray[3];
+            $address["district_name"]= $addressArray[2];
+            $address["ward_name"]= $addressArray[1]; 
+            $address["city_slug"]= Util::slug($addressArray[3]);
+            $address["district_slug"]=Util::slug($addressArray[2]);
+            $address["ward_slug"]=Util::slug($addressArray[1]); 
+            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
+            $address["map"]= $crawler->filter("#__maps_content")->html(); 
         }else{
-        $address["id"]=Util::uuid(); 
-        $address["city_name"]= explode(', ', $addressDetail)[2];
-        $address["district_name"]= explode(', ', $addressDetail)[1];
-        $address["ward_name"]= explode(', ', $addressDetail)[0]; 
-        $address["city_slug"]= Util::slug(explode(', ', $addressDetail)[2]);
-        $address["district_slug"]=Util::slug(explode(', ', $addressDetail)[1]);
-        $address["ward_slug"]=Util::slug(explode(', ', $addressDetail)[0]); 
-        $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-        $address["map"]= $crawler->filter("#__maps_content")->html(); 
+            $address["id"]=Util::uuid(); 
+            $address["city_name"]= explode(', ', $addressDetail)[2];
+            $address["district_name"]= explode(', ', $addressDetail)[1];
+            $address["ward_name"]= explode(', ', $addressDetail)[0]; 
+            $address["city_slug"]= Util::slug(explode(', ', $addressDetail)[2]);
+            $address["district_slug"]=Util::slug(explode(', ', $addressDetail)[1]);
+            $address["ward_slug"]=Util::slug(explode(', ', $addressDetail)[0]); 
+            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
+            $address["map"]= $crawler->filter("#__maps_content")->html(); 
         }
        $foundAddress = Post_address::where([
           "city_name"=> $address["city_name"], 
@@ -203,8 +203,9 @@ $addressArray=explode(', ', $addressDetail);
          //  dd($dataImages);
          // ------------------ PRICE ------------------
          $price["id"]=Util::uuid();
-         $price["order"]=Util::extractNumber($crawler->filter(".item.price span")->text())||0;
-         $price["value"]=$crawler->filter(".item.price span")->text();
+         $orderRandom=Util::convertToMillion(Util::randomDecimal());
+         $price["order"]= $orderRandom["order"];
+         $price["value"]= $orderRandom["value"] ;
           $price["post_id"]= $post["id"];
         //  dd( $price);
          Post_price::create($price);

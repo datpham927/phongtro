@@ -15,12 +15,20 @@ class Util {
         return (string) Str::uuid();
     }
     public static function extractNumber($input)
-    {
-        preg_match('/(\d+)(?=\D)/', $input, $matches);
-        // Lấy số từ kết quả
-        $number = $matches[0] ?? null;
-        return $number; 
-    }
+{
+    preg_match('/\d+(\.\d+)?/', $input, $matches);
+    // Lấy số từ kết quả
+    $number = $matches[0] ?? null;
+    return $number;
+}
+
+public static function randomDecimal($min = 1, $max = 40, $decimals = 1) {
+    // Sinh số nguyên ngẫu nhiên từ $min đến $max
+    $randomInt = mt_rand($min * 10 ** $decimals, $max * 10 ** $decimals);
+    
+    // Chia cho 10^$decimals để tạo số thập phân
+    return $randomInt / 10 ** $decimals;
+} 
     public static function getRandomDateFromNow() {
         // Ngày hiện tại
         $now = Carbon::now();
@@ -57,6 +65,22 @@ class Util {
 
     private static function getDateTime($value) {
         return new DateTime($value);
+    }
+
+   
+    public static function convertToMillion($value) {
+         if($value<200){
+            $price= $value*1000000;
+            return [
+                'order'=> $price,
+                  'value'=> $value. ' triệu/tháng'
+            ];
+         }
+         return  [
+              'order'=> $value,
+              'value'=> $value. ' đồng/tháng'
+        ];
+         
     }
 
    

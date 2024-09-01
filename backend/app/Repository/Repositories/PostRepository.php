@@ -43,15 +43,16 @@ class PostRepository implements PostRepositoryInterface
         });
     }
     
-
+     
     // Áp dụng bộ lọc theo khoảng giá nếu có
-    if (!empty($filters['price_from']) && !empty($filters['price_to'])) {
+    if (!empty($filters['price_from']) || !empty($filters['price_to'])) {
         $query->whereHas('price', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
         });
     }
+ 
     // Áp dụng bộ lọc theo khoảng diện tích nếu có
-    if (!empty($filters['area_from']) && !empty($filters['area_to'])) {
+    if (!empty($filters['area_from']) && !empty($filters['area_to'])) { 
         $query->whereHas('area', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
         });
