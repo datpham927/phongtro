@@ -11,7 +11,8 @@ import { dataArea, dataPrice } from '../../utils/data'
 import PaginationComponent from '../../components/PaginationComponent'
 import { IFilterCategory, IFilterDouble } from '../../interfaces/filter';
 import { useAppSelector } from '../../redux/hooks';
-import WelcomeComponent from '../../components/WelcomeComponent';
+import { convertToMillion } from '../../utils/convertMilion';
+import ListNewPost from '../../components/ListNewPost';
 
 const HomePage:React.FC = () => { 
       const [listPosts, setListPost]=useState<IPost[]>([])
@@ -19,12 +20,9 @@ const HomePage:React.FC = () => {
       const [totalPost, setTotalPost]=useState<number>(0) 
       const [currentPage, setCurrentPage]=useState<number|any>(1)
       const { categories } = useAppSelector((state) => state.category);
-
       const navigate=useNavigate()
       const params = useParams();
        const queries = queryString.parse(location.search);
-  //  console.log(params)
-
 
    useEffect(()=>{
     const { gia_tu, gia_den,dien_tich_tu,dien_tich_den,orderby, ...rest } = queries;
@@ -56,7 +54,7 @@ const HomePage:React.FC = () => {
 }, [currentPage]);
  
 const handleCLickPrice = (item: IFilterDouble) => {
-  const updatedQueryParams =  {  gia_tu: item.min,gia_den: item.max}
+  const updatedQueryParams =  {  gia_tu: convertToMillion(item.min),gia_den: convertToMillion(item.max)}
   const newQuery = queryString.stringify(updatedQueryParams, { sort: false });
   navigate(`?${newQuery}`);
 };
@@ -77,14 +75,16 @@ const handleCLickCategory=(item: IFilterCategory)=>{
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
           <ListPostComponent  data={listPosts} totalPost={totalPost}/>
-          <PaginationComponent currentPage={currentPage}
+         { listPosts.length>0&&
+         <PaginationComponent currentPage={currentPage}
                              setCurrentPage={setCurrentPage} 
-                            totalPage={totalPage} />
+                            totalPage={totalPage} />}
         </div>
         <div className="w-[30%]">
           <ItemNavbarComponent isDouble title="Xem theo giá" content={dataPrice} handleOnClick={handleCLickPrice} />
           <ItemNavbarComponent isDouble title="Xem theo diện tích" content={dataArea} handleOnClick={handleCLickArea}/>
           <ItemNavbarComponent title="Danh mục cho thuê"  content={categories} handleOnClick={handleCLickCategory}/>
+          <ListNewPost/>
         </div>
       </div>
     </>

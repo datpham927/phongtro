@@ -2,12 +2,13 @@ import React, { memo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { IPost } from "../../interfaces/Post";
 import parse from 'html-react-parser';
-const ItemComponent:React.FC<{ props: IPost; scrollIntoView?: boolean }> =  ({props})=> {
-  const {address,area,description,id,price,images,thumb,title,user,slug}=props
+import { timeAgo } from "../../utils/format/timeAgo";
+const ItemPostComponent:React.FC<{ props: IPost; scrollIntoView?: boolean }> =  ({props})=> {
+  const {address,area,description,id,price,images,thumb,title,user,slug,created_at}=props
   const [hoverHeart, setHoverHeart] = useState(false);
   const params=useParams()
   return (
-    <div className="flex border-solid border-t-[1px] border-red-custom p-4 bg-[#fff9f3]">
+    <div className={`flex border-solid border-t-[1px] border-red-custom p-4 ${!params?.category_slug?"bg-[#fff9f3]":""} `}>
       <div className="block w-[280px] h-[240px] relative  shrink-0 rounded-md overflow-hidden cursor-pointer">
         <Link to={` /${slug}/${id}`}>
           <img src={thumb} alt="" />
@@ -31,8 +32,13 @@ const ItemComponent:React.FC<{ props: IPost; scrollIntoView?: boolean }> =  ({pr
         <div className="flex justify-between my-2 ">
           <span className="text-green-500 text-lg">{price.value}</span>
           <span className="text-base">{area.value}</span>
-          <Link  to={`/${params.category_slug?params.category_slug:"tinh-thanh"}/${address.city_slug}/${address.district_slug}`} className="text-sm hover:underline">{address?.district_name+", " +address?.city_name}</Link>
         </div>
+        <div className="flex justify-between my-2 ">
+        <Link  to={`/${params.category_slug?params.category_slug:"tinh-thanh"}/${address.city_slug}/${address.district_slug}`} className="text-sm hover:underline">{address?.district_name+", " +address?.city_name}</Link>
+
+          <span className="text-sm text-[#aaa]">{timeAgo(created_at)}</span>
+        </div>
+
         <p className="text-sm text-gray-500 truncate-trailing line-clamp-3">{parse(description)}</p>
         <div className="flex justify-between  mt-3 ">
           <div className="flex gap-2 items-center">
@@ -61,4 +67,4 @@ const ItemComponent:React.FC<{ props: IPost; scrollIntoView?: boolean }> =  ({pr
   );
 }
 
-export default memo(ItemComponent);
+export default memo(ItemPostComponent);

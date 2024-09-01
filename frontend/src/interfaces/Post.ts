@@ -24,6 +24,7 @@ export interface IPost {
         district_slug:string,
         ward_slug:string,
       };
+      created_at:string
     }
 
 export interface IDetailPost extends IPost {

@@ -39,7 +39,7 @@ const ProvinceComponent: React.FC = () => {
        <WelcomeComponent title={titleWelcome?.title}  description={titleWelcome?.description} />
       <div className="flex justify-center mt-4">
         {location.map((e) => (
-          <ProvinceItemComponent key={e.name} image={e.image} title={e.name} />
+          <ProvinceItemComponent key={e.name} image={e.image} title={e.name} slug={e.slug} />
         ))}
       </div>
     </>

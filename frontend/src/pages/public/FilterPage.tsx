@@ -13,6 +13,8 @@ import { IFilterCategory, IFilterDouble } from '../../interfaces/filter';
 import { IPost } from '../../interfaces/Post';
 import { getAllPost } from '../../services/apiPost';
 import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../services/apiAddress';
+import { convertToMillion } from '../../utils/convertMilion';
+import ListNewPost from '../../components/ListNewPost';
 
 const FilterPage: React.FC = () => {
   const [titleWelcome, setTitleWelcome] = useState<{ title: string; description: string }>({ title: '', description: '' });
@@ -93,7 +95,7 @@ const FilterPage: React.FC = () => {
   }, [currentPage]);
 
   const handleCLickPrice = (item: IFilterDouble) => {
-    const updatedQueryParams = { ...queries, gia_tu: item.min, gia_den: item.max };
+    const updatedQueryParams =  {  gia_tu: convertToMillion(item.min),gia_den: convertToMillion(item.max)}
     const newQuery = queryString.stringify(updatedQueryParams, { sort: false });
     navigate(`?${newQuery}`);
   };
@@ -116,12 +118,13 @@ const FilterPage: React.FC = () => {
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
           <ListPostComponent data={listPosts} totalPost={totalPost} />
-          <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />
+          { listPosts.length>0&&  <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />}
         </div>
         <div className="w-[30%]">
           <ItemNavbarComponent isDouble title="Xem theo giá" content={dataPrice} handleOnClick={handleCLickPrice} />
           <ItemNavbarComponent isDouble title="Xem theo diện tích" content={dataArea} handleOnClick={handleCLickArea} />
           <ItemNavbarComponent title="Danh mục cho thuê" content={categories} handleOnClick={handleCLickCategory} />
+          <ListNewPost/>
         </div>
       </div>
     </>

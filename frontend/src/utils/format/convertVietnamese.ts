@@ -1,4 +1,4 @@
-export const convertVietnamese = (value) => {
+export const convertVietnamese = (value:any) => {
   return value
     ?.toLowerCase()
     .normalize("NFD")
@@ -6,7 +6,7 @@ export const convertVietnamese = (value) => {
     ?.replaceAll(" ", "-");
 };
 
-export const convertDecimal = (percent, name) => {
+export const convertDecimal = (percent:any, name:string) => {
   const maxNumber = name === "price" ? 15 : 90;
   const result =
     (((percent * maxNumber) / 100) * 10 -
@@ -15,11 +15,11 @@ export const convertDecimal = (percent, name) => {
   return name === "price" ? result : Math.ceil((percent * maxNumber) / 100);
 };
 
-export const splitStringToNumber = (string) => {
+export const splitStringToNumber = (string:string) => {
   return string?.match(/\d+/g)?.filter((e) => Number(e));
 };
 
-export const getNumberPrice = (min, max) => {
+export const getNumberPrice = (min:any, max:any) => {
   if (min || max) {
     let min1 = min < max ? min : max;
     let max1 = min > max ? min : max;
@@ -32,7 +32,7 @@ export const getNumberPrice = (min, max) => {
   }
 };
 
-export const getNumberArea = (min, max) => {
+export const getNumberArea = (min:any, max:any) => {
   if (min || max) {
     let min1 = min < max ? min : max;
     let max1 = min > max ? min : max;

@@ -25,16 +25,19 @@ export const location = [
     id: "hcm",
     name: "Phòng trọ Hồ Chí Minh",
     image: "https://phongtro123.com/images/location_hcm.jpg",
+    slug: "ho-chi-minh"
   },
   {
     name: "Phòng trọ Hà Nội",
     image: "https://phongtro123.com/images/location_hn.jpg",
     id: "hn",
+    slug: "ha-noi"
   },
   {
     name: "Phòng trọ Đà nẵng",
     image: "https://phongtro123.com/images/location_dn.jpg",
     id: "dn",
+    slug: "da-nang"
   },
 ];
 

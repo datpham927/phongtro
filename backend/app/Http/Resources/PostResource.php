@@ -24,6 +24,7 @@ class PostResource extends JsonResource
             'thumb' => $this->thumb,
             'slug' => $this->slug,
             'description' => $this->description,
+            "created_at"=> $this->created_at,
             'address' => [
                 'city_name' => $address?->city_name,
                 'district_name' => $address?->district_name,
