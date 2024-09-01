@@ -3,14 +3,14 @@ export const PATH = {
   HOME__PAGE: "/:category_slug",
   FILTER__PAGE: "/tinh-thanh/:city_slug/:district_slug?/:ward_slug?",
   CATEGORY_FILTER__PAGE: "/:category_slug/:city_slug/:district_slug?/:ward_slug?",
-
   RESET_PASSWORD: "/reset/:token",
+  DETAIL_POST: "chi-tiet/:title/:postId",
+
   REGISTER: "/register", 
   SYSTEM: "/he-thong",
   CREATE_POST: "tao-moi-bai-dang",
   MANAGE_POST: "quan-ly-bai-dang",
   EDIT_ACCOUNT:"thong-tin-tai-khoan",
-  DETAIL_POST__TITLE__POSTID: "chi-tiet/:title/:postId",
   DETAIL:"/chi-tiet/",
 };
 

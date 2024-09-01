@@ -4,6 +4,7 @@ import HomePage from '../pages/public/HomePage';
 import ResetPassword from '../pages/public/ResetPassword';
 import { useAppSelector } from '../redux/hooks';
 import FilterPage from '../pages/public/FilterPage';
+import DetailPost from '../pages/public/DetailPost';
 
 const RouterPage = () => { 
   const { isLogged } = useAppSelector((state) => state.auth);
@@ -18,6 +19,8 @@ const RouterPage = () => {
       <Route path={PATH.HOME__PAGE} element={<HomePage />} />
       <Route path={PATH.FILTER__PAGE} element={<FilterPage />} />
       <Route path={PATH.CATEGORY_FILTER__PAGE} element={<FilterPage />} />
+      <Route path={PATH.DETAIL_POST} element={<DetailPost />} />
+
 
 
 

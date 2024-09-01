@@ -8,14 +8,8 @@ export interface IPost {
       description: string;
       slug: string;
       images:[]
-      area: {
-              order: string;
-              value: string;
-      };
-      price: {
-        order: string;
-        value: string;
-      };
+      area:string
+      price: string
       address: {
         city_name: string;
         district_name: string;
@@ -23,6 +17,8 @@ export interface IPost {
         city_slug: string,
         district_slug:string,
         ward_slug:string,
+        address_detail:string
+        map:string
       };
       created_at:string
     }
@@ -32,5 +28,10 @@ export interface IDetailPost extends IPost {
       target: string;
       type_post: string;
       expire: string;
-    };
+    }; 
+    category:{
+      id:string,
+      name:string,
+      slug:string
+    } 
   }

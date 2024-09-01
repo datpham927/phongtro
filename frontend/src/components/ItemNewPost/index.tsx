@@ -5,7 +5,7 @@ import { timeAgo } from '../../utils/format/timeAgo'
 
 const ItemNewPost:React.FC<{post:IPost}> = ({post}) => {
   return (
-    <Link key={post.id} to={''} className="flex items-center border-b border-gray-300 py-3 max-w-md">
+    <Link key={post.id} to={`/chi-tiet/${post.slug}/${post.id}`} className="flex items-center border-b border-gray-300 py-3 max-w-md">
           <div className="flex-shrink-0 mr-3">
             <img src={post.thumb} alt={post.title} className="w-16 h-16 object-cover rounded-md" />
           </div>

@@ -10,7 +10,7 @@ const ItemPostComponent:React.FC<{ props: IPost; scrollIntoView?: boolean }> =  
   return (
     <div className={`flex border-solid border-t-[1px] border-red-custom p-4 ${!params?.category_slug?"bg-[#fff9f3]":""} `}>
       <div className="block w-[280px] h-[240px] relative  shrink-0 rounded-md overflow-hidden cursor-pointer">
-        <Link to={` /${slug}/${id}`}>
+        <Link  to={`/chi-tiet/${slug}/${id}`}>
           <img src={thumb} alt="" />
         </Link>
         <span className="absolute   bg-[rgba(0,0,0,.5)] text-sm text-white px-1 rounded-md left-2 bottom-2">
@@ -26,7 +26,7 @@ const ItemPostComponent:React.FC<{ props: IPost; scrollIntoView?: boolean }> =  
         </span>
       </div>
       <div className="ml-3 flex-1">
-        <Link to={`/tinh-thanh/${address.city_slug}/${address.district_slug}`} className="text-orange-600 uppercase text-base font-semibold cursor-pointer hover:underline">
+        <Link  to={`/chi-tiet/${slug}/${id}`} className="text-orange-600 uppercase text-base font-semibold cursor-pointer hover:underline">
           {title}
         </Link>
         <div className="flex justify-between my-2 ">

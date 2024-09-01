@@ -68,17 +68,15 @@ const getAllPost = async ( query: any): Promise<any> => {
 //   }
 // };
 
-// const apiDetailPost = async (postId: string): Promise<any> => {
-//   try {
-//     const response = await httpRequest.get(`/post/detail-post`, {
-//       params: { postId },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     return Promise.reject(error); // Re-throw error for better handling upstream
-//   }
-// };
+const getDetailPost = async (postId: any): Promise<any> => {
+  try {
+    const response = await httpRequest.get(`/post/${postId}/detail`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
 
-export { getAllPost
+export { getAllPost,getDetailPost
   // , apiNewPost, apiCreatePost, apiGetPostAdmin, apiUpdatePost, apiDeletePost, apiDetailPost 
 };
