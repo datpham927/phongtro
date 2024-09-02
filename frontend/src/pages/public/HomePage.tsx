@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import queryString from 'query-string';
 import { useNavigate, useParams } from 'react-router-dom'
 import { IPost } from '../../interfaces/Post'
-import { getAllPost } from '../../services/apiPost'
+import { getPost } from '../../services/apiPost'
 import SearchComponent from '../../components/SearchComponent'
 import ProvinceComponent from '../../components/ProvinceComponent'
 import ListPostComponent from '../../components/ListPostComponent'
@@ -27,7 +27,7 @@ const HomePage:React.FC = () => {
    useEffect(()=>{
     const { gia_tu, gia_den,dien_tich_tu,dien_tich_den,orderby, ...rest } = queries;
        const fetchApi= async()=>{
-           const res = await getAllPost({...rest,category_slug:params.category_slug, limit:10,
+           const res = await getPost({...rest,category_slug:params.category_slug, limit:10,
             price_from:gia_tu,
             price_to:gia_den,
             area_from:dien_tich_tu,
@@ -74,7 +74,7 @@ const handleCLickCategory=(item: IFilterCategory)=>{
     <ProvinceComponent />
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
-          <ListPostComponent  data={listPosts} totalPost={totalPost}/>
+          <ListPostComponent  data={listPosts} totalPost={totalPost} isHome={!params?.category_slug}/>
          { listPosts.length>0&&
          <PaginationComponent currentPage={currentPage}
                              setCurrentPage={setCurrentPage} 

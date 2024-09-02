@@ -5,4 +5,5 @@ use App\Repository\Interfaces\BaseRepositoryInterface;
 interface PostRepositoryInterface extends BaseRepositoryInterface
 { 
     public function findPostDetailById ($pid);
+    public function findRelatedPostByAddress($addressId);
 }

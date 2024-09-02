@@ -23,11 +23,13 @@ class PostService implements PostServiceInterface
             $limit=$request['limit'];
             $page=$request['page'];
             $sort=$request['sort'];
-            $filters = $request->only( ['category_slug','city_slug','district_slug',
-                                'ward_slug','price_from','price_to',
-                                'area_from','area_to' ]);
+            $filters = $request->all();
          return $this->postRepository->findAll($limit, $sort, $page,$filters);
     
+    }
+
+    public function findRelatedPost ($addressId){
+            return $this->postRepository->findRelatedPostByAddress($addressId);
     }
     public function create($request){
          $validatedData = $request->validated();

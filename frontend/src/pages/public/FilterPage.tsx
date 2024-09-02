@@ -11,7 +11,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { dataArea, dataPrice } from '../../utils/data';
 import { IFilterCategory, IFilterDouble } from '../../interfaces/filter';
 import { IPost } from '../../interfaces/Post';
-import { getAllPost } from '../../services/apiPost';
+import { getPost } from '../../services/apiPost';
 import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../services/apiAddress';
 import { convertToMillion } from '../../utils/convertMilion';
 import ListNewPost from '../../components/ListNewPost';
@@ -33,7 +33,7 @@ const FilterPage: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       const { gia_tu, gia_den, dien_tich_tu, dien_tich_den, orderby, ...rest } = queries;
-      const res = await getAllPost({
+      const res = await getPost({
         ...rest,
         ...params,
         limit: 10,

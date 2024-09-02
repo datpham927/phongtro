@@ -8,9 +8,10 @@ export interface IPost {
       description: string;
       slug: string;
       images:[]
-      area:string
-      price: string
+      area:string|any
+      price: string|any
       address: {
+        id:string;
         city_name: string;
         district_name: string;
         ward_name: string;

@@ -10,7 +10,7 @@ import { httpRequest } from "../utils/httpRequest";
 //   [key: string]: any;
 // }
 
-const getAllPost = async ( query: any): Promise<any> => {
+const getPost = async ( query: any): Promise<any> => {
   try {
     const response = await httpRequest.get(`/post/all`, { params:query});
     return response.data;
@@ -76,7 +76,14 @@ const getDetailPost = async (postId: any): Promise<any> => {
     return Promise.reject(error); // Re-throw error for better handling upstream
   }
 };
-
-export { getAllPost,getDetailPost
+const getRelatedPosts = async (addressId: any): Promise<any> => {
+  try {
+    const response = await httpRequest.get(`/post/${addressId}/related-post`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
+export { getPost,getDetailPost,getRelatedPosts
   // , apiNewPost, apiCreatePost, apiGetPostAdmin, apiUpdatePost, apiDeletePost, apiDetailPost 
 };

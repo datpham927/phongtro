@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { getAllPost } from '../../services/apiPost'
+import { getPost } from '../../services/apiPost'
 import { IPost } from '../../interfaces/Post'
-import { timeAgo } from '../../utils/format/timeAgo'
-import { Link } from 'react-router-dom'
 import ItemNewPost from '../ItemNewPost'
 
 const ListNewPost: React.FC = () => {
@@ -10,7 +8,7 @@ const ListNewPost: React.FC = () => {
 
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await getAllPost({ sort: "ctime", limit: 10 })
+      const res = await getPost({ sort: "ctime", limit: 10 })
       if (res.status) {
         setListPost(res?.data?.posts)
       }

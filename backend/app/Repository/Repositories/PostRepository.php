@@ -41,16 +41,13 @@ class PostRepository implements PostRepositoryInterface
                 $query->where('ward_slug', $filters['ward_slug']);
             }
         });
-    }
-    
-     
+    } 
     // Áp dụng bộ lọc theo khoảng giá nếu có
     if (!empty($filters['price_from']) || !empty($filters['price_to'])) {
         $query->whereHas('price', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
         });
-    }
- 
+    } 
     // Áp dụng bộ lọc theo khoảng diện tích nếu có
     if (!empty($filters['area_from']) && !empty($filters['area_to'])) { 
         $query->whereHas('area', function($query) use ($filters) {
@@ -75,8 +72,10 @@ class PostRepository implements PostRepositoryInterface
         'posts' => PostResource::collection($query->get()), // Assuming $post is a paginated result
     ];   
     }
-
-    
+    public function findRelatedPostByAddress ($addressId){
+        $relatedPost=$this->post::where(["address_id"=>$addressId])->limit(10)->get();
+        return   PostResource::collection($relatedPost);
+    }
     public function create( $data)
     {
         return $this->post->create($data);

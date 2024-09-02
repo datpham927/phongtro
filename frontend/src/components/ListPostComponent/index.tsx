@@ -9,9 +9,10 @@ import EmptyComponent from "../EmptyComponent";
 interface ListComponentProps {
   data: IPost[];
   totalPost: number;
+  isHome:boolean
 }
 
-const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost }) => {
+const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost,isHome }) => {
   const location = useLocation();
   const queries = queryString.parse(location.search);
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost }) =>
 
       <div className="mt-3">
         {data?.map((post) => (
-          <ItemPostComponent key={post.id} props={post} />
+          <ItemPostComponent key={post.id} props={post} isHome={isHome}/>
         ))}
       </div>
     </div>
