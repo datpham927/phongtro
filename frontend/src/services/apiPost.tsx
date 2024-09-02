@@ -10,7 +10,7 @@ import { httpRequest } from "../utils/httpRequest";
 //   [key: string]: any;
 // }
 
-const getAllPost = async ( query: any): Promise<any> => {
+const getPost = async ( query: any): Promise<any> => {
   try {
     const response = await httpRequest.get(`/post/all`, { params:query});
     return response.data;
@@ -68,17 +68,22 @@ const getAllPost = async ( query: any): Promise<any> => {
 //   }
 // };
 
-// const apiDetailPost = async (postId: string): Promise<any> => {
-//   try {
-//     const response = await httpRequest.get(`/post/detail-post`, {
-//       params: { postId },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     return Promise.reject(error); // Re-throw error for better handling upstream
-//   }
-// };
-
-export { getAllPost
+const getDetailPost = async (postId: any): Promise<any> => {
+  try {
+    const response = await httpRequest.get(`/post/${postId}/detail`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
+const getRelatedPosts = async (addressId: any): Promise<any> => {
+  try {
+    const response = await httpRequest.get(`/post/${addressId}/related-post`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
+export { getPost,getDetailPost,getRelatedPosts
   // , apiNewPost, apiCreatePost, apiGetPostAdmin, apiUpdatePost, apiDeletePost, apiDetailPost 
 };

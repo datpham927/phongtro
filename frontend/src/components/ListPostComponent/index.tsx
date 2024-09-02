@@ -1,16 +1,18 @@
 import { memo } from "react";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
-import ItemComponent from "../ItemComponent";
+import ItemPostComponent from "../ItemPostComponent";
 import { IPost } from "../../interfaces/Post";
 import queryString from "query-string";
 import { useLocation, useNavigate } from "react-router-dom";
+import EmptyComponent from "../EmptyComponent";
 
 interface ListComponentProps {
   data: IPost[];
   totalPost: number;
+  isHome:boolean
 }
 
-const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost }) => {
+const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost,isHome }) => {
   const location = useLocation();
   const queries = queryString.parse(location.search);
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost }) =>
   };
    const active=location.search.includes("orderby")
   return (
-    <div className="bg-white py-4 rounded-md shadow-custom ">
+    data.length>0?<div className="bg-white py-4 rounded-md shadow-custom ">
       <div className="px-4">
         <h1 className="text-lg font-medium my-1">Tổng {totalPost} kết quả</h1>
         <div className="flex items-center gap-2">
@@ -51,10 +53,11 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost }) =>
 
       <div className="mt-3">
         {data?.map((post) => (
-          <ItemComponent key={post.id} props={post} />
+          <ItemPostComponent key={post.id} props={post} isHome={isHome}/>
         ))}
       </div>
     </div>
+    :<EmptyComponent/>
   );
 };
 

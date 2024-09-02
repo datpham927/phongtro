@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { location, titleHomePage } from "../../utils/constant";
 import ProvinceItemComponent from "./ProvinceItemComponent";
+import WelcomeComponent from "../WelcomeComponent";
 
 interface TitleWelcome {
-  title: string | undefined;
-  description: string | undefined;
+  title: string | any;
+  description: string | any;
 }
 
 const ProvinceComponent: React.FC = () => {
@@ -34,14 +35,11 @@ const ProvinceComponent: React.FC = () => {
   }, [slug, categories]);
 
   return (
-    <>
-      <div>
-        <h1 className="text-3xl font-semibold">{titleWelcome.title}</h1>
-        <p className="text-sm text-gray-500 mt-3">{titleWelcome.description}</p>
-      </div>
+    <> 
+       <WelcomeComponent title={titleWelcome?.title}  description={titleWelcome?.description} />
       <div className="flex justify-center mt-4">
         {location.map((e) => (
-          <ProvinceItemComponent key={e.name} image={e.image} title={e.name} />
+          <ProvinceItemComponent key={e.name} image={e.image} title={e.name} slug={e.slug} />
         ))}
       </div>
     </>

@@ -26,22 +26,30 @@ class PostRepository implements PostRepositoryInterface
         });
     }
     // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
-    if (!empty($filters['city_slug']) && !empty($filters['district_slug']) && !empty($filters['ward_slug'])) {
+    if (!empty($filters['city_slug']) || !empty($filters['district_slug']) || !empty($filters['ward_slug'])) {
         $query->whereHas('address', function($query) use ($filters) {
-                $query->where('city_slug', $filters['city_slug'])
-                ->where('district_slug', $filters['district_slug'])
-                ->where('ward_slug', $filters['ward_slug']);
+            // Kiểm tra city_slug và áp dụng điều kiện
+            if (!empty($filters['city_slug'])) {
+                $query->where('city_slug', $filters['city_slug']);
+            }
+            // Kiểm tra district_slug và áp dụng điều kiện
+            if (!empty($filters['district_slug'])) {
+                $query->where('district_slug', $filters['district_slug']);
+            }
+            // Kiểm tra ward_slug và áp dụng điều kiện
+            if (!empty($filters['ward_slug'])) {
+                $query->where('ward_slug', $filters['ward_slug']);
+            }
         });
     } 
-
     // Áp dụng bộ lọc theo khoảng giá nếu có
-    if (!empty($filters['price_from']) && !empty($filters['price_to'])) {
+    if (!empty($filters['price_from']) || !empty($filters['price_to'])) {
         $query->whereHas('price', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
         });
-    }
+    } 
     // Áp dụng bộ lọc theo khoảng diện tích nếu có
-    if (!empty($filters['area_from']) && !empty($filters['area_to'])) {
+    if (!empty($filters['area_from']) && !empty($filters['area_to'])) { 
         $query->whereHas('area', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
         });
@@ -64,8 +72,10 @@ class PostRepository implements PostRepositoryInterface
         'posts' => PostResource::collection($query->get()), // Assuming $post is a paginated result
     ];   
     }
-
-    
+    public function findRelatedPostByAddress ($addressId){
+        $relatedPost=$this->post::where(["address_id"=>$addressId])->limit(10)->get();
+        return   PostResource::collection($relatedPost);
+    }
     public function create( $data)
     {
         return $this->post->create($data);

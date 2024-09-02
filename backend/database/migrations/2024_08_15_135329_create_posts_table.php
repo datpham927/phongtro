@@ -12,15 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->uuid('id')->primary(); // UUID làm khóa chính
+            $table->uuid('id')->primary(); // UUID as primary key
             $table->uuid('user_id');
             $table->string('title');
             $table->string('thumb')->nullable();
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
+            $table->uuid('address_id')->nullable(); // Change this from text to uuid
             $table->uuid('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('address_id')->references('id')->on('post_addresses')->onDelete('cascade');
             $table->timestamps();
         });
     }
