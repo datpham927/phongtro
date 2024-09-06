@@ -4,7 +4,7 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import "swiper/css";
 import "swiper/css/navigation";
 
-export const SlideDetailPost:React.FC <{images:any}> = ({images}) => {
+const SlideDetailPost:React.FC <{images:any}> = ({images}) => {
   return (
     <div className='flex w-full'>
     <Swiper
@@ -26,3 +26,4 @@ export const SlideDetailPost:React.FC <{images:any}> = ({images}) => {
   </div>
   )
 }
+export  default SlideDetailPost

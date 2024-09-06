@@ -1,20 +1,14 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import queryString from 'query-string';
-import SearchComponent from '../../components/SearchComponent';
-import ListPostComponent from '../../components/ListPostComponent';
-import PaginationComponent from '../../components/PaginationComponent';
-import ItemNavbarComponent from '../../components/ItemNavbarComponent';
-import WelcomeComponent from '../../components/WelcomeComponent';
-import LocationComponent from '../../components/LocationComponent';
-import { useAppSelector } from '../../redux/hooks';
-import { dataArea, dataPrice } from '../../utils/data';
-import { IFilterCategory, IFilterDouble } from '../../interfaces/filter';
-import { IPost } from '../../interfaces/Post';
-import { getPost } from '../../services/apiPost';
-import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../services/apiAddress';
-import { convertToMillion } from '../../utils/convertMilion';
-import ListNewPost from '../../components/ListNewPost';
+import queryString from 'query-string'; 
+import { useAppSelector } from '../../../redux/hooks';
+import { dataArea, dataPrice } from '../../../utils/data';
+import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter';
+import { IPost } from '../../../interfaces/Post';
+import { getPost } from '../../../services/apiPost';
+import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../../services/apiAddress';
+import { BreadcrumbComponent, ItemNavbarComponent, ListNewPost, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
+import { convertToMillion } from '../../../utils/convertMillion';
 
 const FilterPage: React.FC = () => {
   const [titleWelcome, setTitleWelcome] = useState<{ title: string; description: string }>({ title: '', description: '' });
@@ -109,7 +103,16 @@ const FilterPage: React.FC = () => {
   const handleCLickCategory = (item: IFilterCategory) => {
     navigate(`/${item.slug}`);
   };
-
+  const breadcrumbs = [
+    {
+        path:`/${category?.slug}`,
+        breadcrumb:  category?.name,
+    } ,
+    {
+      path:`/${category?.slug}`,
+      breadcrumb:  category?.name,
+  } 
+];
   return (
     <>
       <SearchComponent />

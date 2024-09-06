@@ -9,7 +9,7 @@ import EmptyComponent from "../EmptyComponent";
 interface ListComponentProps {
   data: IPost[];
   totalPost: number;
-  isHome:boolean
+  isHome?:boolean
 }
 
 const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost,isHome }) => {

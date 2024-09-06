@@ -8,7 +8,7 @@ interface BoxInfoProps {
     status?: string;
 }
 
-export const BoxInfo: React.FC<BoxInfoProps> = ({ avatar, name, phone, zalo, status }) => {
+ const BoxInfo: React.FC<BoxInfoProps> = ({ avatar, name, phone, zalo, status }) => {
     return (
         <div className='flex flex-col justify-center p-4 rounded-md items-center w-full bg-[#FEBB02]'>
             <img className='w-[80px] h-[80px] rounded-full my-1' 
@@ -30,3 +30,4 @@ export const BoxInfo: React.FC<BoxInfoProps> = ({ avatar, name, phone, zalo, sta
         </div>
     );
 }
+export default BoxInfo

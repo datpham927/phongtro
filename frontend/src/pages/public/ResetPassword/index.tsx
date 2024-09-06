@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { resetPassword } from '../../services/apiAuth';
-import Overlay from '../../components/common/Overlay';
+import { resetPassword } from '../../../services/apiAuth';
+import { Overlay } from '../../../components';
 
 const ResetPassword:React.FC= () => {
     const [password, setPassword] = useState<string>('');
