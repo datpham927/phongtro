@@ -73,5 +73,31 @@ const getAddress= async ( ward_slug:any) => {
 };
 
 
+const getApiProvince = async () => {
+    try {
+        const response = await httpRequest.get('/address/get-city');
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+};
+
+// const getApiDistrict = async (province_code: number) => {
+//     try {
+//         const response = await axios.get(`https://provinces.open-api.vn/api/p/${province_code}?depth=2`);
+//         return response.data;
+//     } catch (error) {
+//         return error;
+//     }
+// };
+// const getApiWards= async (districtId: number) => {
+//     try {
+//         const response = await axios.get(`https://provinces.open-api.vn/api/${districtId}?depth=2`);
+//         return response.data;
+//     } catch (error) {
+//         return error;
+//     }
+// };
+
 export { getApiPublicProvince,getAddress,getWardBelongCategoryByCityAndDistrict,getDistrictBelongCategoryByCity,
-     getApiPublicDistrict ,getApiPublicWards,getDistrictByCity,getWardByCityAndDistrict};
+     getApiPublicDistrict ,getApiPublicWards,getDistrictByCity,getWardByCityAndDistrict,getApiProvince};

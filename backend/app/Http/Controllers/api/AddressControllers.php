@@ -57,5 +57,30 @@ class AddressControllers extends Controller
           }  catch (\Throwable $th) {
               return ResponseHelper::error("Error", $th);
           }
-  }
+      }
+
+      public function getCities(){
+        try {
+              $response = $this->AddressService->findCities();
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+      }
+      public function getDistricts($city_slug){
+        try {
+              $response = $this->AddressService->findDistricts($city_slug);
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+      }
+      public function getWards($district_slug){
+        try {
+              $response = $this->AddressService->findWards($district_slug);
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+      }
 }

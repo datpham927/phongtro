@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 interface SearchItemComponentProps {
-  title: string;
+  title: string|any;
   icon: React.ReactNode; // Sử dụng `React.ReactNode` để nhận các giá trị icon khác nhau
   onClick: () => void|null;
   defaultText: string;
