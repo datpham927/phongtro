@@ -4,11 +4,9 @@ import InputComponent from "../../../../components/InputComponent/InputComponent
 import { setFeatureAuth, setOpenFeatureAuth } from "../../../../redux/action/actionSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
 import InputPassWordComponent from "../../../../components/InputComponent/InputPassWordComponent";
-import TypeAccountComponent from "../../../../components/TypeAccountComponent/TypeAccountComponent";
+import TypeAccountComponent from "../../../../components/TypeAccountComponent";
 import validate from "../../../../utils/validate";
 import { apiRegister } from "../../../../services/apiAuth";
-import { showNotification } from "../../../../components/common/showNotification";
-import { ToastContainer } from "react-toastify";
 import { setIsLoginSuccess } from "../../../../redux/auth/authSlice";
 
 interface InvalidField {

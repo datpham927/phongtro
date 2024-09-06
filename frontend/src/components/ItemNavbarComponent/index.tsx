@@ -6,7 +6,7 @@ interface ItemNavbarComponentProps {
   title: string;
   content: IFilterDouble[] | IFilterCategory[];
   isDouble: boolean;
-  handleOnClick:(e: IFilterDouble | IFilterCategory) => void
+  handleOnClick:(e: IFilterDouble | IFilterCategory) => void|any
 }
 const ItemNavbarComponent: React.FC<ItemNavbarComponentProps> = ({
   title,

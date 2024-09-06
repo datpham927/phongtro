@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export const showNotification = (message: string, err?: boolean): void => {
+const showNotification = (message: string, err?: boolean): void => {
     err
         ? toast(message, {
               position: 'top-center',
@@ -21,3 +21,4 @@ export const showNotification = (message: string, err?: boolean): void => {
               progress: undefined,
           });
 };
+export  default showNotification

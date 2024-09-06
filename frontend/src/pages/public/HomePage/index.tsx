@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import queryString from 'query-string';
 import { useNavigate, useParams } from 'react-router-dom'
-import { IPost } from '../../interfaces/Post'
-import { getPost } from '../../services/apiPost'
-import SearchComponent from '../../components/SearchComponent'
-import ProvinceComponent from '../../components/ProvinceComponent'
-import ListPostComponent from '../../components/ListPostComponent'
-import ItemNavbarComponent from '../../components/ItemNavbarComponent'
-import { dataArea, dataPrice } from '../../utils/data'
-import PaginationComponent from '../../components/PaginationComponent'
-import { IFilterCategory, IFilterDouble } from '../../interfaces/filter';
-import { useAppSelector } from '../../redux/hooks';
-import { convertToMillion } from '../../utils/convertMilion';
-import ListNewPost from '../../components/ListNewPost';
+import { IPost } from '../../../interfaces/Post';
+import { useAppSelector } from '../../../redux/hooks';
+import { getPost } from '../../../services/apiPost';
+import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter'; 
+import { dataArea, dataPrice } from '../../../utils/data'; 
+import { convertToMillion } from '../../../utils/convertMillion';
+import { ItemNavbarComponent, ListNewPost, ListPostComponent, PaginationComponent, ProvinceComponent, SearchComponent } from '../../../components';
+ 
 
 const HomePage:React.FC = () => { 
       const [listPosts, setListPost]=useState<IPost[]>([])

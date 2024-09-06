@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { SlideDetailPost } from '../../components/SlideDetailPost';
-import { BoxInfo } from '../../components/BoxInfo';
-import ListNewPost from '../../components/ListNewPost';
-import { getDetailPost } from '../../services/apiPost';
-import { IDetailPost } from '../../interfaces/Post';
-import { formatDate } from '../../utils/format/formatDate';
-import { timeAgo } from '../../utils/format/timeAgo';
-import RelatedPostComponent from '../../components/RelatedPostComponent';
+import { getDetailPost } from '../../../services/apiPost';
+import { IDetailPost } from '../../../interfaces/Post';
+import { formatDate } from '../../../utils/format/formatDate';
+import { timeAgo } from '../../../utils/format/timeAgo';
+import { BoxInfo, BreadcrumbComponent, ListNewPost, RelatedPostComponent, SlideDetailPost } from '../../../components';
 
 const DetailPost: React.FC = () => {
     const [dataPost, setDataPost] = useState<IDetailPost | null>(null);
     const { postId } = useParams<{ postId: string }>();
-
-  
+    
     useEffect(() => {
         const fetchApi =  (async () => {
             if (!postId) return;
@@ -37,8 +33,30 @@ const DetailPost: React.FC = () => {
             <td className="text-sm">{value}</td>
         </tr>
     );
+
+    const breadcrumbs = [
+        {
+            path:`/${category.slug}`,
+            breadcrumb:  category.name,
+        },
+        {
+            path: `/tinh-thanh/${address.city_slug}`,
+            breadcrumb: address.city_name,
+        },
+        {
+            path: `/tinh-thanh/${address.city_slug}/${address.district_slug}`,
+            breadcrumb: address.district_name,
+        },
+        ,
+        {
+            path: '',
+            breadcrumb:title,
+        },
+    ];
     return (
-        <div className="flex w-full my-10">
+       <>
+        <BreadcrumbComponent breadcrumbs={breadcrumbs}/>
+        <div className="flex w-full">
     <div className="w-2/3 overflow-hidden h-full gap-4 rounded-md ">
      <div className='w-full shadow-custom'>
           <SlideDetailPost images={images} />
@@ -120,7 +138,6 @@ const DetailPost: React.FC = () => {
                     </tbody>
                 </table>
             </div>
-
             <div className="my-5">
                 <h1 className="text-[20px] my-2 font-semibold">Bản đồ</h1>
                 <span className='text-sm'>Địa chỉ: {address.address_detail}</span>
@@ -146,10 +163,10 @@ const DetailPost: React.FC = () => {
             status="Đang hoạt động"
         />
         <ListNewPost />
-
     </div>
 </div>
 
+       </>
 
     );
 };

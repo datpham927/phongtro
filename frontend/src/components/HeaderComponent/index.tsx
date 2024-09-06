@@ -4,16 +4,15 @@ import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import { menuManage } from "../../utils/menuManage";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import UserComponent from "../UserComponent/UserComponent";
+import UserComponent from "../UserComponent";
 import { setFeatureAuth, setOpenFeatureAuth } from "../../redux/action/actionSlice";
 import { setCategories } from "../../redux/category/categorySlice";
 import { getAllCategory } from "../../services/apiCategory";
 import { setDetailUser } from "../../redux/user/userSlice";
 import { setIsLoginSuccess } from "../../redux/auth/authSlice";
 import { apiLogout } from "../../services/apiAuth";
-import { showNotification } from "../common/showNotification";
 
-function HeaderComponent() {
+const HeaderComponent=()=> {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   // const { openFeatureAuth, featureAuth  } = useAppSelector((state) => state.action);
@@ -37,7 +36,6 @@ function HeaderComponent() {
         dispatch(setDetailUser({}));
         dispatch(setIsLoginSuccess(false));
         window.location.reload();
-        showNotification('Đăng xuất thành công', true);
         navigate("/")
 }
 
