@@ -1,6 +1,5 @@
 /* eslint-disable no-self-compare */
 import { memo } from "react";
-import { extractLocation } from "../../utils/format/extractLocation";
 
  
 

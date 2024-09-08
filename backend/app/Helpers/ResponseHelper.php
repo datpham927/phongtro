@@ -20,7 +20,9 @@ class ResponseHelper
     public static function error($message = 'An error occurred', Throwable $e = null, $status = 500){
         $statusCode = $status;
         $errors = null;
-        if ($e) { $errors = $e->getMessage(); $statusCode = is_numeric($e->getCode())?$e->getCode() : $status; }
+        if ($e) { $errors = $e->getMessage(); 
+            $statusCode =$e->getCode()>0?$e->getCode() : $status; 
+        }
         $response = [ 'status' => false, 'message' => $message];
         if ($errors) {$response['errors'] = $errors;};
         return response()->json($response, $statusCode);

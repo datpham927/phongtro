@@ -47,7 +47,7 @@ const getWardByCityAndDistrict= async (city_slug: any,ward_slug:any) => {
 
 const getDistrictBelongCategoryByCity= async (category_slug:any,city_slug: any) => {
     try {
-        const response = await httpRequest.get(`address/${category_slug}/ ${city_slug}/all_district_by_city`);
+        const response = await httpRequest.get(`address/${category_slug}/${city_slug}/all_district_by_city`);
         return response.data;
     } catch (error) {
         return error;

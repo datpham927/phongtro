@@ -1,10 +1,14 @@
-import  { ModalRadioComponent } from "../ModalComponent";
-import SearchItemComponent from "./SearchItemComponent";
+import  ModalRangeComponent from "../ModalComponent/ModalRangeComponent";
 import { useEffect, useMemo, useState } from "react";
 import {  useNavigate, useParams } from "react-router-dom";
 import {  useAppSelector } from "../../redux/hooks";
 import queryString from "query-string";
 import { getApiProvince } from "../../services/apiAddress";
+import SearchItemComponent from "../SearchItemComponent";
+import { dataArea, dataPrice } from "../../utils/data";
+import ModalRadioComponent from "../ModalComponent/ModalRadioComponent";
+import { convertToMillion } from "../../utils/convertMillion";
+import { convertMillionToDecimal } from "../../utils/format/convertMillionToDecimal";
 
 function SearchComponent() {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -38,16 +42,12 @@ function SearchComponent() {
     };
     fetchApi();
   }, []);
-
-  interface SummitEvent {
-    category_slug?: string;
-    city_slug?: string;
-  }
+ 
   
-  const handleOnSummit = (e: SummitEvent, type: string) => {
+  const handleOnSummit = (e: any, type: string) => {
     setQueriesModel((prev:any) => ({ ...prev, ...e }));
     const searchParams = location.search;
-    let path: string;
+    let path: any;
     if (type === "category") {
       path = params.city_slug
         ? `/${e.category_slug}/${params.city_slug}${searchParams}`
@@ -56,79 +56,75 @@ function SearchComponent() {
       path = params.category_slug
         ? `/${params.category_slug}/${e.city_slug}${searchParams}`
         : `/tinh-thanh/${e.city_slug}${searchParams}`;
-    } else {
-      return; 
+    } else  if(type=='price'){
+      setNameModel(e.title)
+      const { gia_tu,gia_den, ...queryParams } = queries;
+      const updatedQueryParams =  {  gia_tu: convertToMillion(e.min),gia_den: convertToMillion(e.max)}
+      const newQuery = queryString.stringify({...queryParams, ...updatedQueryParams}, { sort: false });
+        path =`?${newQuery}`
+    }else  if(type=='area'){
+      setNameModel(e.title)
+      const { dien_tich_tu,dien_tich_den, ...queryParams } = queries;
+      const updatedQueryParams =  {  dien_tich_tu:  e.min ,dien_tich_den:  e.max }
+      const newQuery = queryString.stringify({...queryParams,...updatedQueryParams}, { sort: false });
+        path =`?${newQuery}`
     }
     navigate(path);
     setOpenModal(false);
   };
   
-  // useEffect(() => {
-  //   const fetchApi = async () => {
-  //     const response = await apiPost({
-  //       page: pageNumber || 0,
-  //       ...contentSearch,
-  //     });
-  //     if (response.err !== 0) return;
-  //     dispatch(setListPost(response));
-  //   };
-  //   fetchApi();
-  // }, [pageNumber, evenSummit]);
-
-  // const handleSearch = () => {
-  //   setEvenSummit((prev) => !prev);
-  //   const content = {
-  //     areaNumber: queries?.area?.areaNumber,
-  //     priceNumber: queries?.price?.priceNumber,
-  //     categoryCode: queries?.categories?.code,
-  //     provinceCode: queries?.province?.code,
-  //   };
-  //   setContentSearch(content);
-  //   const text = `${
-  //     queries.category ? queries.categories?.code : "Cho thuê tất cả"
-  //   } ${queries.province.code ? `tỉnh ${queries.categories?.code}` : ""} ${
-  //     queries.price?.priceNumber ? `giá ${queries.price?.priceNumber}` : ""
-  //   } ${
-  //     queries.area?.areaNumber ? `diện tích ${queries.area?.areaNumber}` : ""
-  //   } `;
-  // };
   return (
     <div className=" grid grid-cols-5 gap-[8px] p-[10px] bg-amber-400 my-3 rounded-lg">
       <SearchItemComponent
         icon={<ion-icon name="close-circle-outline"></ion-icon>}
         title={categories.find(e => e.slug === queriesModel.category_slug)?.name}
         defaultText={"Tất cả"}
+        imgUrl='https://phongtro123.com/images/building-icon.svg'
         onClick={() => handleOpenModal(categories, "category",'Chọn loại bất động sản')}
       />
      <SearchItemComponent
         icon={<ion-icon name="chevron-forward-outline"></ion-icon>}
-        // title={queries?.province?.title}
         title={province.find((e:any) => e.city_slug === params.city_slug)?.city_name}
         defaultText={"Toàn quốc"}
+         imgUrl='https://phongtro123.com/images/location-icon.svg'
         onClick={() => handleOpenModal(province, "province",'Chọn tỉnh thành')}
       />
-        {/*<SearchItemComponent
-        icon={<ion-icon name="chevron-forward-outline"></ion-icon>}
-        // title={queries?.price?.title}
-        defaultText={"Chọn giá"}
-        onClick={() => handleOpenModal(dataPrice, "price")}
-      />
-      <SearchItemComponent
-        icon={<ion-icon name="chevron-forward-outline"></ion-icon>}
-        // title={queries?.area?.title}
-        defaultText={"Chọn diện tích"}
-        onClick={() => handleOpenModal(dataArea, "area")}
-      />
-      <button
-        // onClick={handleSearch}
+       <SearchItemComponent
+  icon={<ion-icon name="chevron-forward-outline"></ion-icon>}
+  title={ Number(queries.gia_den) === 999999
+    ? "Trên 15 triệu"
+    : queries.gia_tu && queries.gia_den
+    ? `${convertMillionToDecimal(Number(queries.gia_tu))} - ${convertMillionToDecimal(Number(queries.gia_den))} triệu`
+    : ""
+  }
+  defaultText="Chọn giá"
+  imgUrl="https://phongtro123.com/images/price-icon.svg"
+  onClick={() => handleOpenModal(dataPrice, "price", "Chọn giá")}
+/>
+
+<SearchItemComponent
+  icon={<ion-icon name="chevron-forward-outline"></ion-icon>}
+  title={ Number(queries.dien_tich_den) === 999999
+    ? "Trên 90m2"
+    : queries.dien_tich_tu && queries.dien_tich_den
+    ? `${queries.dien_tich_tu} - ${queries.dien_tich_den}m2`
+    : ""
+  }
+  defaultText="Chọn diện tích"
+  imgUrl="https://phongtro123.com/images/acreage-icon.svg"
+  onClick={() => handleOpenModal(dataArea, "area", "Chọn diện tích")}
+/>
+
+        <button
         className="flex items-center justify-center text-sm font-medium fon bg-blue-custom text-white p-2 rounded-md hover:shadow-custom"
       >
         <span className="flex items-center mx-1 text-lg">
           <ion-icon name="search-outline"></ion-icon>
         </span>
         <span>Tìm kiếm</span>
-      </button> */}
-      {openModal && (
+      </button>
+      {openModal &&(
+         ['category',"province"].includes(valueType) ?
         <ModalRadioComponent
           name={nameModel}
           onSummit={handleOnSummit}
@@ -136,8 +132,15 @@ function SearchComponent() {
           type={valueType}
           setOpenModal={setOpenModal}
           isSelect={queriesModel}
-        />
-      )}
+        />:
+        <ModalRangeComponent content={contentModel} 
+        min={valueType==="price"?convertMillionToDecimal(Number(queries.gia_tu)): Number(queries.dien_tich_tu)}
+        max={valueType==="price"?convertMillionToDecimal(Number(queries.gia_den)): Number(queries.dien_tich_den)} 
+         setOpenModal={setOpenModal}
+        onSummit={handleOnSummit} name={nameModel} type={valueType}/>
+      ) 
+      }
+ 
     </div>
   );
 }

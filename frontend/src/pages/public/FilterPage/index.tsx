@@ -103,16 +103,7 @@ const FilterPage: React.FC = () => {
   const handleCLickCategory = (item: IFilterCategory) => {
     navigate(`/${item.slug}`);
   };
-  const breadcrumbs = [
-    {
-        path:`/${category?.slug}`,
-        breadcrumb:  category?.name,
-    } ,
-    {
-      path:`/${category?.slug}`,
-      breadcrumb:  category?.name,
-  } 
-];
+ 
   return (
     <>
       <SearchComponent />
