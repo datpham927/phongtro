@@ -30,4 +30,17 @@ class AddressService implements AddressServiceInterface
     public function findNameWard($ward_slug){
         return $this->addressRepository->findNameWardByWardSlug($ward_slug);
     }
+
+
+    public function  findCities (){
+        return $this->addressRepository->findCities();
+    }
+
+    public function  findDistricts($city_slug){
+        return $this->addressRepository->findDistricts($city_slug);
+    }
+
+    public function  findWards ($district_slug){
+        return $this->addressRepository->findWards($district_slug);
+    }
 }

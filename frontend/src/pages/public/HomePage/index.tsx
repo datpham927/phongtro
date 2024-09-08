@@ -45,7 +45,7 @@ const HomePage:React.FC = () => {
              currentPage !== 0 
             ? { ...queryParams, page: currentPage, }
             : queryParams;
-    const newQuery = queryString.stringify(updatedQueryParams);
+    const newQuery = queryString.stringify(updatedQueryParams, { sort: false });
     navigate(`?${newQuery}`);
 }, [currentPage]);
  

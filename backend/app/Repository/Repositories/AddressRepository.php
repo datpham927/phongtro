@@ -79,8 +79,7 @@ class AddressRepository  implements AddressRepositoryInterface
         $locationData = $this->address::where('city_slug', $city_slug)
         ->where('district_slug', $district_slug)
         ->select('city_name', 'district_name')
-        ->first();
-       
+        ->first(); 
         $wards = $this->address
         ->join('posts as p', 'p.address_id', '=', 'post_addresses.id')
         ->join('categories as c', 'p.category_id', '=', 'c.id')
@@ -100,4 +99,28 @@ class AddressRepository  implements AddressRepositoryInterface
                return  $this->address::where('ward_slug', $ward_slug)->first();
          }
  
+         public function findCities() {
+            return $this->address
+                ->select('city_name', 'city_slug')
+                ->selectRaw("'city' as type")
+                ->distinct()
+                ->get();
+        }
+        public function  findDistricts($city_slug){
+            return $this->address
+            ->select('district_name', 'district_slug')
+            ->selectRaw("'district' as type")
+            ->where("city_slug",$city_slug)
+            ->distinct()
+            ->get();
+        }
+
+        public function  findWards ($district_slug){
+            return $this->address
+            ->select('ward_name', 'ward_slug')
+            ->selectRaw("'ward' as type")
+            ->where("district_slug",$district_slug)
+            ->distinct()
+            ->get();
+        }
 }

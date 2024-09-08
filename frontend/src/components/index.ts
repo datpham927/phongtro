@@ -12,7 +12,7 @@ export { default as ItemPostComponent } from  '../components/ItemPostComponent';
 export { default as ListNewPost } from  '../components/ListNewPost';
 export { default as ListPostComponent } from  '../components/ListPostComponent';
 export { default as LocationComponent } from  '../components/LocationComponent';
-export { default as ModalComponent } from  '../components/ModalComponent';
+export { default as ModalComponent } from  '../components/ModalComponent/ModalRadioComponent';
 export { default as NavigateComponent } from  '../components/NavigateComponent';
 export { default as PaginationComponent } from  '../components/PaginationComponent';
 export { default as ProvinceComponent } from  '../components/ProvinceComponent';

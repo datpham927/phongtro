@@ -20,14 +20,14 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost,isHom
   const handleNewPost = () => {
     const { ...queryParams } = queries;
     const updatedQueryParams = { ...queryParams, orderby: "ctime" };
-    const newQuery = queryString.stringify(updatedQueryParams);
+    const newQuery = queryString.stringify(updatedQueryParams, { sort: false });
     navigate(`?${newQuery}`);
   };
 
   const handleDefaultPost = () => {
     const { orderby, ...queryParams } = queries;
     const updatedQueryParams = { ...queryParams };
-    const newQuery = queryString.stringify(updatedQueryParams);
+    const newQuery = queryString.stringify(updatedQueryParams, { sort: false });
     navigate(`?${newQuery}`);
   };
    const active=location.search.includes("orderby")

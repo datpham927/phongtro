@@ -47,7 +47,7 @@ const getWardByCityAndDistrict= async (city_slug: any,ward_slug:any) => {
 
 const getDistrictBelongCategoryByCity= async (category_slug:any,city_slug: any) => {
     try {
-        const response = await httpRequest.get(`address/${category_slug}/ ${city_slug}/all_district_by_city`);
+        const response = await httpRequest.get(`address/${category_slug}/${city_slug}/all_district_by_city`);
         return response.data;
     } catch (error) {
         return error;
@@ -73,5 +73,31 @@ const getAddress= async ( ward_slug:any) => {
 };
 
 
+const getApiProvince = async () => {
+    try {
+        const response = await httpRequest.get('/address/get-city');
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+};
+
+// const getApiDistrict = async (province_code: number) => {
+//     try {
+//         const response = await axios.get(`https://provinces.open-api.vn/api/p/${province_code}?depth=2`);
+//         return response.data;
+//     } catch (error) {
+//         return error;
+//     }
+// };
+// const getApiWards= async (districtId: number) => {
+//     try {
+//         const response = await axios.get(`https://provinces.open-api.vn/api/${districtId}?depth=2`);
+//         return response.data;
+//     } catch (error) {
+//         return error;
+//     }
+// };
+
 export { getApiPublicProvince,getAddress,getWardBelongCategoryByCityAndDistrict,getDistrictBelongCategoryByCity,
-     getApiPublicDistrict ,getApiPublicWards,getDistrictByCity,getWardByCityAndDistrict};
+     getApiPublicDistrict ,getApiPublicWards,getDistrictByCity,getWardByCityAndDistrict,getApiProvince};

@@ -5,8 +5,8 @@ import { IFilterCategory, IFilterDouble } from "../../interfaces/filter";
 interface ItemNavbarComponentProps {
   title: string;
   content: IFilterDouble[] | IFilterCategory[];
-  isDouble: boolean;
-  handleOnClick:(e: IFilterDouble | IFilterCategory) => void|any
+  isDouble?: boolean;
+  handleOnClick?:any|undefined
 }
 const ItemNavbarComponent: React.FC<ItemNavbarComponentProps> = ({
   title,
