@@ -24,6 +24,9 @@ export { default as UserComponent } from  '../components/UserComponent';
 export { default as WelcomeComponent } from  '../components/WelcomeComponent';
 export { default as Overlay } from  '../components/common/Overlay';
 export { default as showNotification } from  '../components/common/showNotification';
+export { default as SidebarComponent } from  '../components/SidebarComponent';
+export { default as AddressComponent } from  '../components/AddressComponent';
+export { default as SelectAddress } from  '../components/SelectAddress';
 
 
 

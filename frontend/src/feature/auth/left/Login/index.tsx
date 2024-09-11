@@ -3,8 +3,7 @@ import { apiLogin } from '../../../../services/apiAuth';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { setFeatureAuth, setOpenFeatureAuth } from '../../../../redux/action/actionSlice';
 import { setIsLoginSuccess } from '../../../../redux/auth/authSlice';
-import ButtonComponent from '../../../../components/ButtonComponent/ButtonComponent';
-import InputPassWordComponent from '../../../../components/InputComponent/InputPassWordComponent';
+import { ButtonComponent, InputPassWordComponent } from '../../../../components';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');

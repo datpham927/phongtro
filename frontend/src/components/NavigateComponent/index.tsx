@@ -1,21 +1,11 @@
 // import { setPostFilterCode } from "../redux/postSlice/postSlice";
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { PATH } from "../../utils/constant";
 
 const NavigateComponent = () => {
   const { categories } = useAppSelector((state) => state.category);
-  const [fixedNavigate, setFixedNavigate] = useState(false);
-
-  useEffect(() => {
-    const handleOnScroll = (e:any) => {
-      setFixedNavigate(true);
-      console.log(e?.target?.scrollHeight);
-    };
-    document.addEventListener("scroll", handleOnScroll);
-  });
-
+ 
   const notActive =
     "text-white text-sm font-semibold px-3 py-[10px]  hover:bg-red-custom";
   const active =
@@ -23,8 +13,7 @@ const NavigateComponent = () => {
 
   return (
     <div
-      className={`bg-blue-custom w-full   ${fixedNavigate ? "fixed top-0 w-full  " : ""
-        }`}
+      className='bg-blue-custom w-full z-[999] top-0 sticky '
     >
       <div className="w-[1100px] mx-auto  flex items-center">
         <NavLink

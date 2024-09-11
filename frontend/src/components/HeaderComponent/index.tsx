@@ -61,7 +61,7 @@ const HeaderComponent=()=> {
             <>
               <ButtonComponent text="Quản lý tài khoản" onClick={() => setModal(!modal)}/>
               {modal && (
-                <div className="absolute flex flex-col top-[80%] bg-white w-[200px] p-3 rounded-sm shadow-custom z-10">
+                <div className="absolute flex flex-col  top-[80%] bg-white w-[200px] p-3 rounded-sm shadow-custom z-[1000]">
                   {menuManage.map((e) => (
                     <Link to={e.path} key={e.id}
                       className=" border-solid border-b-[1px] border-gray-300 py-2 text-sm text-blue-custom cursor-pointer hover:text-orange-500">
