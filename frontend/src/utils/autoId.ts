@@ -1,4 +1,4 @@
-export const autoId = (value) => {
+export const autoId = (value:any) => {
   let code =
     value
       .toLowerCase()

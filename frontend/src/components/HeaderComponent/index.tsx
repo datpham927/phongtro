@@ -18,16 +18,6 @@ const HeaderComponent=()=> {
   // const { openFeatureAuth, featureAuth  } = useAppSelector((state) => state.action);
   const {  isLogged  } = useAppSelector((state) => state.auth);
   const navigate=useNavigate()
-  useEffect(() => {
-    const fetchApi = async () => {
-      const res = await getAllCategory();
-      if (res?.status) {
-        dispatch(setCategories(res?.data));
-      }
-    };
-    fetchApi();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleLogout = async () => {
         const res = await apiLogout();
@@ -37,14 +27,8 @@ const HeaderComponent=()=> {
         dispatch(setIsLoginSuccess(false));
         window.location.reload();
         navigate("/")
-}
-
-
-  // () => {
-  //   han
-  //   // toastMessage("Đăng xuất thành công");
-  // }
-  
+} 
+ 
   return (
     <div>
       <div className="flex justify-between w-[1100px] mx-auto">

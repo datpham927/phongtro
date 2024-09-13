@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { menuManage } from "../../utils/menuManage";
 import { useAppSelector } from "../../redux/hooks";
-
 function SidebarComponent() {
   const  user  = useAppSelector((state) => state.user);
   return (
@@ -33,9 +32,10 @@ function SidebarComponent() {
         </strong>
       </span>
 
-      <ul className="flex flex-col gap-4 mt-5">
+      <ul className="flex flex-col mt-5">
         {menuManage.map((e) => (
-          <li className=" text-sm text-blue-custom hover:text-red-500">
+          <li className=" flex text-center gap-2 text-sm  hover:bg-[#f1f1f1] py-3">
+             {e.icon}
             <NavLink
               key={e.id}
               to={e.path}

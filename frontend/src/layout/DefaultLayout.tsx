@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
  
 const DefaultLayout = () => { 
   return (
-      <>
+      <div className='w-full h-full  overflow-scroll'>
           <HeaderComponent />
           <NavigateComponent/>
           <div className="w-[1100px] mx-auto"> 
@@ -14,7 +14,7 @@ const DefaultLayout = () => {
           </div>
           <FooterComponent/>
           <Auth/>
-          </>
+          </div>
   )
 };
 

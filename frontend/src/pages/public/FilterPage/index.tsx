@@ -5,7 +5,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import { dataArea, dataPrice } from '../../../utils/data';
 import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter';
 import { IPost } from '../../../interfaces/Post';
-import { getPost } from '../../../services/apiPost';
+import { apiGetPost } from '../../../services/apiPost';
 import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../../services/apiAddress';
 import { BreadcrumbComponent, ItemNavbarComponent, ListNewPost, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
 import { convertToMillion } from '../../../utils/convertMillion';
@@ -27,7 +27,7 @@ const FilterPage: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       const { gia_tu, gia_den, dien_tich_tu, dien_tich_den, orderby, ...rest } = queries;
-      const res = await getPost({
+      const res = await apiGetPost({
         ...rest,
         ...params,
         limit: 10,
@@ -112,7 +112,7 @@ const FilterPage: React.FC = () => {
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
           <ListPostComponent data={listPosts} totalPost={totalPost} />
-          { listPosts.length>0&&  <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />}
+          { listPosts?.length>0&&  <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />}
         </div>
         <div className="w-[30%]">
           <ItemNavbarComponent isDouble title="Xem theo giá" content={dataPrice} handleOnClick={handleCLickPrice} />

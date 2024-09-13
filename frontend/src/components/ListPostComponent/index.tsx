@@ -32,7 +32,7 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost,isHom
   };
    const active=location.search.includes("orderby")
   return (
-    data.length>0?<div className="bg-white py-4 rounded-md shadow-custom ">
+    data?.length>0?<div className="bg-white py-4 rounded-md shadow-custom ">
       <div className="px-4">
         <h1 className="text-lg font-medium my-1">Tổng {totalPost} kết quả</h1>
         <div className="flex items-center gap-2">

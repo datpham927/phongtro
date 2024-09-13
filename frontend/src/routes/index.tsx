@@ -5,6 +5,7 @@ import { DetailPost, FilterPage, HomePage, ResetPassword } from '../pages/public
 import System from '../pages/system/System'; 
 import DefaultLayout from '../layout/DefaultLayout';
 import CreatePost from '../pages/system/CreatePost';
+import ManagePost from '../pages/system/ManagePost';
 
 
 const RouterPage = () => { 
@@ -28,7 +29,7 @@ const RouterPage = () => {
   
       <Route path={PATH.SYSTEM} element={<System />}>
           <Route path={PATH.CREATE_POST} element={<CreatePost />} />
-          {/* <Route path={PATH.MANAGE_POST} element={<ManagePost />} /> */}
+          <Route path={PATH.MANAGE_POST} element={<ManagePost />} />
           {/* <Route path={PATH.EDIT_ACCOUNT} element={<EditAccount />} /> */}
         </Route>
     </Routes>

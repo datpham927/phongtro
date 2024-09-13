@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { useNavigate, useParams } from 'react-router-dom'
 import { IPost } from '../../../interfaces/Post';
 import { useAppSelector } from '../../../redux/hooks';
-import { getPost } from '../../../services/apiPost';
+import { apiGetPost } from '../../../services/apiPost';
 import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter'; 
 import { dataArea, dataPrice } from '../../../utils/data'; 
 import { convertToMillion } from '../../../utils/convertMillion';
@@ -23,7 +23,7 @@ const HomePage:React.FC = () => {
    useEffect(()=>{
     const { gia_tu, gia_den,dien_tich_tu,dien_tich_den,orderby, ...rest } = queries;
        const fetchApi= async()=>{
-           const res = await getPost({...rest,category_slug:params.category_slug, limit:10,
+           const res = await apiGetPost({...rest,category_slug:params.category_slug, limit:10,
             price_from:gia_tu,
             price_to:gia_den,
             area_from:dien_tich_tu,
@@ -71,7 +71,7 @@ const handleCLickCategory=(item: IFilterCategory)=>{
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
           <ListPostComponent  data={listPosts} totalPost={totalPost} isHome={!params?.category_slug}/>
-         { listPosts.length>0&&
+         { listPosts?.length>0&&
          <PaginationComponent currentPage={currentPage}
                              setCurrentPage={setCurrentPage} 
                             totalPage={totalPage} />}

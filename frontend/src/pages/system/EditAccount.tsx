@@ -22,7 +22,7 @@
 //     const files = e.target.files[0];
 //     const formData = new FormData();
 //     formData.append("file", files);
-//     formData.append("upload_preset", process.env.REACT_APP_UPLOAD_NAME);
+//     formData.append("upload_preset", process.env.VITE_REACT_UPLOAD_PRESET);
 //     const response = await getApiUploadImage(formData)
 //     if (response) {
 //       setDataEditUser((prev) => ({ ...prev, avatar: response.url }))

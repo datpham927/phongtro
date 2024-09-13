@@ -5,6 +5,8 @@ interface InputReadOnlyProps {
   value: string;
   direction?: string;
   isEditPhone?: boolean;
+  className?:string
+  
 }
 
 function InputReadOnly({
@@ -12,10 +14,11 @@ function InputReadOnly({
   value,
   direction = "flex-col gap-1",
   isEditPhone = false,
+  className =''
 }: InputReadOnlyProps) {
   return (
-    <div className={`flex ${direction}`}>
-      <label htmlFor="exact-address" className="flex items-end w-1/2">
+    <div className={`flex ${direction}  ${className}`}>
+      <label htmlFor="exact-address" className={`flex items-end w-1/2`}>
         {label}
       </label>
       <div className="w-full">

@@ -3,6 +3,9 @@ import { Link, Outlet } from "react-router-dom";
 import SidebarComponent from "../../components/SidebarComponent/index.tsx";
 
 function System() {
+
+   
+
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex w-full bg-blue-custom top-0 sticky ">
@@ -18,7 +21,7 @@ function System() {
         <div className="w-1/6 bg-primary-bg h-auto">
           <SidebarComponent />
         </div>
-        <div className="w-5/6 h-full py-10  bg-white">
+        <div className="w-5/6 h-screen  py-10  bg-white overflow-scroll">
           <Outlet />
         </div>
       </div>

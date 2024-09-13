@@ -20,7 +20,6 @@ const Login: React.FC = () => {
         if (res?.status) {
             localStorage.setItem('access_token', JSON.stringify(res.data.authorization.access_token));
             localStorage.setItem('client_id', JSON.stringify(res.data.user_id));
-            localStorage.setItem('refresh_token', JSON.stringify(res.data.authorization.refresh_token));
             // showNotification('Đăng nhập thành công!', true);
             dispatch(setOpenFeatureAuth(false));
             dispatch(setIsLoginSuccess(true));

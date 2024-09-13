@@ -1,11 +1,24 @@
 // import { setPostFilterCode } from "../redux/postSlice/postSlice";
 import { NavLink } from "react-router-dom";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { PATH } from "../../utils/constant";
+import { useEffect } from "react";
+import { getAllCategory } from "../../services/apiCategory";
+import { setCategories } from "../../redux/category/categorySlice";
 
 const NavigateComponent = () => {
   const { categories } = useAppSelector((state) => state.category);
- 
+  const dispatch=useAppDispatch()
+  useEffect(() => {
+    const fetchApi = async () => {
+      const res = await getAllCategory();
+      if (res?.status) {
+        dispatch(setCategories(res?.data));
+      }
+    };
+    fetchApi();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const notActive =
     "text-white text-sm font-semibold px-3 py-[10px]  hover:bg-red-custom";
   const active =
