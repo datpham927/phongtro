@@ -28,17 +28,17 @@ Route::middleware(Login::class)->prefix('v1/user')->group(function () {
 // Nhóm các route liên quan đến danh mục
 Route::prefix('v1/category')->group(function () {
     Route::get('/all', [CategoryControllers::class, 'getAll']) ;
-    Route::post('/add', [CategoryControllers::class, 'create']) ;
-    Route::post('/{cid}/update', [CategoryControllers::class, 'update']) ;
-    Route::delete('/{cid}/destroy', [CategoryControllers::class, 'destroy']) ;
+    Route::middleware(Login::class)->post('/add', [CategoryControllers::class, 'create']) ;
+    Route::middleware(Login::class)->post('/{cid}/update', [CategoryControllers::class, 'update']) ;
+    Route::middleware(Login::class)->delete('/{cid}/destroy', [CategoryControllers::class, 'destroy']) ;
 });
 
 Route::prefix('v1/post')->group(function () {
+    Route::middleware(Login::class)->delete('/{pid}/delete', [PostControllers::class, 'destroy']) ;
+    Route::middleware(Login::class)->post('/add', [PostControllers::class, 'create']) ;
+    Route::middleware(Login::class)->post('/{pid}/update', [PostControllers::class, 'update']) ;
     Route::get('/all', [PostControllers::class, 'getAll']) ;
-    Route::post('/add', [PostControllers::class, 'create']) ;
-    Route::post('/{pid}/update', [PostControllers::class, 'update']) ;
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']) ;
-    Route::delete('/{pid}/delete', [PostControllers::class, 'destroy']) ;
     Route::get('/{address_id}/related-post', [PostControllers::class, 'getRelatedPost']) ;
 });
 
@@ -51,6 +51,4 @@ Route::prefix('v1/address')->group(function () {
     Route::get('/get-city', [AddressControllers::class, 'getCities']) ;
     Route::get('/{city_lug}/get-district', [AddressControllers::class, 'getDistricts']) ;
     Route::get('/{district_lug}/get-ward', [AddressControllers::class, 'getWards']) ;
-
-
 });

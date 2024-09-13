@@ -48,6 +48,7 @@ class PostService implements PostServiceInterface
         }
 
           $dataPost=[
+            "user_id"=> $validatedData[ "user_id"],
             "id"=>Util::uuid(),
             'address_id'=>$addressId,
             "slug"=>Util::slug($validatedData[ "title"] ),
