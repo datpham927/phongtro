@@ -28,7 +28,7 @@ const BreadcrumbComponent: React.FC<BreadcrumbsProps> = ({ breadcrumbs }) => {
                             {b.breadcrumb}
                         </span>
                     )}
-                    {b.path !== '' && index < breadcrumbs.length - 1 && (
+                    {b.path !== '' && index < breadcrumbs?.length - 1 && (
                         <span className="text-secondary">
                             <KeyboardArrowRightIcon fontSize="medium" />
                         </span>

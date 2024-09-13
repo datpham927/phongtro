@@ -1,4 +1,4 @@
-import { httpRequest } from "../utils/httpRequest";
+import { axiosJWT, httpRequest } from "../utils/httpRequest";
 
  
 
@@ -10,7 +10,7 @@ import { httpRequest } from "../utils/httpRequest";
 //   [key: string]: any;
 // }
 
-const getPost = async ( query: any): Promise<any> => {
+const apiGetPost = async ( query: any): Promise<any> => {
   try {
     const response = await httpRequest.get(`/post/all`, { params:query});
     return response.data;
@@ -18,28 +18,17 @@ const getPost = async ( query: any): Promise<any> => {
     return Promise.reject(error); // Re-throw error for better handling upstream
   }
 };
+ 
+const apiCreatePost = async (content: any): Promise<any> => {
+  try {
+    const response = await axiosJWT.post(`/post/add`, content);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
 
-// const apiNewPost = async (query: QueryParams = {}): Promise<any> => {
-//   try {
-//     const response = await httpRequest.get(`/post/new-post`, {
-//       params: query,
-//     });
-//     return response.data;
-//   } catch (error) {
-//     return Promise.reject(error); // Re-throw error for better handling upstream
-//   }
-// };
-
-// const apiCreatePost = async (content: PostContent): Promise<any> => {
-//   try {
-//     const response = await httpRequest.post(`/post/create-post`, content);
-//     return response.data;
-//   } catch (error) {
-//     return Promise.reject(error); // Re-throw error for better handling upstream
-//   }
-// };
-
-// const apiGetPostAdmin = async (): Promise<any> => {
+// const apiapiGetPostAdmin = async (): Promise<any> => {
 //   try {
 //     const response = await httpRequest.get(`/post/admin-post`);
 //     return response.data;
@@ -84,6 +73,6 @@ const getRelatedPosts = async (addressId: any): Promise<any> => {
     return Promise.reject(error); // Re-throw error for better handling upstream
   }
 };
-export { getPost,getDetailPost,getRelatedPosts
-  // , apiNewPost, apiCreatePost, apiGetPostAdmin, apiUpdatePost, apiDeletePost, apiDetailPost 
+export { apiGetPost,getDetailPost,getRelatedPosts,apiCreatePost
+  // , apiNewPost, apiCreatePost, apiapiGetPostAdmin, apiUpdatePost, apiDeletePost, apiDetailPost 
 };

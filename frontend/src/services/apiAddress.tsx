@@ -10,7 +10,7 @@ const getApiPublicProvince = async () => {
     }
 };
 
-const getApiPublicDistrict = async (province_code: number) => {
+const getApiPublicDistrict = async (province_code: any) => {
     try {
         const response = await axios.get(`https://provinces.open-api.vn/api/p/${province_code}?depth=2`);
         return response.data;
@@ -18,9 +18,9 @@ const getApiPublicDistrict = async (province_code: number) => {
         return error;
     }
 };
-const getApiPublicWards= async (districtId: number) => {
+const getApiPublicWards= async (districtId: any) => {
     try {
-        const response = await axios.get(`https://provinces.open-api.vn/api/${districtId}?depth=2`);
+        const response = await axios.get(`https://provinces.open-api.vn/api/d/${districtId}?depth=2`);
         return response.data;
     } catch (error) {
         return error;
@@ -82,7 +82,7 @@ const getApiProvince = async () => {
     }
 };
 
-// const getApiDistrict = async (province_code: number) => {
+// const getApiDistrict = async (province_code: any) => {
 //     try {
 //         const response = await axios.get(`https://provinces.open-api.vn/api/p/${province_code}?depth=2`);
 //         return response.data;
@@ -90,7 +90,7 @@ const getApiProvince = async () => {
 //         return error;
 //     }
 // };
-// const getApiWards= async (districtId: number) => {
+// const getApiWards= async (districtId: any) => {
 //     try {
 //         const response = await axios.get(`https://provinces.open-api.vn/api/${districtId}?depth=2`);
 //         return response.data;

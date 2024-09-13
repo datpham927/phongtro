@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import ButtonComponent from "../../../../components/ButtonComponent/ButtonComponent";
-import InputComponent from "../../../../components/InputComponent/InputComponent";
 import { setFeatureAuth, setOpenFeatureAuth } from "../../../../redux/action/actionSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
-import InputPassWordComponent from "../../../../components/InputComponent/InputPassWordComponent";
-import TypeAccountComponent from "../../../../components/TypeAccountComponent";
 import validate from "../../../../utils/validate";
 import { apiRegister } from "../../../../services/apiAuth";
 import { setIsLoginSuccess } from "../../../../redux/auth/authSlice";
+import { ButtonComponent, InputComponent, InputPassWordComponent, TypeAccountComponent } from "../../../../components";
 
 interface InvalidField {
   name: string;

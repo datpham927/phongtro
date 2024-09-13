@@ -21,7 +21,8 @@ export interface IPost {
         address_detail:string
         map:string
       };
-      created_at:string
+      created_at:string,
+      expire_at:string
     }
 
 export interface IDetailPost extends IPost {

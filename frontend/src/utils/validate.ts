@@ -7,17 +7,24 @@ const validate = (
   const valueFormArray = Object.entries(valueForm);
 
   valueFormArray.forEach(([key, value]) => {
+    if (key === 'images'&&value.length===0) {
+      invalidFields.push({
+        name: key,
+        message: "Vui lòng chọn hình ảnh!",
+      });
+      error = false;
+    }
     if (value === "" || value === 0) {
       invalidFields.push({
         name: key,
-        message: "Bạn không được bỏ trống trường này",
+        message: "Bạn không được bỏ trống!",
       });
       error = false;
     }
   });
 
   valueFormArray.forEach(([key, value]) => {
-    switch (key) {
+    switch (key) { 
       case "email": {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {

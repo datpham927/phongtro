@@ -30,7 +30,7 @@ const ModalRangeComponent: React.FC<ModalRadioComponentProps> = ({
    const [selectValue, setSelectValue] = useState<any>({min:"",max:""});
    const valueMax=type==="price"?15:90
    useEffect(()=>{
-      if(!min||!max) return
+      if(!min||!max) return 
       if(max===999999){
             setPercent1( 100)
             setPercent2( 100)

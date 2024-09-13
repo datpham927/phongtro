@@ -179,7 +179,7 @@ class AuthService implements AuthServiceInterface
         $accessToken = JWT::encode([
             'user_id' => $user->id,
             'email' => $user->email,
-            'exp' => time() + 10// 10 ngày
+            'exp' => time() +  60 * 24 * 60*10// 10 ngày
         ], $accessTokenSecret, 'HS256');
         $exp_rToken = time() + 60 * 24 * 60 * 60; // 60 ngày
         $refreshToken = JWT::encode([

@@ -30,7 +30,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
         onChange={onChange}
         name={name}
       />
-      {invalidFields.length > 0 &&
+      {invalidFields?.length > 0 &&
         invalidFields.some((e) => e.name === name) && (
           <span className="my-1 text-sm text-red-custom">
             {invalidFields.find((e) => e.name === name)?.message}
