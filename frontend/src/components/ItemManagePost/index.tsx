@@ -7,8 +7,7 @@ interface ItemManagePostProps {
   startDate: string;
   expireDate?: string;
   status?: string;
-  // setIsEdit?: (isEdit: boolean) => void;
-  // onClickEdit: () => void;
+  onClickEdit: () => void;
   // onClickDelete: () => void;
 }
 
@@ -20,7 +19,7 @@ function ItemManagePost({
   expireDate,
   status,
   // setIsEdit,
-  // onClickEdit,
+  onClickEdit,
   // onClickDelete
 }: ItemManagePostProps) {
   return (
@@ -36,11 +35,10 @@ function ItemManagePost({
       <li className="flex p-[15px] text-sm justify-between">
         <button
           className="px-2 bg-blue-500 text-white rounded-md"
-          // onClick={(e) => {
-          //   e.preventDefault();
-          //   if (setIsEdit) setIsEdit(true);
-          //   onClickEdit();
-          // }}
+          onClick={(e) => {
+            e.preventDefault();
+            onClickEdit();
+          }}
         >
           Edit
         </button>

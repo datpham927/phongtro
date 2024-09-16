@@ -1,17 +1,18 @@
 import { memo, useEffect, useState } from "react";
 import InputReadOnly from "../InputComponent/InputReadOnly";
 import { getApiPublicDistrict, getApiPublicProvince, getApiPublicWards } from "../../services/apiAddress";
-import { IDetailPost } from "../../interfaces/Post";
+import { IDetailPost, IPostPayload } from "../../interfaces/Post";
 import InputForm from "../InputComponent/InputForm";
 import SelectOption from "../SelectOption";
+import { convertToSlug } from "../../utils/format/convertToSlug";
+import { useParams } from "react-router-dom";
 
 interface AddressComponentProps {
-  payload: any; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc payload của bạn
+  payload: IPostPayload; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc payload của bạn
   setPayload: React.Dispatch<React.SetStateAction<any>>; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc payload của bạn
   invalidFields: any; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc invalidFields của bạn
   setInvalidFields: React.Dispatch<React.SetStateAction<any>>; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc invalidFields của bạn
   isEdit?: boolean;
-  dataEditPost?:IDetailPost
 }
 
 interface IProvince {
@@ -33,7 +34,6 @@ function AddressComponent({
   invalidFields,
   setInvalidFields,
   isEdit,
-  dataEditPost,
 }: AddressComponentProps) {
   const [provinces, setProvinces] = useState<IProvince[]>([]);
   const [districts, setDistricts] = useState<IDistrict[]>([]);
@@ -77,41 +77,19 @@ function AddressComponent({
   }, [districtCode]);
 
   useEffect(() => {
-    const provinceName =  provinces?.find(e => e.code === provinceCode)?.name??""
-    const districtName =districts?.find(e => e.code === districtCode)?.name ??""
-    const wardName = wards?.find(e => e.code === wardCode)?.name??""
-    setPayload((prev:any) => ({
+    const provinceName = provinces?.find(e => e.code === provinceCode)?.name ?? "";
+    const districtName = districts?.find(e => e.code === districtCode)?.name ?? "";
+    const wardName = wards?.find(e => e.code === wardCode)?.name ?? "";
+    const fullAddress = `${wardCode ?wardName : ""}${districtCode ? ", " + districtName : ""}${provinceCode ?  ", " + provinceName : ""}`;
+    setPayload((prev: any) => ({
       ...prev,
       province: provinceName,
       district: districtName,
       ward: wardName,
+      address_detail: fullAddress,
     }));
   }, [provinceCode, districtCode, wardCode]);
   
-
-  useEffect(() => {
-    // if (provinces?.length > 0 && isEdit) {
-    //   const arrAddress = dataEditPost?.address?.split(",");
-    //   const provinceName = arrAddress?.[arrAddress?.length - 1]?.trim();
-    //   const province = provinces.find(e => e.province_name === provinceName);
-    //   if (province) {
-    //     setProvinceCode(province.province_id);
-    //   }
-    // }
-  }, [provinces, isEdit, dataEditPost?.address]);
-
-  // useEffect(() => {
-  //   if (districts?.length > 0 && isEdit) {
-  //     const arrAddress = dataEditPost?.address?.split(",");
-  //     const districtName = arrAddress?.[arrAddress?.length - 2]?.trim();
-  //     const district = districts.find(e => e.district_name === districtName);
-  //     if (district) {
-  //       setDistrictCode(district.district_id);
-  //     }
-  //   }
-  // }, [districts, isEdit, dataEditPost?.address]);
-
-  // ?.find(e => e.code === provinceCode)?.name
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl my-5 font-semibold">Địa chỉ cho thuê</h1>
@@ -149,16 +127,7 @@ function AddressComponent({
       </div>
       <InputReadOnly 
         label="Địa chỉ chính xác"
-        value={`${provinceCode
-          ? provinces?.find(e => e.code === provinceCode)?.name  
-          : ""
-        }${districtCode
-          ? ", "+ districts?.find(e => e.code === districtCode)?.name  
-          : ""
-        }${ wardCode
-          ?  ", "+ wards?.find(e => e.code === wardCode)?.name
-          : ""
-        }`}
+        value={payload.address_detail}
       />
       <InputForm
         label={"Bản đồ"}

@@ -1,29 +1,16 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent } from "../../components";
 import validate from "../../utils/validate";
 import { apiCreatePost } from "../../services/apiPost";
-import { IDetailPost, IPost } from "../../interfaces/Post";
+import {  IPostPayload } from "../../interfaces/Post";
 import { useAppSelector } from "../../redux/hooks";
 import { convertToSlug } from "../../utils/format/convertToSlug";
 import { getOneYearLater } from "../../utils/getOneYearLater";
 import { convertMillionToDecimal } from "../../utils/format/convertMillionToDecimal";
-import { isArrayBuffer } from "util/types";
-interface Payload {
-  areaNumber: string;
-  categoryCode: string;
-  description: string;
-  images: string[];
-  map: string;
-  priceNumber: string;
-  province: string;
-  target: string;
-  title: string;
-  district:string,
-  ward:string,
-}
+ 
 
 function CreatePost() {
-  const [payload, setPayload] = useState<Payload>({
+  const [payload, setPayload] = useState<IPostPayload>({
     areaNumber: "",
     categoryCode: "",
     description: "",
@@ -34,17 +21,16 @@ function CreatePost() {
     district:'',
     ward:'',
     target: "Tất cả",
-    title: ""
+    title: "",
+    address_detail:''
   });
   const [invalidFields, setInvalidFields] = useState<any>([]);
   const { categories } = useAppSelector((state) => state.category);
-  const handleSummit = async () => {
+
+  const handleSummit = useCallback(async () => {
     const check = validate(payload, setInvalidFields);
-    console.log(invalidFields)
     if (!check) return;
-  
-    const { areaNumber, priceNumber, images, categoryCode, district, province, ward, map, target, ...data } = payload;
-    console.log(Array.isArray(images)); 
+    const { areaNumber, priceNumber, images, address_detail,categoryCode, district, province, ward, map, target, ...data } = payload;
     const postData = {
       thumb: images[0],
       images,
@@ -60,14 +46,14 @@ function CreatePost() {
         city_name: convertToSlug(province),
         district_name: convertToSlug(district),
         ward_name: convertToSlug(ward),
-        address_detail: `${province}, ${district}, ${ward}`,
+        address_detail,
         map,
       },
       ...data,
     };
     const response = await apiCreatePost(postData);
-    console.log(response);
-  };
+    if(response.status) {alert("Thêm thành công")}
+  },[payload]);
 
   return (       
     <div className="h-full px-7 flex flex-col">

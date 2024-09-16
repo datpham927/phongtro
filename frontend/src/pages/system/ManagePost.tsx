@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import SelectOption from "../../components/SelectOption";
-import { useDispatch, useSelector } from "react-redux";
-import { apiGetPost } from "../../services/apiPost";
+import { useDispatch } from "react-redux";
+import { apiGetPostForShop } from "../../services/apiPost";
 import { useAppSelector } from "../../redux/hooks";
-import { IPost } from "../../interfaces/Post";
+import { IDetailPost, IPost } from "../../interfaces/Post";
 import ItemManagePost from "../../components/ItemManagePost";
 import { checkStatus } from "../../utils/checkStatus";
 import { transformId } from "../../utils/format/transformId";
@@ -12,17 +12,12 @@ import { ButtonComponent } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../utils/constant";
 function ManagePost() {
-  const [posts, setPost] = useState<IPost[]>([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const  user  = useAppSelector((state) => state.user);
-
-//   const {isUpload}=useSelector((state)=>state.app)
-  const dispatch = useDispatch();
+  const [posts, setPost] = useState<IPost[]>([]);  
+  
   const navigate=useNavigate()
   useEffect(() => {
     const fetchApi = async () => {
-      const response = await apiGetPost({user_id:user.id,limit:1,page:1});
-      console.log(response)
+      const response = await apiGetPostForShop({limit:1,page:1});
       if (!response?.status) return;
       setPost(response?.data?.posts);
     };
@@ -81,7 +76,7 @@ function ManagePost() {
                 price={e?.price?.value}
                 startDate={formatDate(e?.created_at)}
                 status={checkStatus(e?.expire_at)}
-                // onClickEdit={() => {}}
+                onClickEdit={() => { navigate(`${PATH.SYSTEM}/chinh-sua-bai-dang/${e.id}`)}}
                 // onClickDelete={()=>{}}
                 // setIsEdit={setIsEdit}
               />

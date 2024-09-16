@@ -95,11 +95,8 @@ const ModalRangeComponent: React.FC<ModalRadioComponentProps> = ({
    };
 
    const handleSummit = (e: any) => {
-
-   
       e.stopPropagation();
       // setOpenModal(false); 
-      console.log(selectValue)
       onSummit({
          title:
                percent1 === 0 || percent2 === 0

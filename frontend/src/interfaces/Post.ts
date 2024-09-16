@@ -8,8 +8,14 @@ export interface IPost {
       description: string;
       slug: string;
       images:[]
-      area:string|any
-      price: string|any
+      area:{
+        order:string,
+        value:string
+      }
+      price:{
+        order:string,
+        value:string
+      }
       address: {
         id:string;
         city_name: string;
@@ -37,3 +43,20 @@ export interface IDetailPost extends IPost {
       slug:string
     } 
   }
+
+
+ export  interface IPostPayload {
+    areaNumber: string;
+    categoryCode: string;
+    description: string;
+    images: string[];
+    map: string;
+    priceNumber: string;
+    province: string;
+    target: string;
+    title: string;
+    district:string,
+    ward:string,
+    address_detail:string
+  }
+  

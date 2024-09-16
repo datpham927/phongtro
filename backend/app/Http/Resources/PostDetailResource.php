@@ -43,8 +43,14 @@ class PostDetailResource extends JsonResource
                 'address_detail'  =>$address?->address_detail,
                 'map'  =>$address?->map,
             ],
-            'area'=>$area?->value,
-            'price' =>$price?->value,
+            'area'=>[
+              "order"=>  $area?->order,
+              "value"=>  $area?->value
+            ],
+            'price' =>[
+                "order"=>  $price?->order,
+                "value"=>  $price?->value
+              ],
             'attribute' => [ 
                 'target'      =>$attribute?->target,
                 'value'      =>$attribute?->type_post,

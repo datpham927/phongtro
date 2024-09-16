@@ -36,7 +36,8 @@ Route::prefix('v1/category')->group(function () {
 Route::prefix('v1/post')->group(function () {
     Route::middleware(Login::class)->delete('/{pid}/delete', [PostControllers::class, 'destroy']) ;
     Route::middleware(Login::class)->post('/add', [PostControllers::class, 'create']) ;
-    Route::middleware(Login::class)->post('/{pid}/update', [PostControllers::class, 'update']) ;
+    Route::middleware(Login::class)->put('/{pid}/update', [PostControllers::class, 'update']) ;
+    Route::middleware(Login::class)->get('/shop', [PostControllers::class, 'getAllForShop']) ;
     Route::get('/all', [PostControllers::class, 'getAll']) ;
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']) ;
     Route::get('/{address_id}/related-post', [PostControllers::class, 'getRelatedPost']) ;
