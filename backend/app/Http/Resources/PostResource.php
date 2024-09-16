@@ -20,7 +20,7 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             "created_at" => $this->created_at,
-            "expire_at" => $this->attribute->expire,
+            "expire_at" => $this->expire_at,
             'address' => [
                 'city_name' => $this->address?->city_name,
                 'district_name' => $this->address?->district_name,
