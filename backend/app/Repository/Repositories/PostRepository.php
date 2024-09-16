@@ -20,10 +20,13 @@ class PostRepository implements PostRepositoryInterface
     // Khởi tạo query builder
     $query = $this->post->newQuery(); 
     // Áp dụng bộ lọc theo category_id nếu có
+
+
     if (!empty($filters['category_slug'])) {
         $query->whereHas('category', function($query) use ($filters) {
             $query->where('slug', $filters['category_slug']);
         });
+        unset($filters['category_slug']);
     }
     // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
     if (!empty($filters['city_slug']) || !empty($filters['district_slug']) || !empty($filters['ward_slug'])) {
@@ -41,19 +44,24 @@ class PostRepository implements PostRepositoryInterface
                 $query->where('ward_slug', $filters['ward_slug']);
             }
         });
+        unset($filters['city_slug'],$filters['ward_slug'],$filters['district_slug']);
     } 
     // Áp dụng bộ lọc theo khoảng giá nếu có
     if (!empty($filters['price_from']) || !empty($filters['price_to'])) {
         $query->whereHas('price', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
         });
+        unset($filters['price_from'],$filters['price_to']);
     } 
     // Áp dụng bộ lọc theo khoảng diện tích nếu có
     if (!empty($filters['area_from']) && !empty($filters['area_to'])) { 
         $query->whereHas('area', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
         });
+        unset($filters['area_from'],$filters['area_to']);
+
     }
+    $query->where($filters);
     // tất cả bài post
     $totalProducts= $query->get()->count();
     $totalPage=ceil($totalProducts/$limit);

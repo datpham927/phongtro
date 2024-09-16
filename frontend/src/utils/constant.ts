@@ -4,11 +4,10 @@ export const PATH = {
   FILTER__PAGE: "/tinh-thanh/:city_slug/:district_slug?/:ward_slug?",
   CATEGORY_FILTER__PAGE: "/:category_slug/:city_slug/:district_slug?/:ward_slug?",
   RESET_PASSWORD: "/reset/:token",
-  DETAIL_POST: "chi-tiet/:title/:postId",
-
-  REGISTER: "/register", 
+  DETAIL_POST: "chi-tiet/:title/:postId",  
   SYSTEM: "/he-thong",
   CREATE_POST: "tao-moi-bai-dang",
+  UPDATE_POST: "chinh-sua-bai-dang/:pid",
   MANAGE_POST: "quan-ly-bai-dang",
   EDIT_ACCOUNT:"thong-tin-tai-khoan",
   DETAIL:"/chi-tiet/",

@@ -1,15 +1,5 @@
 import { axiosJWT, httpRequest } from "../utils/httpRequest";
-
  
-
-// interface PostContent {
-//   // Define the structure of the post content object
-//   // Example:
-//   title: string;
-//   description: string;
-//   [key: string]: any;
-// }
-
 const apiGetPost = async ( query: any): Promise<any> => {
   try {
     const response = await httpRequest.get(`/post/all`, { params:query});
@@ -18,7 +8,14 @@ const apiGetPost = async ( query: any): Promise<any> => {
     return Promise.reject(error); // Re-throw error for better handling upstream
   }
 };
- 
+const apiGetPostForShop = async ( query: any): Promise<any> => {
+  try {
+    const response = await axiosJWT.get(`/post/shop`, { params:query});
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
 const apiCreatePost = async (content: any): Promise<any> => {
   try {
     const response = await axiosJWT.post(`/post/add`, content);
@@ -28,7 +25,7 @@ const apiCreatePost = async (content: any): Promise<any> => {
   }
 };
 
-// const apiapiGetPostAdmin = async (): Promise<any> => {
+// const apiGetPostAdmin = async (): Promise<any> => {
 //   try {
 //     const response = await httpRequest.get(`/post/admin-post`);
 //     return response.data;
@@ -37,14 +34,14 @@ const apiCreatePost = async (content: any): Promise<any> => {
 //   }
 // };
 
-// const apiUpdatePost = async (data: PostContent): Promise<any> => {
-//   try {
-//     const response = await httpRequest.put(`/post/update-post`, data);
-//     return response.data;
-//   } catch (error) {
-//     return Promise.reject(error); // Re-throw error for better handling upstream
-//   }
-// };
+const apiUpdatePost = async (pid:string,data: any): Promise<any> => {
+  try {
+    const response = await axiosJWT.put(`/post/${pid}/update`, data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
 
 // const apiDeletePost = async (postId: string): Promise<any> => {
 //   try {
@@ -73,6 +70,7 @@ const getRelatedPosts = async (addressId: any): Promise<any> => {
     return Promise.reject(error); // Re-throw error for better handling upstream
   }
 };
-export { apiGetPost,getDetailPost,getRelatedPosts,apiCreatePost
+export { apiGetPost,getDetailPost,getRelatedPosts,apiCreatePost,apiGetPostForShop,
+  apiUpdatePost
   // , apiNewPost, apiCreatePost, apiapiGetPostAdmin, apiUpdatePost, apiDeletePost, apiDetailPost 
 };

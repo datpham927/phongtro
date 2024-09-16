@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;  
 use App\Service\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Throwable; 
 class AuthControllers extends Controller
 {
@@ -22,8 +23,10 @@ class AuthControllers extends Controller
     }
     public function register(Request $request){
         try {
-            $response = $this->authService->register($request); 
-            return ResponseHelper::success($response,'User created successfully');
+            $response = $this->authService->register($request);  
+            $cookie=$response['cookie'];
+            unset($response['cookie']);
+            return ResponseHelper::successWithCookie($response,'User created successfully',$cookie);
         } catch (Throwable $th) { //catch error
             return ResponseHelper::error('An error occurred while creating the user.',$th,203);
         }
@@ -32,7 +35,9 @@ class AuthControllers extends Controller
     public function login(Request $request) {
          try {
             $response = $this->authService->login($request); 
-            return ResponseHelper::success($response,'Login successfully');
+            $cookie=$response['cookie'];
+            unset($response['cookie']);
+            return ResponseHelper::successWithCookie($response,'Login successfully',$cookie);
          } catch (Throwable $th) {
             return ResponseHelper::error('An error occurred while login the user.',$th);
          }
@@ -48,7 +53,9 @@ class AuthControllers extends Controller
     public function refreshToken(Request $request) { 
         try {
             $response = $this->authService->refreshToken($request); 
-            return ResponseHelper::success($response,'Successfully');
+            $cookie=$response['cookie'];
+            unset($response['cookie']);
+            return ResponseHelper::successWithCookie($response,'Successfully',$cookie);
         } catch (Throwable $th) {
             return  ResponseHelper::error('Error', $th);
         }

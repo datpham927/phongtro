@@ -79,7 +79,7 @@ const DetailPost: React.FC = () => {
                             src="https://phongtro123.com/images/price-icon.svg" 
                             alt="Price icon" 
                         />
-                        {price}
+                        {price?.value}
                     </div>
                     <div className="flex items-center text-sm">
                         <img 
@@ -87,7 +87,7 @@ const DetailPost: React.FC = () => {
                             src="https://phongtro123.com/images/acreage-icon.svg" 
                             alt="Area icon" 
                         />
-                        {area}
+                        {area?.value}
                     </div>
                     <div className="flex items-center text-sm">
                         <img 

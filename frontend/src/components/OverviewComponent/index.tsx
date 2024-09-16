@@ -1,11 +1,10 @@
 import {  useState, ChangeEvent  } from "react";
 import { BallTriangle } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import InputForm from "../InputComponent/InputForm";
 import InputFormV2 from "../InputComponent/InputFormV2";
 import InputReadOnly from "../InputComponent/InputReadOnly";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {   useAppSelector } from "../../redux/hooks";
 import SelectOption from "../SelectOption";
 import { apiUploadImage } from "../../services/apiUploadPicture";
 
@@ -22,17 +21,11 @@ function OverviewComponent({
   payload,
   setPayload,
   invalidFields,
-  setInvalidFields,
-  isEdit = false,
-  setIsEdit,
-}: OverviewComponentProps) {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [images, setImage] = useState<string[]>([]);
+  setInvalidFields, 
+}: OverviewComponentProps) {  
   const [isLoading, setIsLoading] = useState(false);
   const { categories } = useAppSelector((state: RootState) => state.category);
-  const  user  = useAppSelector((state) => state.user);
-
+  const  user  = useAppSelector((state) => state.user); 
   const handleUploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
     setIsLoading(true);
     const files = e.target.files;
@@ -47,19 +40,14 @@ function OverviewComponent({
       if (response) {
         imagesArray = [...imagesArray, response.secure_url];
       }
-    }
-  
-    setIsLoading(false);
-  
+    } 
+    setIsLoading(false); 
     // Ensure payload?.images is an array, and if not, initialize it as an empty array
     setPayload((prev: any) => ({
       ...prev,
       images: [...(prev?.images ?? []), ...imagesArray],
     }));
-    setImage((image) => (image && image?.length > 0 ? [...image, ...imagesArray] : [...imagesArray]));
   };
-  
-
   // useEffect(() => {
   //   if (dataEditPost?.images?.image && isEdit) {
   //     setImage(JSON.parse(dataEditPost?.images?.image));
@@ -198,12 +186,17 @@ function OverviewComponent({
         )}
       </div> 
       <div className="grid grid-cols-4 gap-3">
-        {images?.map((e) => (
+        {payload?.images?.map((e:any) => (
           <div className="flex flex-col justify-center shadow-custom rounded-md overflow-hidden">
             <img className="w-full h-[110px] object-cover " src={e} alt="" />
             <div
               className="w-full bg-white flex items-center justify-center py-2 cursor-pointer"
-              onClick={() => setImage(() => images?.filter((i) => i !== e))}
+              onClick={() =>
+                setPayload((prev:any) => ({
+                  ...prev,
+                  images: prev.images.filter((img: string) => img !== e),
+                }))
+              }
             >
               <span className="text-sm">Xóa</span>
             </div>

@@ -23,9 +23,20 @@ class PostService implements PostServiceInterface
             $limit=$request['limit'];
             $page=$request['page'];
             $sort=$request['sort'];
+            unset($request['limit'],$request['page'],$request['sort']);
             $filters = $request->all();
          return $this->postRepository->findAll($limit, $sort, $page,$filters);
     
+    }
+    public function findAllForShop($request){
+        $limit=$request['limit'];
+        $page=$request['page'];
+        $sort=$request['sort'];
+        unset($request['limit'],$request['page'],$request['sort']);
+        $filters = $request->all();
+        $filters['user_id']=$request['user_id'];
+
+     return $this->postRepository->findAll($limit, $sort, $page,$filters);
     }
 
     public function findRelatedPost ($addressId){

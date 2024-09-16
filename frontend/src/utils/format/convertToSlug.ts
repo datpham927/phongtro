@@ -1,6 +1,6 @@
 export function convertToSlug(text: string): string {
-   // Loại bỏ các từ "Thành phố", "Tỉnh", "Quận"
-   text = text.replace(/\b(Thành phố|Tỉnh|Quận)\b/gi, '').trim();
+   // Loại bỏ các từ "Thành phố", "Tỉnh", "Quận" mà không dùng từ giới hạn
+   text = text.replace(/(Thành phố|Tỉnh|Quận)/gi, '').trim();
 
    // Chuyển đổi chuỗi thành chữ thường
    text = text.toLowerCase();

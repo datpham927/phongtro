@@ -83,7 +83,7 @@ class AuthService implements AuthServiceInterface
         $accessToken=$tokens["access_token"];  
         $refreshToken=$tokens["refresh_token"];
         //   thêm vào database
-          RefreshToken::create([
+        RefreshToken::create([
             'user_id' => $user->id,
             'refresh_token' => $refreshToken
         ]);
@@ -99,11 +99,12 @@ class AuthService implements AuthServiceInterface
     // Tìm refresh token liên quan đến user_id
     $refreshToken = RefreshToken::where('user_id',  $request->user_id)->first();
     if ($refreshToken)  $refreshToken->delete();
+    Cookie::queue(Cookie::forget('refresh_token'));
 }
     // Phương thức để làm mới token
     public function refreshToken($request)
     {
-        $requestToken = $request->input('refresh_token') ;
+        $requestToken = $request->cookie('refresh_token') ;
         // Retrieve the refresh token from the database
         $refreshTokenDB = RefreshToken::where('refresh_token', $requestToken)->first();
         if (!$refreshTokenDB) { throw new Exception('Refresh Token Not Found', 401);  }
@@ -121,13 +122,15 @@ class AuthService implements AuthServiceInterface
     }
     // Phương thức xây dựng phản hồi chứa thông tin người dùng và token
     private function buildAuthResponse($user, $access_token,$refreshToken) {
+        $exp_rToken = 60 * 24 * 60; // 60 ngày tính theo phút (60 phút * 24 giờ * 60 ngày)
+        $cookie = Cookie::make('refresh_token', $refreshToken, $exp_rToken, null, null, true, true, false, 'Lax');
         return [
             'user_id' => $user->id,
             'authorization' => [
-                'access_token' => $access_token,
-                "refresh_token"=>$refreshToken,
+                'access_token' => $access_token, 
                 'token_type' => 'bearer',
             ],
+            'cookie'=>$cookie
         ];
     }
       public function resetPasswordPost($request){
