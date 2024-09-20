@@ -23,4 +23,12 @@ class UserControllers extends Controller
                   return ResponseHelper::error("Error", $th);
               }
       }
+      public function updateProfile(Request $request ){
+        try {
+              $response = $this->userService->updateProfile($request );
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+  }
 }

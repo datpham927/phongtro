@@ -5,7 +5,7 @@ interface InputFormProps {
   setValue: React.Dispatch<React.SetStateAction<any>>;
   name: string;
   invalidFields: { name: string; message: string }[];
-  value: string;
+  value?: string;
   setInvalidFields: React.Dispatch<React.SetStateAction<{ name: string; message: string }[]>>;
   direction?: string;
 }

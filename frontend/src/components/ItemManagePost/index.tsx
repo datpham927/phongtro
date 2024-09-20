@@ -8,7 +8,7 @@ interface ItemManagePostProps {
   expireDate?: string;
   status?: string;
   onClickEdit: () => void;
-  // onClickDelete: () => void;
+  onClickDelete: () => void;
 }
 
 function ItemManagePost({
@@ -18,9 +18,8 @@ function ItemManagePost({
   startDate,
   expireDate,
   status,
-  // setIsEdit,
   onClickEdit,
-  // onClickDelete
+  onClickDelete
 }: ItemManagePostProps) {
   return (
     <ul className="grid grid-cols-7 divide-x border-solid border-t-[1px] border-slate-200">
@@ -44,10 +43,10 @@ function ItemManagePost({
         </button>
         <button
           className="px-2 bg-blue-500 text-white rounded-md"
-          // onClick={(e) => {
-          //   e.preventDefault();
-          //   onClickDelete();
-          // }}
+          onClick={(e) => {
+            e.preventDefault();
+            onClickDelete();
+          }}
         >
           Delete
         </button>

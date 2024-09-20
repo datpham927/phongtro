@@ -13,7 +13,6 @@ Route::post('/crawler', [CrawlerControllers::class, 'crawler'])->name('crawler.i
   
 // Nhóm các route liên quan đến người dùng
 Route::middleware(Login::class)->post('v1/auth/logout', [AuthControllers::class, 'logout']);
-
 Route::prefix('v1/auth')->group(function () {
     Route::post('/register', [AuthControllers::class, 'register']) ;
     Route::post('/login', [AuthControllers::class, 'login']) ;
@@ -23,6 +22,7 @@ Route::prefix('v1/auth')->group(function () {
 });
 Route::middleware(Login::class)->prefix('v1/user')->group(function () {
     Route::get('/detail', [UserControllers::class, 'getUser']) ;
+    Route::put(  '/profile', [UserControllers::class, 'updateProfile']) ;
 });
 
 // Nhóm các route liên quan đến danh mục

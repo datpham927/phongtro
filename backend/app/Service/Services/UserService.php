@@ -16,5 +16,14 @@ class UserService implements UserServiceInterface
          $user=$this->userRepository->findById($user_id);
          return new UserResource( $user);
     }
+
+    public function updateProfile($request){
+        $payload=$request->all();
+         $user_id=$request['user_id'];
+         unset( $payload['user_id']);
+        $user=$this->userRepository->findByIdAndUpdate($user_id,  $payload);
+        return new UserResource( $user);
+    }
+
  
 }

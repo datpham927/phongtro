@@ -35,7 +35,6 @@ export interface IDetailPost extends IPost {
     attribute: {
       target: string;
       type_post: string;
-      expire: string;
     }; 
     category:{
       id:string,

@@ -3,16 +3,13 @@ import { Link } from 'react-router-dom';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 interface BreadcrumbsProps {
-    breadcrumbs: Array<{
-        path: string;
-        breadcrumb: string;
-    }>;
+    breadcrumbs: any;
 }
 
 const BreadcrumbComponent: React.FC<BreadcrumbsProps> = ({ breadcrumbs }) => {
     return (
         <div className="flex w-full items-center py-2">
-            {breadcrumbs.map((b, index) => (
+            {breadcrumbs.map((b:any, index:any) => (
                 <div key={index} className="flex items-center">
                     {b.path ? (
                         <Link

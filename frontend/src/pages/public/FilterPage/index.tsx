@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import queryString from 'query-string'; 
-import { useAppSelector } from '../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { dataArea, dataPrice } from '../../../utils/data';
 import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter';
 import { IPost } from '../../../interfaces/Post';
@@ -9,6 +9,7 @@ import { apiGetPost } from '../../../services/apiPost';
 import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../../services/apiAddress';
 import { BreadcrumbComponent, ItemNavbarComponent, ListNewPost, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
 import { convertToMillion } from '../../../utils/convertMillion';
+import { setLoading } from '../../../redux/action/actionSlice';
 
 const FilterPage: React.FC = () => {
   const [titleWelcome, setTitleWelcome] = useState<{ title: string; description: string }>({ title: '', description: '' });
@@ -18,6 +19,8 @@ const FilterPage: React.FC = () => {
   const [totalPost, setTotalPost] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const { categories } = useAppSelector((state) => state.category);
+  const dispatch= useAppDispatch()
+
   const navigate = useNavigate();
   const params = useParams();
   const queries = useMemo(() => queryString.parse(location.search), [location.search]);
@@ -25,6 +28,7 @@ const FilterPage: React.FC = () => {
 
 
   useEffect(() => {
+    dispatch(setLoading(true)) 
     const fetchPosts = async () => {
       const { gia_tu, gia_den, dien_tich_tu, dien_tich_den, orderby, ...rest } = queries;
       const res = await apiGetPost({
@@ -43,6 +47,7 @@ const FilterPage: React.FC = () => {
         setTotalPage(res.data.totalPage);
         setTotalPost(res.data.totalPosts);
       }
+      dispatch(setLoading(false))
     };
 
     fetchPosts();

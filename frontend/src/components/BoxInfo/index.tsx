@@ -10,7 +10,7 @@ interface BoxInfoProps {
 
  const BoxInfo: React.FC<BoxInfoProps> = ({ avatar, name, phone, zalo, status }) => {
     return (
-        <div className='flex flex-col justify-center p-4 rounded-md items-center w-full bg-[#FEBB02]'>
+        <div className='flex flex-col justify-center p-4 mb-[20px] rounded-md items-center w-full bg-[#FEBB02]'>
             <img className='w-[80px] h-[80px] rounded-full my-1' 
                 src={avatar ? avatar : "https://phongtro123.com/images/default-user.png"} 
                 alt={name} />

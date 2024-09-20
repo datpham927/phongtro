@@ -6,26 +6,31 @@ import { IDetailPost } from '../../../interfaces/Post';
 import { formatDate } from '../../../utils/format/formatDate';
 import { timeAgo } from '../../../utils/format/timeAgo';
 import { BoxInfo, BreadcrumbComponent, ListNewPost, RelatedPostComponent, SlideDetailPost } from '../../../components';
+import { useAppDispatch } from '../../../redux/hooks';
+import { setLoading } from '../../../redux/action/actionSlice';
 
 const DetailPost: React.FC = () => {
     const [dataPost, setDataPost] = useState<IDetailPost | null>(null);
+    const dispatch= useAppDispatch()
     const { postId } = useParams<{ postId: string }>();
     
     useEffect(() => {
+        dispatch(setLoading(true))
         const fetchApi =  (async () => {
             if (!postId) return;
             const res = await getDetailPost(postId);
             if (res.status && res.data) {
                 setDataPost(res.data);
             }
+            dispatch(setLoading(false))
         }  );
         fetchApi();
     }, [postId]);
 
-    if (!dataPost) return <div>Loading...</div>;
+    if (!dataPost) return ;
 
     const { title, images, address, price, area, description,
-           id, category, attribute, created_at, user } = dataPost;
+           id, category, attribute, expire_at, created_at, user } = dataPost;
 
     const renderRow = (label: string, value: React.ReactNode, isBg: boolean = false) => (
         <tr className={`h-[40px] ${isBg ? 'bg-primary-bg' : ''}`}>
@@ -56,7 +61,7 @@ const DetailPost: React.FC = () => {
     return (
        <>
         <BreadcrumbComponent breadcrumbs={breadcrumbs}/>
-        <div className="flex w-full">
+        <div className="flex gap-2 w-full">
     <div className="w-2/3 overflow-hidden h-full gap-4 rounded-md ">
      <div className='w-full shadow-custom'>
           <SlideDetailPost images={images} />
@@ -124,7 +129,7 @@ const DetailPost: React.FC = () => {
                         {renderRow('Loại tin rao:', category?.name )}
                         {renderRow('Đối tượng thuê:', attribute?.target, true)}
                         {renderRow('Ngày đăng:', formatDate(created_at) )}
-                        {renderRow('Ngày hết hạn:', attribute?.expire, true)}
+                        {renderRow('Ngày hết hạn:', expire_at, true)}
                     </tbody>
                 </table>
             </div>
@@ -147,6 +152,7 @@ const DetailPost: React.FC = () => {
     
      </div>
         <RelatedPostComponent 
+            detailPostId={postId}
             addressId={address.id}
             categoryName={category.name}
             cityName={address.city_name}
@@ -162,7 +168,7 @@ const DetailPost: React.FC = () => {
             zalo={user?.zalo}
             status="Đang hoạt động"
         />
-        <ListNewPost />
+        <ListNewPost detailPostId={postId}/>
     </div>
 </div>
 
