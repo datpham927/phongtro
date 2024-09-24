@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import SelectOption from "../../components/SelectOption"; 
-import { apiDeletePost, apiGetExpiredPostForShop, apiGetPostForShop } from "../../services/apiPost"; 
-import { IPost } from "../../interfaces/Post";
-import ItemManagePost from "../../components/ItemManagePost";
-import { checkStatus } from "../../utils/checkStatus";
-import { transformId } from "../../utils/format/transformId";
-import { formatDate } from "../../utils/format/formatDate";
-import { ButtonComponent, PaginationComponent } from "../../components";
+import SelectOption from "../../../../components/SelectOption"; 
+import { apiDeletePost, apiGetExpiredPostForShop, apiGetPostForShop } from "../../../../services/apiPost"; 
+import { IPost } from "../../../../interfaces/Post";
+import ItemManagePost from "../../../../components/ItemManagePost";
+import { checkStatus } from "../../../../utils/checkStatus";
+import { transformId } from "../../../../utils/format/transformId";
+import { formatDate } from "../../../../utils/format/formatDate";
+import { ButtonComponent, PaginationComponent } from "../../../../components";
 import { useNavigate } from "react-router-dom";
-import { PATH } from "../../utils/constant";
-import { useAppDispatch } from "../../redux/hooks";
-import { setLoading } from "../../redux/action/actionSlice";
+import { PATH } from "../../../../utils/constant";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { setLoading } from "../../../../redux/action/actionSlice";
 function ManagePost() {
-  const [posts, setPost] = useState<IPost[]>([]);  
+  const [posts, setPosts] = useState<IPost[]>([]);  
   const [totalPage, setTotalPage]=useState<number>(0)
   const [currentPage, setCurrentPage]=useState<number|any>(1)
   const [postFilter, SetPostFilter]=useState<number|any>(1)
@@ -29,7 +29,7 @@ function ManagePost() {
           res = await apiGetExpiredPostForShop({ limit: 10, page: currentPage });
         }
         if (!res?.status) return;
-        setPost(res?.data?.posts);
+        setPosts(res?.data?.posts);
         setTotalPage(res?.data?.totalPage);
         dispatch(setLoading(false))  
     };
@@ -41,7 +41,7 @@ function ManagePost() {
 const handleDeletePost=async(pid:string)=>{
     const res=await apiDeletePost(pid);
     if(res.status){
-      setPost((prevPosts) => prevPosts.filter((post) => post.id !== pid));
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== pid));
     }else{
         alert("Xóa không thành công")
     }
@@ -83,7 +83,7 @@ const handleDeletePost=async(pid:string)=>{
             return (
               <ItemManagePost
                 key={e?.id}
-                avatar={e.thumb}
+                thumb={e.thumb}
                  id={transformId(e?.id)  }
                 expireDate={formatDate(e?.expire_at)}
                 price={e?.price?.value}
@@ -95,7 +95,7 @@ const handleDeletePost=async(pid:string)=>{
             );
           })}
         </div>
-        {posts?.length>0&&
+        {totalPage>1&&
          <PaginationComponent currentPage={currentPage}
                              setCurrentPage={setCurrentPage} 
                             totalPage={totalPage} />}

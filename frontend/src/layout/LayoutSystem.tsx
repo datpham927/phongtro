@@ -1,9 +1,8 @@
-import NavigateComponent from "../../components/NavigateComponent";
 import { Link, Outlet } from "react-router-dom";
-import SidebarComponent from "../../components/SidebarComponent/index.tsx";
-import LoadingComponent from "../../components/LoadingComponent/index.tsx";
+import { NavigateComponent, SidebarComponent } from "../components";
+import LoadingComponent from "../components/LoadingComponent";
 
-function System() { 
+function LayoutSystem() { 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex w-full bg-blue-custom top-0 sticky ">
@@ -29,4 +28,4 @@ function System() {
   );
 }
 
-export default System;
+export default LayoutSystem;

@@ -8,6 +8,7 @@ interface InputFormProps {
   value?: string;
   setInvalidFields: React.Dispatch<React.SetStateAction<{ name: string; message: string }[]>>;
   direction?: string;
+  type?:string
 }
 
 function InputForm({
@@ -18,6 +19,7 @@ function InputForm({
   value,
   setInvalidFields,
   direction,
+  type='text'
 }: InputFormProps) {
   return (
     <div className={`flex ${direction ? direction : "flex-col gap-1"} w-full`}>
@@ -27,7 +29,7 @@ function InputForm({
           id={name}
           value={value}
           className="flex w-full border-solid border-[1px] border-slate-300 py-1 px-2 rounded-md outline-blue-300"
-          type="text"
+          type={type}
           onChange={(e) => {
             setValue((prev:any) => ({ ...prev, [name]: e.target.value }));
             setInvalidFields(invalidFields.filter((field) => field.name !== name));

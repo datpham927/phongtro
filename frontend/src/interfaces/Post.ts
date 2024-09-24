@@ -1,4 +1,4 @@
-import { IUserDetail } from "./UserDetail";
+import { IUserDetail } from "./User";
 
 export interface IPost {
       id: string;

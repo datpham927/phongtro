@@ -1,15 +1,15 @@
 import { useEffect, useState, useCallback } from "react";
-import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent } from "../../components";
-import validate from "../../utils/validate";
-import { apiUpdatePost, getDetailPost } from "../../services/apiPost";
-import { IDetailPost, IPostPayload } from "../../interfaces/Post";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { convertToSlug } from "../../utils/format/convertToSlug";
-import { getOneYearLater } from "../../utils/getOneYearLater";
-import { convertMillionToDecimal } from "../../utils/format/convertMillionToDecimal";
+import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent } from "../../../components";
+import validate from "../../../utils/validate";
+import { apiUpdatePost, getDetailPost } from "../../../services/apiPost";
+import { IDetailPost, IPostPayload } from "../../../interfaces/Post";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { convertToSlug } from "../../../utils/format/convertToSlug";
+import { getOneYearLater } from "../../../utils/getOneYearLater";
+import { convertMillionToDecimal } from "../../../utils/format/convertMillionToDecimal";
 import { useNavigate, useParams } from "react-router-dom";
-import { setLoading } from "../../redux/action/actionSlice";
-import { PATH } from "../../utils/constant";
+import { setLoading } from "../../../redux/action/actionSlice";
+import { PATH } from "../../../utils/constant";
 
 function UpdatePost() {
   const [payload, setPayload] = useState<IPostPayload>({

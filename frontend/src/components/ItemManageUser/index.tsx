@@ -1,36 +1,37 @@
 import { memo } from "react";
 
-interface ItemManagePostProps {
+interface ItemManageUserProps {
   id: string;
-  thumb: string;
-  price: string;
-  startDate: string;
-  expireDate?: string;
-  status?: string;
+  avatar: string;
+  type: string;
+  phone?: string;
+  name?: string;
+  postQuantity?: string;
   onClickEdit: () => void;
   onClickDelete: () => void;
 }
 
-function ItemManagePost({
+function ItemManageUser({
   id,
-  thumb,
-  price,
-  startDate,
-  expireDate,
-  status,
+  avatar,
+  type,
+  phone,
+  name,
+  postQuantity,
   onClickEdit,
   onClickDelete
-}: ItemManagePostProps) {
+}: ItemManageUserProps) {
   return (
     <ul className="grid grid-cols-7 divide-x border-solid border-t-[1px] border-slate-200">
       <li className="p-[10px] text-sm">{id}</li>
       <li className="p-[10px] text-sm">
-        <img className="w-[30px] h-[30px]" src={thumb} alt="" />
+        <img className="w-[40px] h-[40px]" src={avatar} alt="" />
       </li>
-      <li className="p-[10px] text-sm">{price}</li>
-      <li className="p-[10px] text-sm">{startDate}</li>
-      <li className="p-[10px] text-sm">{expireDate}</li>
-      <li className="p-[10px] text-sm">{status}</li>
+      <li className="p-[10px] text-sm">{name}</li>
+      <li className="p-[10px] text-sm">{phone}</li>
+      <li className="p-[10px] text-sm">{type}</li>
+      <li className="p-[10px] text-sm">{postQuantity}</li>
+
       <li className="flex p-[15px] text-sm justify-between">
         <button
           className="px-2 bg-blue-500 text-white rounded-md"
@@ -55,4 +56,4 @@ function ItemManagePost({
   );
 }
 
-export default memo(ItemManagePost);
+export default memo(ItemManageUser);

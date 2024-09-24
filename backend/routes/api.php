@@ -21,8 +21,12 @@ Route::prefix('v1/auth')->group(function () {
     Route::put('/{token}/change_password', [AuthControllers::class, 'changePasswordPost']);
 });
 Route::middleware(Login::class)->prefix('v1/user')->group(function () {
-    Route::get('/detail', [UserControllers::class, 'getUser']) ;
+    Route::post('/add', [UserControllers::class, 'addUser']) ;
+    Route::get('/{uid}/detail', [UserControllers::class, 'getUser']) ;
+    Route::get(    '/all-user', [UserControllers::class, 'getAllUser']) ;
     Route::put(  '/profile', [UserControllers::class, 'updateProfile']) ;
+    Route::put(  '/{uid}/update', [UserControllers::class, 'updateUser']) ;
+    Route::delete(  '/{uid}/delete', [UserControllers::class, 'deleteUser']) ;
 });
 
 // Nhóm các route liên quan đến danh mục

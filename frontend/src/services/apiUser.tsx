@@ -1,15 +1,34 @@
 import { axiosJWT } from "../utils/httpRequest";
 
-export const apiGetDetailUser = async () => {
+export const apiGetDetailUser = async (uid:string) => {
     try {
-      const response = await axiosJWT.get(`/user/detail`);
+      const response = await axiosJWT.get(`/user/${uid}/detail`);
       return response.data;
     } catch (error) {
        console.log(error)
 
-      return Promise.reject(error); // Re-throw error for better handling upstream
+   return error;
     }
   };
+  export const apiGetAllUser = async (query:any) => {
+    try {
+      const response = await axiosJWT.get(`/user/all-user`,{params:query});
+      return response.data;
+    } catch (error) {
+       console.log(error)
+   return error;
+    }
+  }; 
+
+  export const apiAddUser = async (data:any) => {
+    try {
+      const response = await axiosJWT.post(`/user/add`,data);
+      return response.data;
+    } catch (error) {
+       console.log(error)
+   return error;
+    }
+  }; 
   
   export const apiUpdateProfile= async (data:any) => {
     try {
@@ -17,8 +36,25 @@ export const apiGetDetailUser = async () => {
       return response.data;
     } catch (error) {
        console.log(error)
-
-      return Promise.reject(error); // Re-throw error for better handling upstream
+   return error;
+    }
+  };
+  export const apiUpdateUser= async (data:any,uid:any) => {
+    try {
+      const response = await axiosJWT.put(`/user/${uid}/update`,data);
+      return response.data;
+    } catch (error) {
+       console.log(error)
+   return error;
+    }
+  };
+  export const apiDeleteUser= async (uid:any) => {
+    try {
+      const response = await axiosJWT.delete(`/user/${uid}/delete`);
+      return response.data;
+    } catch (error) {
+       console.log(error)
+   return error;
     }
   };
   

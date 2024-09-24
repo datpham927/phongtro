@@ -52,7 +52,7 @@ class PostRepository implements PostRepositoryInterface
         unset($filters['price_from'],$filters['price_to']);
     } 
     // Áp dụng bộ lọc theo khoảng diện tích nếu có
-    if (!empty($filters['area_from']) && !empty($filters['area_to'])) { 
+    if (!empty($filters['area_from'])  ||  !empty($filters['area_to'])) { 
         $query->whereHas('area', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
         });
@@ -90,10 +90,8 @@ class PostRepository implements PostRepositoryInterface
     
         // Tính tổng số trang
         $totalPage = $limit > 0 ? ceil($totalPosts / $limit) : 1;
-    
         // Áp dụng sắp xếp, skip và take (limit)
         $expiredPostsQuery->orderBy('expire_at', $sort);
-    
         // Xử lý phân trang
         $skip = ($page - 1) * $limit;
         if ($limit > 0) {

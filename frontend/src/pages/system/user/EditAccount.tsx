@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { BallTriangle } from "react-loader-spinner"
-import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import InputReadOnly from "../../components/InputComponent/InputReadOnly"
-import InputForm from "../../components/InputComponent/InputForm"
-import { ButtonComponent } from "../../components"
-import { apiUploadImage } from "../../services/apiUploadPicture"
-import { apiUpdateProfile } from "../../services/apiUser"
-import validate from "../../utils/validate"
-import { setDetailUser } from "../../redux/user/userSlice"
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks"
+import InputReadOnly from "../../../components/InputComponent/InputReadOnly"
+import InputForm from "../../../components/InputComponent/InputForm"
+import { ButtonComponent } from "../../../components"
+import { apiUploadImage } from "../../../services/apiUploadPicture"
+import { apiUpdateProfile } from "../../../services/apiUser"
+import validate from "../../../utils/validate"
+import { setDetailUser } from "../../../redux/user/userSlice"
+import { setLoading } from "../../../redux/action/actionSlice"
 
 const EditAccount = () => {
   const dispatch = useAppDispatch()
@@ -21,7 +22,7 @@ const EditAccount = () => {
       setDataEditUser(user) 
   },[user])
   
-  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadImage = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsLoading(true)
     const files = e.target.files?.[0]
     if (files) {
@@ -37,12 +38,14 @@ const EditAccount = () => {
       }
     }
     setIsLoading(false)
-  }
+  },[])
 
   const handleSummit = async () => {
+    dispatch(setLoading(true))
     if (validate(dataEditUser, setInvalidFields)) {
       const response = await apiUpdateProfile(dataEditUser)
       if (!response.status) { alert("Cập nhật không thành công");return}
+    dispatch(setLoading(false))
       alert("Cập nhật thành công")
       dispatch(setDetailUser(response.data))
     }
@@ -97,7 +100,7 @@ const EditAccount = () => {
           />
           <div className="flex my-5">
             <label className="w-1/3">Mật khẩu</label>
-            <span className="text-sm text-blue-custom">Đổi mật khẩu</span>
+            <button className="text-sm text-blue-custom">Đổi mật khẩu</button>
           </div>
           <div className="flex my-5">
             <label className="w-1/3">Ảnh đại diện</label>

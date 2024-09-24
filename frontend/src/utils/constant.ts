@@ -5,12 +5,19 @@ export const PATH = {
   CATEGORY_FILTER__PAGE: "/:category_slug/:city_slug/:district_slug?/:ward_slug?",
   RESET_PASSWORD: "/reset/:token",
   DETAIL_POST: "chi-tiet/:title/:postId",  
-  SYSTEM: "/he-thong",
+  SYSTEM: "/quan-ly",
+  UPDATE_PASSWORD: "doi-mat-khau",
   CREATE_POST: "tao-moi-bai-dang",
-  UPDATE_POST: "chinh-sua-bai-dang/:pid",
   MANAGE_POST: "quan-ly-bai-dang",
   EDIT_ACCOUNT:"thong-tin-tai-khoan",
   DETAIL:"/chi-tiet/",
+  // ------------------
+  MANAGE_USER: "quan-ly-nguoi-dung",
+  UPDATE_USER: "chinh-sua-thong-tin-nguoi-dung/:uid",
+  CREATE_USER: "them-nguoi-dung",
+  APPROVE_POST:'duyet-bai-dang',
+  UPDATE_POST: "chinh-sua-bai-dang/:pid",
+
 };
 
 export const titleHomePage = {

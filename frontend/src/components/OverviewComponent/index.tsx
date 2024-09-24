@@ -1,4 +1,4 @@
-import {  useState, ChangeEvent  } from "react";
+import {  useState, ChangeEvent, useCallback  } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { RootState } from "../../redux/store";
 import InputForm from "../InputComponent/InputForm";
@@ -26,13 +26,12 @@ function OverviewComponent({
   const [isLoading, setIsLoading] = useState(false);
   const { categories } = useAppSelector((state: RootState) => state.category);
   const  user  = useAppSelector((state) => state.user); 
-  const handleUploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleUploadImage = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
     setIsLoading(true);
     const files = e.target.files;
     if (!files) return;
     let imagesArray: string[] = [];
     const formData = new FormData();
-  
     for (let i of Array.from(files)) {
       formData.append("file", i);
       formData.append('upload_preset', import.meta.env.VITE_REACT_UPLOAD_PRESET);
@@ -47,7 +46,7 @@ function OverviewComponent({
       ...prev,
       images: [...(prev?.images ?? []), ...imagesArray],
     }));
-  };
+  },[]);
   // useEffect(() => {
   //   if (dataEditPost?.images?.image && isEdit) {
   //     setImage(JSON.parse(dataEditPost?.images?.image));

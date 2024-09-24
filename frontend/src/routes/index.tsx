@@ -4,38 +4,37 @@ import { useAppSelector } from '../redux/hooks';
 import { DetailPost, FilterPage, HomePage, ResetPassword } from '../pages/public';
 import DefaultLayout from '../layout/DefaultLayout';
 import PrivateRoute from '../middleware/PrivateRoute';
-import { CreatePost, EditAccount, ManagePost, System, UpdatePost } from '../pages/system';
+import { CreatePost, CreateUser, EditAccount, ManagePost,  ManageUser,  UpdatePost, UpdateUser } from '../pages/system';
+import LayoutSystem from '../layout/LayoutSystem';
 
 
 const RouterPage = () => { 
   const { isLogged } = useAppSelector((state) => state.auth);
-
   return (
     <Routes>
-      {/* Route mặc định */} 
       <Route path={PATH.HOME} element={<DefaultLayout />}>
           <Route path='*' element={<Navigate to={PATH.HOME} />} />
-          {/* Các route công khai */}
           <Route path={PATH.HOME} element={<HomePage />} />
           <Route path={PATH.HOME__PAGE} element={<HomePage />} />
           <Route path={PATH.FILTER__PAGE} element={<FilterPage />} />
           <Route path={PATH.CATEGORY_FILTER__PAGE} element={<FilterPage />} />
           <Route path={PATH.DETAIL_POST} element={<DetailPost />} />
-          {/* DefaultLayout */}
-          </Route>
-      {/* Route yêu cầu chưa đăng nhập */}
+      </Route>
       {!isLogged && <Route path={PATH.RESET_PASSWORD} element={<ResetPassword />} />}
-      <Route path={PATH.SYSTEM} element={
-          <PrivateRoute isLogged={isLogged}>
-            <System />
-          </PrivateRoute>
-      }>
-      <Route path={PATH.MANAGE_POST} element={<ManagePost />} />
-      <Route path={PATH.CREATE_POST} element={<CreatePost />} />
-      <Route path={PATH.UPDATE_POST} element={<UpdatePost />} />
-      <Route path={PATH.EDIT_ACCOUNT} element={<EditAccount />} />
-      \
-    </Route>
+      <Route path={PATH.SYSTEM} element={ <PrivateRoute isLogged={isLogged}><LayoutSystem /></PrivateRoute>}>
+              <Route path={PATH.MANAGE_POST} element={<ManagePost />} />
+              <Route path={PATH.CREATE_POST} element={<CreatePost />} />
+              <Route path={PATH.UPDATE_POST} element={<UpdatePost />} />
+              <Route path={PATH.EDIT_ACCOUNT} element={<EditAccount />} /> 
+              {/* ---- user ----- */}
+              <Route path={PATH.MANAGE_USER} element={<ManageUser />} /> 
+              <Route path={PATH.UPDATE_USER} element={<UpdateUser />} /> 
+              <Route path={PATH.CREATE_USER} element={<CreateUser />} /> 
+              {/* ------- */}
+              <Route path={PATH.APPROVE_POST} element={<ManagePost />} /> 
+        </Route>
+
+        
     </Routes>
   );
 };

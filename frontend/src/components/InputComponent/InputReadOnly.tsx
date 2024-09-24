@@ -2,7 +2,7 @@ import { memo } from "react";
 
 interface InputReadOnlyProps {
   label: string;
-  value: string;
+  value?: string;
   direction?: string;
   isEditPhone?: boolean;
   className?:string
