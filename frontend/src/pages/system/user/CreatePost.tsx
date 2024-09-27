@@ -1,12 +1,15 @@
 import { useCallback, useState } from "react";
-import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent } from "../../components";
-import validate from "../../utils/validate";
-import { apiCreatePost } from "../../services/apiPost";
-import {  IPostPayload } from "../../interfaces/Post";
-import { useAppSelector } from "../../redux/hooks";
-import { convertToSlug } from "../../utils/format/convertToSlug";
-import { getOneYearLater } from "../../utils/getOneYearLater";
-import { convertMillionToDecimal } from "../../utils/format/convertMillionToDecimal";
+import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent } from "../../../components";
+import validate from "../../../utils/validate";
+import { apiCreatePost } from "../../../services/apiPost";
+import {  IPostPayload } from "../../../interfaces/Post";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { convertToSlug } from "../../../utils/format/convertToSlug";
+import { getOneYearLater } from "../../../utils/getOneYearLater";
+import { convertMillionToDecimal } from "../../../utils/format/convertMillionToDecimal";
+import { PATH } from "../../../utils/constant";
+import { useNavigate } from "react-router-dom";
+import { setLoading } from "../../../redux/action/actionSlice";
  
 
 function CreatePost() {
@@ -26,21 +29,24 @@ function CreatePost() {
   });
   const [invalidFields, setInvalidFields] = useState<any>([]);
   const { categories } = useAppSelector((state) => state.category);
+  const dispatch= useAppDispatch()
+  const navigate=useNavigate()
 
   const handleSummit = useCallback(async () => {
+    dispatch(setLoading(true))
     const check = validate(payload, setInvalidFields);
     if (!check) return;
     const { areaNumber, priceNumber, images, address_detail,categoryCode, district, province, ward, map, target, ...data } = payload;
     const postData = {
       thumb: images[0],
       images,
+      expire_at:getOneYearLater(),
       price: { order: priceNumber, value: `${convertMillionToDecimal(Number(priceNumber))} đồng/tháng` },
       area: { order: areaNumber, value: `${areaNumber} m2` },
       category_id: categoryCode,
       attribute: {
         target,
-        type_post: categories.find(e => e.id === categoryCode)?.name,
-        expire: getOneYearLater(),
+        type_post: categories.find(e => e.id === categoryCode)?.name, 
       },
       address: {
         city_name: convertToSlug(province),
@@ -52,7 +58,9 @@ function CreatePost() {
       ...data,
     };
     const response = await apiCreatePost(postData);
-    if(response.status) {alert("Thêm thành công")}
+    dispatch(setLoading(false)) 
+    if(response.status) {alert("Thêm thành công");navigate(`${PATH.SYSTEM}/${PATH.MANAGE_POST}`)}
+    else{ alert('Thêm không thành công')}
   },[payload]);
 
   return (       
@@ -83,7 +91,6 @@ function CreatePost() {
         onClick={handleSummit}
       />
         </div >
-
          <div className="flex flex-col gap-3 w-[40%] pb-20">
            <NoticeListComponent/>
          </div>

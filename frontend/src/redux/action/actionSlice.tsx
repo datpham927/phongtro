@@ -6,10 +6,13 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 interface actionInitial {
     openFeatureAuth: boolean;
     featureAuth: number; //0 register 1 login 2 forgot
+    loading: boolean; //0 register 1 login 2 forgot
+
 }
 const initialState: actionInitial = {
     openFeatureAuth: false, 
     featureAuth: 0, 
+    loading:false
 };
 
 export const actionSlice = createSlice({
@@ -23,13 +26,16 @@ export const actionSlice = createSlice({
         setFeatureAuth: (state, action: PayloadAction<number>) => {
             state.featureAuth = action.payload;
         },
-       
+        setLoading: (state, action: PayloadAction<boolean>) => {
+            state.loading = action.payload;
+        },
      
     },
 });
 export const {
     setOpenFeatureAuth,
     setFeatureAuth, 
+    setLoading,
 } = actionSlice.actions;
 
 export default actionSlice.reducer;

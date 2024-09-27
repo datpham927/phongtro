@@ -6,5 +6,5 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
 {
       public function findUserByEmail($email);
       public function findUserByToken($token);
-
+      
 }

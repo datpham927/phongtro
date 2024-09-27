@@ -3,8 +3,11 @@ import FooterComponent from '../components/FooterComponent';
 import { Auth } from '../feature';
 import NavigateComponent from '../components/NavigateComponent';
 import { Outlet } from 'react-router-dom';
+import LoadingComponent from '../components/LoadingComponent';
+import { useAppSelector } from '../redux/hooks';
  
 const DefaultLayout = () => { 
+
   return (
       <div className='w-full h-full  overflow-scroll'>
           <HeaderComponent />
@@ -14,6 +17,7 @@ const DefaultLayout = () => {
           </div>
           <FooterComponent/>
           <Auth/>
+          <LoadingComponent/> 
           </div>
   )
 };

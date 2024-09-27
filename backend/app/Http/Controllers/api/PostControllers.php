@@ -33,6 +33,14 @@ class PostControllers extends Controller
             return ResponseHelper::error("Error", $th);
         }
     }
+    public function getAllPostExpiredForShop(Request $request) {
+        try {
+            $response = $this->postService->findAllPostExpiredForShop($request);
+            return ResponseHelper::success($response, "Successfully", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Error", $th);
+        }
+    }
     public function getRelatedPost(Request $request,$address_id) {
         try {
             $response = $this->postService->findRelatedPost($address_id);

@@ -27,6 +27,7 @@ class PostDetailResource extends JsonResource
             'slug'         => $this->slug,
             'description'         => $this->description,
             "created_at"=> $this->created_at,
+            "expire_at"=> $this->created_at,
             'category'        => [
                 "id"=>$this->category->id,
                 "name"=>$this->category->name,
@@ -53,8 +54,7 @@ class PostDetailResource extends JsonResource
               ],
             'attribute' => [ 
                 'target'      =>$attribute?->target,
-                'value'      =>$attribute?->type_post,
-                'expire'      =>$attribute?->expire,
+                'value'      =>$attribute?->type_post, 
                 'created_at'      =>$attribute?->created_at,
             ],
             'user'=>[

@@ -13,7 +13,6 @@ Route::post('/crawler', [CrawlerControllers::class, 'crawler'])->name('crawler.i
   
 // Nhóm các route liên quan đến người dùng
 Route::middleware(Login::class)->post('v1/auth/logout', [AuthControllers::class, 'logout']);
-
 Route::prefix('v1/auth')->group(function () {
     Route::post('/register', [AuthControllers::class, 'register']) ;
     Route::post('/login', [AuthControllers::class, 'login']) ;
@@ -22,7 +21,12 @@ Route::prefix('v1/auth')->group(function () {
     Route::put('/{token}/change_password', [AuthControllers::class, 'changePasswordPost']);
 });
 Route::middleware(Login::class)->prefix('v1/user')->group(function () {
-    Route::get('/detail', [UserControllers::class, 'getUser']) ;
+    Route::post('/add', [UserControllers::class, 'addUser']) ;
+    Route::get('/{uid}/detail', [UserControllers::class, 'getUser']) ;
+    Route::get(    '/all-user', [UserControllers::class, 'getAllUser']) ;
+    Route::put(  '/profile', [UserControllers::class, 'updateProfile']) ;
+    Route::put(  '/{uid}/update', [UserControllers::class, 'updateUser']) ;
+    Route::delete(  '/{uid}/delete', [UserControllers::class, 'deleteUser']) ;
 });
 
 // Nhóm các route liên quan đến danh mục
@@ -38,6 +42,7 @@ Route::prefix('v1/post')->group(function () {
     Route::middleware(Login::class)->post('/add', [PostControllers::class, 'create']) ;
     Route::middleware(Login::class)->put('/{pid}/update', [PostControllers::class, 'update']) ;
     Route::middleware(Login::class)->get('/shop', [PostControllers::class, 'getAllForShop']) ;
+    Route::middleware(Login::class)->get('/expired', [PostControllers::class, 'getAllPostExpiredForShop']) ;
     Route::get('/all', [PostControllers::class, 'getAll']) ;
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']) ;
     Route::get('/{address_id}/related-post', [PostControllers::class, 'getRelatedPost']) ;

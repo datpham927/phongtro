@@ -23,7 +23,7 @@ class AddressRepository  implements AddressRepositoryInterface
         ->select('city_name')->first();
         // Tạo query để lấy danh sách các quận
         $districtsQuery = $this->address::where('city_slug', $city_slug)
-            ->leftJoin('posts', 'posts.address_id', '=', 'post_addresses.id') // Sử dụng leftJoin để kết nối bảng
+            ->join('posts', 'posts.address_id', '=', 'post_addresses.id') // Sử dụng join để kết nối bảng
             ->select('district_name', 'district_slug', DB::raw('COUNT(posts.id) as quantity')) // Đếm số lượng bài viết
             ->groupBy('district_name', 'district_slug')
             ->orderBy('district_name', 'asc'); // Sắp xếp theo tên quận
@@ -48,7 +48,7 @@ class AddressRepository  implements AddressRepositoryInterface
         // Lấy danh sách các phường/xã
         $wards = $this->address::where('city_slug', $city_slug)
             ->where('district_slug', $district_slug)
-            ->leftJoin('posts', 'posts.address_id', '=', 'post_addresses.id') // Sử dụng leftJoin để kết nối bảng
+            ->join('posts', 'posts.address_id', '=', 'post_addresses.id') // Sử dụng join để kết nối bảng
             ->select('ward_name', 'ward_slug',  DB::raw('COUNT(posts.id) as quantity'))
             ->groupBy('ward_name', 'ward_slug')->orderBy('ward_name', 'asc')->get();
     

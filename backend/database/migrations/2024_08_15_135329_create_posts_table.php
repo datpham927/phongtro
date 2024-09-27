@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('address_id')->references('id')->on('post_addresses')->onDelete('cascade');
+            $table->string('expire_at')->nullable();
             $table->timestamps();
         });
     }

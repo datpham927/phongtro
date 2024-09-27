@@ -20,8 +20,6 @@ class PostRepository implements PostRepositoryInterface
     // Khởi tạo query builder
     $query = $this->post->newQuery(); 
     // Áp dụng bộ lọc theo category_id nếu có
-
-
     if (!empty($filters['category_slug'])) {
         $query->whereHas('category', function($query) use ($filters) {
             $query->where('slug', $filters['category_slug']);
@@ -54,7 +52,7 @@ class PostRepository implements PostRepositoryInterface
         unset($filters['price_from'],$filters['price_to']);
     } 
     // Áp dụng bộ lọc theo khoảng diện tích nếu có
-    if (!empty($filters['area_from']) && !empty($filters['area_to'])) { 
+    if (!empty($filters['area_from'])  ||  !empty($filters['area_to'])) { 
         $query->whereHas('area', function($query) use ($filters) {
             $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
         });
@@ -80,6 +78,39 @@ class PostRepository implements PostRepositoryInterface
         'posts' => PostResource::collection($query->get()), // Assuming $post is a paginated result
     ];   
     }
+
+    public function findAllPostExpiredForShop($limit, $sort, $page, $shopId)
+    {
+        // Truy vấn lấy các bài viết hết hạn
+        $expiredPostsQuery = $this->post::where('user_id', $shopId)
+            ->where('expire_at', '<', now());
+    
+        // Lấy tổng số bài viết hết hạn (clone query để không ảnh hưởng đến pagination)
+        $totalPosts = (clone $expiredPostsQuery)->count();
+    
+        // Tính tổng số trang
+        $totalPage = $limit > 0 ? ceil($totalPosts / $limit) : 1;
+        // Áp dụng sắp xếp, skip và take (limit)
+        $expiredPostsQuery->orderBy('expire_at', $sort);
+        // Xử lý phân trang
+        $skip = ($page - 1) * $limit;
+        if ($limit > 0) {
+            $expiredPostsQuery->skip($skip)->take($limit);
+        }
+    
+        // Lấy kết quả
+        $posts = $expiredPostsQuery->get();
+    
+        return [
+            'totalPage' => intval($totalPage),
+            'currentPage' => intval($page),
+            'totalPosts' => intval($totalPosts),
+            'posts' => PostResource::collection($posts), // Assuming PostResource is used for formatting
+        ];
+    }
+    
+    
+
     public function findRelatedPostByAddress ($addressId){
         $relatedPost=$this->post::where(["address_id"=>$addressId])->limit(10)->get();
         return   PostResource::collection($relatedPost);

@@ -38,6 +38,15 @@ class PostService implements PostServiceInterface
 
      return $this->postRepository->findAll($limit, $sort, $page,$filters);
     }
+    public function findAllPostExpiredForShop($request){
+        $limit=$request['limit'];
+        $page=$request['page'];
+        $sort='desc';
+        unset($request['limit'],$request['page'],$request['sort']);
+        $shopId=$request['user_id'];
+
+     return $this->postRepository->findAllPostExpiredForShop($limit, $sort, $page, $shopId);
+    }
 
     public function findRelatedPost ($addressId){
             return $this->postRepository->findRelatedPostByAddress($addressId);
@@ -57,7 +66,6 @@ class PostService implements PostServiceInterface
         } else {
             $addressId = $foundAddress->id; // Truy cập thuộc tính id của đối tượng $foundAddress
         }
-
           $dataPost=[
             "user_id"=> $validatedData[ "user_id"],
             "id"=>Util::uuid(),
@@ -66,7 +74,8 @@ class PostService implements PostServiceInterface
             "title"=>  $validatedData[ "title"],
             "thumb"=>  $validatedData["thumb"],
             "description"=>  $validatedData["description"],
-            "category_id"=>  $validatedData["category_id"]   
+            "category_id"=>  $validatedData["category_id"]  ,
+            "expire_at"=>  $validatedData["expire_at"]   
          ];
             $post= $this->postRepository->create($dataPost);
          $postId=$post["id"];

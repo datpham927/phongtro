@@ -16,31 +16,31 @@ use Symfony\Component\DomCrawler\Crawler;
 class CrawlerControllers extends Controller
 {
    public  $categoryLinks = [
-        [
-            'url' => 'https://phongtro123.com/cho-thue-phong-tro',
-            'name' => 'Cho Thuê Phòng Trọ',
-            'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
-        ], 
-          [
-            'url' => 'https://phongtro123.com/nha-cho-thue',
-            'name' => 'Cho Thuê Nhà Nguyên Căn',
-            'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
-        ],  
-      
-        //  [
-        //     'url' => 'https://phongtro123.com/cho-thue-mat-bang',
-        //     'name' => 'Cho Thuê Mặt Bằng',
-        //     'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
-        // ],  
         // [
-        //     'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
-        //     'name' => 'Tìm Người Ở Ghép',
-        //     'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
-        //     'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
-        // ],
+        //     'url' => 'https://phongtro123.com/cho-thue-phong-tro',
+        //     'name' => 'Cho Thuê Phòng Trọ',
+        //     'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
+        //     'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
+        // ], 
+        //   [
+        //     'url' => 'https://phongtro123.com/nha-cho-thue',
+        //     'name' => 'Cho Thuê Nhà Nguyên Căn',
+        //     'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+        //     'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
+        // ],  
+      
+         [
+            'url' => 'https://phongtro123.com/cho-thue-mat-bang',
+            'name' => 'Cho Thuê Mặt Bằng',
+            'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
+        ],  
+        [
+            'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
+            'name' => 'Tìm Người Ở Ghép',
+            'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
+            'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
+        ],
         // [
         //     'url' => 'https://phongtro123.com/cho-thue-can-ho',
         //     'name' => 'Cho Thuê Căn Hộ',
@@ -148,7 +148,7 @@ $addressArray=explode(', ', $addressDetail);
             $address["district_slug"]=Util::slug($addressArray[2]);
             $address["ward_slug"]=Util::slug($addressArray[1]); 
             $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-            $address["map"]= $crawler->filter("#__maps_content")->html(); 
+            $address["map"]= '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.5956177445114!2d108.24024507365495!3d16.034552740368213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142175ea43a1001%3A0x1b74ea0a2ed3227b!2zS8O9IHTDumMgeMOhIFNpbmggdmnDqm4gVFAgxJDDoCBO4bq1bmcgLSBQaMOtYSDEkMO0bmc!5e0!3m2!1svi!2s!4v1726499130448!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'; 
         }else{
             $address["id"]=Util::uuid(); 
             $address["city_name"]= explode(', ', $addressDetail)[2];
@@ -180,7 +180,8 @@ $addressArray=explode(', ', $addressDetail);
          $postData["thumb"]=$postThumb;
          $postData["description"]=$crawler->filter(".section-content")->html();
          $postData["slug"]=Util::slug($crawler->filter(".page-h1 a")->text());
-        //  dd( $postData);
+         $postData["expire_at"]=Util::getRandomDateFromNow();
+         //  dd( $postData);
          $post= Post::create($postData);
          // -------------  image  ------------- 
          $dataImages = [];
@@ -223,8 +224,7 @@ $addressArray=explode(', ', $addressDetail);
          $type= $crawler->filter("tr")->eq(3)->filter("td")->eq(1)->text() ;
          $target= $crawler->filter("tr")->eq(4)->filter("td")->eq(1)->text()  ; 
          $attribute["type_post"]= $type;
-         $attribute["target"]=$target;
-         $attribute["expire"]=Util::getRandomDateFromNow();
+         $attribute["target"]=$target; 
          $attribute["post_id"]= $post["id"];
         //  dd( $attribute);
         Post_attribute::create($attribute);

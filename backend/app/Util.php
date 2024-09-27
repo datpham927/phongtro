@@ -67,7 +67,6 @@ public static function randomDecimal($min = 1, $max = 40, $decimals = 1) {
         return new DateTime($value);
     }
 
-   
     public static function convertToMillion($value) {
          if($value<200){
             $price= $value*1000000;

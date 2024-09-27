@@ -1,4 +1,4 @@
-import { IUserDetail } from "./UserDetail";
+import { IUserDetail } from "./User";
 
 export interface IPost {
       id: string;
@@ -35,7 +35,6 @@ export interface IDetailPost extends IPost {
     attribute: {
       target: string;
       type_post: string;
-      expire: string;
     }; 
     category:{
       id:string,

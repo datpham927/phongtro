@@ -88,4 +88,6 @@
     border: solid 1px rgb(144, 211, 255);
   }
   
- 
+  iframe{
+    width: 100%!important;
+  }

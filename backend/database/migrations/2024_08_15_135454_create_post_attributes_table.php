@@ -19,7 +19,6 @@ return new class extends Migration
             // Các trường khác
             $table->string('target');
             $table->string('type_post');
-            $table->string('expire');
             // Thời gian tạo và cập nhật
             $table->timestamps();
             // Định nghĩa khóa ngoại

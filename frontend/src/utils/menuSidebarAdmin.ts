@@ -1,16 +1,10 @@
 import { PATH } from "./constant";
 
-export const menuSidebar = [
+export const menuSidebarAdmin = [
   {
     id: 1,
-    text: "Đăng tin cho thuê",
-    path: `${PATH.SYSTEM}/${PATH.CREATE_POST}`,
-    icon:"https://phongtro123.com/images/dashboard-add-post.svg"
-  },
-  {
-    id: 2,
-    text: "Quản lý tin đăng",
-    path: `${PATH.SYSTEM}/${PATH.MANAGE_POST}`,
+    text: "Quản lý người dùng",
+    path: `${PATH.SYSTEM}/${PATH.MANAGE_USER}`,
     icon:"https://phongtro123.com/images/dashboard-manage-post.svg"
   },
   {
