@@ -156,5 +156,32 @@ class PostRepository implements PostRepositoryInterface
     // Trả về resource mới với bài post đã load các mối quan hệ
     return new PostDetailResource($post);
 } 
-
+public function findAllUnapprovedPosts($limit,$sort, $page){
+     // Truy vấn lấy các bài viết hết hạn
+     $expiredPostsQuery = $this->post::where('is_approved',false); 
+    // Lấy tổng số bài viết hết hạn (clone query để không ảnh hưởng đến pagination)
+    $sortby = $sort === 'ctime' ? 'desc' : 'asc';
+    $expiredPostsQuery->orderBy('posts.created_at', $sortby);
+    $totalPosts = (clone $expiredPostsQuery)->count();
+    // Tính tổng số trang
+    $totalPage = $limit > 0 ? ceil($totalPosts / $limit) : 1;  
+    $skip = ($page - 1) * $limit;
+    if ($limit > 0) {
+    $expiredPostsQuery->skip($skip)->take($limit);
+    }
+    // Lấy kết quả
+    $posts = $expiredPostsQuery->get();
+ return [
+     'totalPage' => intval($totalPage),
+     'currentPage' => intval($page),
+     'totalPosts' => intval($totalPosts),
+     'posts' => PostResource::collection($posts), // Assuming PostResource is used for formatting
+ ];
+}
+        public function findByIdAndApprovePost($pid){
+            $post=$this->findById($pid);
+            if(! $post)throw new Exception("Post does not exist!",404);
+            $post->update(["is_approved"=>true]);
+            return $post;
+        }
 }

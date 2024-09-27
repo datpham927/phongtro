@@ -25,7 +25,7 @@ function ItemManageUser({
     <ul className="grid grid-cols-7 divide-x border-solid border-t-[1px] border-slate-200">
       <li className="p-[10px] text-sm">{id}</li>
       <li className="p-[10px] text-sm">
-        <img className="w-[40px] h-[40px]" src={avatar} alt="" />
+        <img className="w-[40px] h-[40px]" src={avatar ? avatar : "https://phongtro123.com/images/default-user.png"} alt="" />
       </li>
       <li className="p-[10px] text-sm">{name}</li>
       <li className="p-[10px] text-sm">{phone}</li>

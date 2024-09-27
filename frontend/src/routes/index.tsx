@@ -4,7 +4,7 @@ import { useAppSelector } from '../redux/hooks';
 import { DetailPost, FilterPage, HomePage, ResetPassword } from '../pages/public';
 import DefaultLayout from '../layout/DefaultLayout';
 import PrivateRoute from '../middleware/PrivateRoute';
-import { CreatePost, CreateUser, EditAccount, ManagePost,  ManageUser,  UpdatePost, UpdateUser } from '../pages/system';
+import { CreatePost, CreateUser, EditAccount, ManageApprovedPost, ManagePost,  ManageUser,  UpdatePost, UpdateUser } from '../pages/system';
 import LayoutSystem from '../layout/LayoutSystem';
 
 
@@ -31,7 +31,7 @@ const RouterPage = () => {
               <Route path={PATH.UPDATE_USER} element={<UpdateUser />} /> 
               <Route path={PATH.CREATE_USER} element={<CreateUser />} /> 
               {/* ------- */}
-              <Route path={PATH.APPROVE_POST} element={<ManagePost />} /> 
+              <Route path={PATH.APPROVE_POST} element={<ManageApprovedPost />} /> 
         </Route>
 
         

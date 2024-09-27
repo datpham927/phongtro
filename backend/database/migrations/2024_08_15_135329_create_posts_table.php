@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('address_id')->references('id')->on('post_addresses')->onDelete('cascade');
             $table->string('expire_at')->nullable();
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }

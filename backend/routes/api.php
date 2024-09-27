@@ -43,6 +43,8 @@ Route::prefix('v1/post')->group(function () {
     Route::middleware(Login::class)->put('/{pid}/update', [PostControllers::class, 'update']) ;
     Route::middleware(Login::class)->get('/shop', [PostControllers::class, 'getAllForShop']) ;
     Route::middleware(Login::class)->get('/expired', [PostControllers::class, 'getAllPostExpiredForShop']) ;
+    Route::middleware(Login::class)->get('/unapproved', [PostControllers::class, 'getAllUnapprovedPosts']) ;
+    Route::middleware(Login::class)->post('/{pid}/is-approved', [PostControllers::class, 'ApprovePost']) ;
     Route::get('/all', [PostControllers::class, 'getAll']) ;
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']) ;
     Route::get('/{address_id}/related-post', [PostControllers::class, 'getRelatedPost']) ;

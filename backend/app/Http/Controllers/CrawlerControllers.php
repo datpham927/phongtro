@@ -22,25 +22,25 @@ class CrawlerControllers extends Controller
         //     'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
         //     'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
         // ], 
-        //   [
-        //     'url' => 'https://phongtro123.com/nha-cho-thue',
-        //     'name' => 'Cho Thuê Nhà Nguyên Căn',
-        //     'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
-        // ],  
-      
-         [
-            'url' => 'https://phongtro123.com/cho-thue-mat-bang',
-            'name' => 'Cho Thuê Mặt Bằng',
-            'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
+          [
+            'url' => 'https://phongtro123.com/nha-cho-thue',
+            'name' => 'Cho Thuê Nhà Nguyên Căn',
+            'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
         ],  
-        [
-            'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
-            'name' => 'Tìm Người Ở Ghép',
-            'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
-            'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
-        ],
+      
+        //  [
+        //     'url' => 'https://phongtro123.com/cho-thue-mat-bang',
+        //     'name' => 'Cho Thuê Mặt Bằng',
+        //     'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+        //     'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
+        // ],  
+        // [
+        //     'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
+        //     'name' => 'Tìm Người Ở Ghép',
+        //     'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
+        //     'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
+        // ],
         // [
         //     'url' => 'https://phongtro123.com/cho-thue-can-ho',
         //     'name' => 'Cho Thuê Căn Hộ',
@@ -136,9 +136,9 @@ class CrawlerControllers extends Controller
         // $postLink $brand_id  $categoryId  
         $html=file_get_contents($postLink);   
         $crawler=new Crawler( $html);
-// ------------------ ADDRESS ------------------
-$addressDetail=$crawler->filter(".post-address")->text();
-$addressArray=explode(', ', $addressDetail);
+            // ------------------ ADDRESS ------------------
+            $addressDetail=$crawler->filter(".post-address")->text();
+            $addressArray=explode(', ', $addressDetail);
         if( count($addressArray)>3){
             $address["id"]=Util::uuid(); 
             $address["city_name"]=$addressArray[3];
@@ -181,6 +181,7 @@ $addressArray=explode(', ', $addressDetail);
          $postData["description"]=$crawler->filter(".section-content")->html();
          $postData["slug"]=Util::slug($crawler->filter(".page-h1 a")->text());
          $postData["expire_at"]=Util::getRandomDateFromNow();
+         $postData["is_approved"]=true;
          //  dd( $postData);
          $post= Post::create($postData);
          // -------------  image  ------------- 

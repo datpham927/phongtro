@@ -31,17 +31,7 @@ const apiCreatePost = async (content: any): Promise<any> => {
   } catch (error) {
     return Promise.reject(error); // Re-throw error for better handling upstream
   }
-};
-
-// const apiGetPostAdmin = async (): Promise<any> => {
-//   try {
-//     const response = await httpRequest.get(`/post/admin-post`);
-//     return response.data;
-//   } catch (error) {
-//     return Promise.reject(error); // Re-throw error for better handling upstream
-//   }
-// };
-
+}; 
 const apiUpdatePost = async (pid:string,data: any): Promise<any> => {
   try {
     const response = await axiosJWT.put(`/post/${pid}/update`, data);
@@ -76,7 +66,24 @@ const getRelatedPosts = async (addressId: any): Promise<any> => {
     return Promise.reject(error); // Re-throw error for better handling upstream
   }
 };
+
+const getAllUnapprovedPosts = async ( query: any): Promise<any> => {
+  try {
+    const response = await  axiosJWT.get(`post/unapproved`,{params:query});
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
+const apiApprovedPost= async (postId:string): Promise<any> => {
+  try {
+    const response = await  axiosJWT.post(`post/${postId}/is-approved`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
 export { apiGetPost,getDetailPost,getRelatedPosts,apiCreatePost,apiGetPostForShop,
-  apiUpdatePost,apiDeletePost,apiGetExpiredPostForShop
+  apiUpdatePost,apiDeletePost,apiGetExpiredPostForShop,getAllUnapprovedPosts,apiApprovedPost
   // , apiNewPost, apiCreatePost, apiapiGetPostAdmin, apiUpdatePost, apiDeletePost, apiDetailPost 
 };
