@@ -33,20 +33,20 @@ function ManagePost() {
         setTotalPage(res?.data?.totalPage);
         dispatch(setLoading(false))  
     };
-  
     fetchApi();
   }, [currentPage, postFilter]);
   
 
 const handleDeletePost=async(pid:string)=>{
+  if(confirm("Bạn có muốn xóa bài này không?")){
     const res=await apiDeletePost(pid);
     if(res.status){
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== pid));
     }else{
         alert("Xóa không thành công")
     }
+  }
 }
-
 
   return (
     <div className="w-full p-6">

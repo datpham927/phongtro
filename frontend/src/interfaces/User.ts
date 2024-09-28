@@ -7,6 +7,8 @@ export interface IUserDetail {
     facebook     :string,
     avatar       :string,
      type: string; 
+    post_quantity?:any
+
 }
 
 export interface ICreateIUser extends IUserDetail{ 

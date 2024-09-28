@@ -30,12 +30,15 @@ function ManageApprovedPost() {
   
 
 const handleDeletePost=async(pid:string)=>{
+  if(confirm("Bạn có muốn xóa bài này không?")){
     const res=await apiDeletePost(pid);
     if(res.status){
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== pid));
     }else{
         alert("Xóa không thành công")
     }
+  }
+
 }
 const handleApprovalPost=async(pid:string)=>{
    if(confirm("Bạn có muốn duyệt bài này không?")){
