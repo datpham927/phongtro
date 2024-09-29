@@ -16,6 +16,12 @@ export const menuManageAdmin = [
   }, 
   {
     id: 3,
+    text: "Quản lý danh mục",
+    path: `${PATH.SYSTEM}/${PATH.MANAGE_CATEGORY}`,
+    icon:manageIcon
+  },
+  {
+    id: 4,
     text: "Sửa thông tin cá nhân",
     path: `${PATH.SYSTEM}/${PATH.EDIT_ACCOUNT}`,
     icon:editIcon

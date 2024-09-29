@@ -20,7 +20,7 @@ export const apiGetDetailUser = async (uid:string) => {
     }
   }; 
 
-  export const apiAddUser = async (data:any) => {
+  export const apiCreateUser = async (data:any) => {
     try {
       const response = await axiosJWT.post(`/user/add`,data);
       return response.data;

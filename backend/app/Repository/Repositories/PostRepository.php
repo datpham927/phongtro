@@ -166,9 +166,7 @@ public function findAllUnapprovedPosts($limit,$sort, $page){
     // Tính tổng số trang
     $totalPage = $limit > 0 ? ceil($totalPosts / $limit) : 1;  
     $skip = ($page - 1) * $limit;
-    if ($limit > 0) {
-    $expiredPostsQuery->skip($skip)->take($limit);
-    }
+    if ($limit > 0) {$expiredPostsQuery->skip($skip)->take($limit);}
     // Lấy kết quả
     $posts = $expiredPostsQuery->get();
  return [

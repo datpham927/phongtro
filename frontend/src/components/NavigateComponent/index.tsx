@@ -3,17 +3,17 @@ import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { PATH } from "../../utils/constant";
 import { useEffect } from "react";
-import { getAllCategory } from "../../services/apiCategory";
 import { setCategories } from "../../redux/category/categorySlice";
+import { apiGetAllCategory } from "../../services/apiCategory";
 
 const NavigateComponent = () => {
   const { categories } = useAppSelector((state) => state.category);
   const dispatch=useAppDispatch()
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await getAllCategory();
+      const res = await apiGetAllCategory(null);
       if (res?.status) {
-        dispatch(setCategories(res?.data));
+        dispatch(setCategories(res?.data.categories));
       }
     };
     fetchApi();

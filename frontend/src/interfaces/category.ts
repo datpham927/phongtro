@@ -4,5 +4,6 @@ export interface ICategory {
         title: string,
         slug:  string,
         sub_title: string,
+        post_quantity?:number
   }
   

@@ -44,14 +44,12 @@ class AddressRepository  implements AddressRepositoryInterface
             ->where('district_slug', $district_slug)
             ->select('city_name', 'district_name')
             ->first();
-
         // Lấy danh sách các phường/xã
         $wards = $this->address::where('city_slug', $city_slug)
             ->where('district_slug', $district_slug)
             ->join('posts', 'posts.address_id', '=', 'post_addresses.id') // Sử dụng join để kết nối bảng
             ->select('ward_name', 'ward_slug',  DB::raw('COUNT(posts.id) as quantity'))
             ->groupBy('ward_name', 'ward_slug')->orderBy('ward_name', 'asc')->get();
-    
             return [
                 'city_name' => $locationData->city_name,
                 'district_name' => $locationData->district_name,
