@@ -13,6 +13,8 @@ interface PostServiceInterface
     public function update($request, $id);
     public function destroy($id); 
     public function findRelatedPost ($addressId);
-    
+    public function  findAllUnapprovedPosts($request);
+    public function  findApprovePost($pid); 
 
+    
 }

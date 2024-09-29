@@ -7,6 +7,7 @@ export interface IPost {
       thumb: string;
       description: string;
       slug: string;
+      is_approved?:boolean;
       images:[]
       area:{
         order:string,

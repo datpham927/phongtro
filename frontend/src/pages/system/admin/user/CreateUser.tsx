@@ -5,7 +5,7 @@ import { ICreateIUser  } from "../../../../interfaces/User";
 import InputForm from "../../../../components/InputComponent/InputForm";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { apiAddUser  } from "../../../../services/apiUser";
+import { apiCreateUser  } from "../../../../services/apiUser";
 import validate from "../../../../utils/validate";
 import { apiUploadImage } from "../../../../services/apiUploadPicture";
 import { FormControl, FormControlLabel,  Radio, RadioGroup } from "@mui/material";
@@ -46,7 +46,7 @@ function CreateUser() {
     dispatch(setLoading(true)); 
     if (validate(payload, setInvalidFields)) {
       const {id,confirm_password,...data }=payload
-      const res = await apiAddUser(data);
+      const res = await apiCreateUser(data);
       if (!res.status) {
          alert("Thêm không thành công");
       }else{

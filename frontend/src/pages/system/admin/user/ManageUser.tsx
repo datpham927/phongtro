@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import SelectOption from "../../../../components/SelectOption"; 
 import { transformId } from "../../../../utils/format/transformId";
 import { ButtonComponent, PaginationComponent } from "../../../../components";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +12,6 @@ function ManageUser() {
   const [users, setUsers] = useState<IUserDetail[]>([]);  
   const [totalPage, setTotalPage]=useState<number>(0)
   const [currentPage, setCurrentPage]=useState<number|any>(1)
-  const [postFilter, SetPostFilter]=useState<number|any>(1)
   const dispatch= useAppDispatch()
 
   const navigate=useNavigate()
@@ -27,7 +25,7 @@ function ManageUser() {
         dispatch(setLoading(false))  
     };
     fetchApi();
-  }, [currentPage, postFilter]);
+  }, [currentPage ]);
   
 
 const handleDeletePost=async(uid:any)=>{
@@ -49,16 +47,6 @@ const handleDeletePost=async(uid:any)=>{
       <div className="flex justify-between items-center  border-solid border-b-[1px] border-gray-300 mb-6">
         <h1 className="flex text-2xl py-3 ">Quản lý người dùng</h1>
         <div className="flex gap-6 text-center">
-          <SelectOption
-            setCode={SetPostFilter}
-            className="w-auto"
-            label="Lọc theo trạng thái"
-            type=""
-            options={[
-              { code: 1, name: "Tin đang hiển thị" },
-              { code: 2, name: "Tin hết Hạn" },
-            ]}
-          />
           <ButtonComponent text="Thêm người dùng" className="bg-[#dc3545] text-white text-sm !py-0"  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_USER}`)}/>
         </div>
       </div>

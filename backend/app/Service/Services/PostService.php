@@ -182,5 +182,15 @@ class PostService implements PostServiceInterface
         $address["ward_slug"]= Util::slug($address[ "ward_name"] );
        return Post_address::create($address);
     }
-    
+    public function  findAllUnapprovedPosts($request){
+        $limit=$request['limit'];
+        $page=$request['page'];
+        $sort=$request['sort'];
+        unset($request['limit'],$request['page'],$request['sort']);
+     return $this->postRepository->findAllUnapprovedPosts($limit, $sort, $page);
+    }
+
+    public function findApprovePost($pid){
+        return $this->postRepository->findByIdAndApprovePost($pid);
+    }
 }

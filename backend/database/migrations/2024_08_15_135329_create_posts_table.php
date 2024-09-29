@@ -20,10 +20,11 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->uuid('address_id')->nullable(); // Change this from text to uuid
             $table->uuid('category_id');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('address_id')->references('id')->on('post_addresses')->onDelete('cascade');
             $table->string('expire_at')->nullable();
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }

@@ -17,7 +17,9 @@ export const PATH = {
   CREATE_USER: "them-nguoi-dung",
   APPROVE_POST:'duyet-bai-dang',
   UPDATE_POST: "chinh-sua-bai-dang/:pid",
-
+  MANAGE_CATEGORY: "quan-ly-danh-muc",
+  UPDATE_CATEGORY: "chinh-sua-danh-muc/:cid",
+  CREATE_CATEGORY: "them--danh-muc",
 };
 
 export const titleHomePage = {
