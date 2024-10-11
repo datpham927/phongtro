@@ -24,7 +24,7 @@ const FilterPage: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
   const queries = useMemo(() => queryString.parse(location.search), [location.search]);
-  const category=categories.find(e=>e.slug===params.category_slug||e.slug==="cho-thue-phong-tro")
+  const category=categories?.find(e=>e.slug===params.category_slug||e.slug==="cho-thue-phong-tro")
 
 
   useEffect(() => {

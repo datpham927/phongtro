@@ -58,6 +58,7 @@ class PostDetailResource extends JsonResource
                 'created_at'      =>$attribute?->created_at,
             ],
             'user'=>[
+                'id' => $this->user?->id,
                 'name'=>$user->name,
                 'phone'=>$user->phone,
                 'zalo'=>$user->zalo,

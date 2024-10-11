@@ -8,7 +8,6 @@ class PostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
-     *
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
@@ -38,6 +37,7 @@ class PostResource extends JsonResource
                 'value' => $this->price?->value,
             ],
             'user' => [
+                'id' => $this->user?->id,
                 'name' => $this->user?->name,
                 'phone' => $this->user?->phone,
                 'avatar' => $this->user?->avatar,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { apiLogin } from '../../../../services/apiAuth';
 import { useAppDispatch } from '../../../../redux/hooks';
-import { setFeatureAuth, setOpenFeatureAuth } from '../../../../redux/action/actionSlice';
+import { setFeatureAuth, setLoading, setOpenFeatureAuth } from '../../../../redux/action/actionSlice';
 import { setIsLoginSuccess } from '../../../../redux/auth/authSlice';
 import { ButtonComponent, InputPassWordComponent } from '../../../../components';
 
@@ -12,11 +12,13 @@ const Login: React.FC = () => {
     const dispatch = useAppDispatch();
     const handleSummit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
+        dispatch(setLoading(true))
         if (!email || !password) {
             setError('Tài khoản hoặc mật khẩu không chính xác!');
             return;
         }
         const res = await apiLogin(email, password);
+        dispatch(setLoading(false))
         if (res?.status) {
             localStorage.setItem('access_token', JSON.stringify(res.data.authorization.access_token));
             localStorage.setItem('client_id', JSON.stringify(res.data.user_id));

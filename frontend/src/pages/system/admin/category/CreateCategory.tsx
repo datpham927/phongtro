@@ -32,7 +32,6 @@ function CreateCategory() {
     }
     dispatch(setLoading(false)); 
   } ;
-console.log(invalidFields)
   return (
     <div className="flex flex-col h-full px-7 ">
       <div className="w-full border-solid border-b-[1px] border-gray-300">

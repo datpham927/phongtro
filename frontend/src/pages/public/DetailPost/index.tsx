@@ -162,6 +162,7 @@ const DetailPost: React.FC = () => {
 
     <div className="w-1/3 px-2">
         <BoxInfo
+            userId={user?.id}
             avatar={user?.avatar}
             name={user?.name}
             phone={user?.phone}
