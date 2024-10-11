@@ -15,6 +15,4 @@ interface PostServiceInterface
     public function findRelatedPost ($addressId);
     public function  findAllUnapprovedPosts($request);
     public function  findApprovePost($pid); 
-
-    
 }

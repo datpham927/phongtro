@@ -121,23 +121,15 @@ class PostService implements PostServiceInterface
         "description" => $validatedData["description"],
         "category_id" => $validatedData["category_id"]
     ];
-    $this->postRepository->findByIdAndUpdate($id, $dataPost);
+     $post= $this->postRepository->findByIdAndUpdate($id, $dataPost);
     if (!empty($validatedData["images"])) {
-        Post_image::where('post_id', $id)->delete();
+        $post->images()->delete();
         $this->createPostImage($validatedData["images"], $id);
     }
-    if (!empty($validatedData["area"])) {
-        Post_area::where('post_id', $id)->delete();
-        $this->createPostArea($validatedData["area"], $id);
-    }
-    if (!empty($validatedData["price"])) {
-        Post_price::where('post_id', $id)->delete();
-        $this->createPostPrice($validatedData["price"], $id);
-    }
-    if (!empty($validatedData["attribute"])) {
-        Post_attribute::where('post_id', $id)->update($validatedData["attribute"]);
-    } 
-    return $post;
+    if (!empty($validatedData["area"])) { $post->price()->update($validatedData["area"]); }
+    if (!empty($validatedData["price"])) {$post->price()->update($validatedData["price"]);}
+    if (!empty($validatedData["attribute"])) {$post->attribute()->update($validatedData["attribute"]);} 
+       return $post;
     }
     public function destroy($id){
          // Có định nghĩa khóa ngoại nên các table kia sẽ tự động xóa
@@ -148,9 +140,7 @@ class PostService implements PostServiceInterface
     public function findDetailPost($pid){
           return $this->postRepository->findPostDetailById ($pid);
     } 
-
      // ----------------- 
-
      public function createPostImage($images,$pid){
         foreach($images as $img){
             Post_image::create([
@@ -186,6 +176,7 @@ class PostService implements PostServiceInterface
         $limit=$request['limit'];
         $page=$request['page'];
         $sort=$request['sort'];
+        $request['is_approved']=true;
         unset($request['limit'],$request['page'],$request['sort']);
      return $this->postRepository->findAllUnapprovedPosts($limit, $sort, $page);
     }
