@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import ButtonComponent from "../../../../components/ButtonComponent/ButtonComponent";
-import InputComponent from "../../../../components/InputComponent/InputComponent";
-import { setFeatureAuth, setOpenFeatureAuth } from "../../../../redux/action/actionSlice";
+import { setFeatureAuth, setLoading, setOpenFeatureAuth } from "../../../../redux/action/actionSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
-import InputPassWordComponent from "../../../../components/InputComponent/InputPassWordComponent";
-import TypeAccountComponent from "../../../../components/TypeAccountComponent/TypeAccountComponent";
 import validate from "../../../../utils/validate";
 import { apiRegister } from "../../../../services/apiAuth";
-import { showNotification } from "../../../../components/common/showNotification";
-import { ToastContainer } from "react-toastify";
 import { setIsLoginSuccess } from "../../../../redux/auth/authSlice";
+import { ButtonComponent, InputComponent, InputPassWordComponent, TypeAccountComponent } from "../../../../components";
 
 interface InvalidField {
   name: string;
@@ -32,10 +27,11 @@ const Register: React.FC = () => {
     setInvalidFields([]);
     setValueForm({ ...valueForm, [e.target.name]: e.target.value });
   };
-
   const handelSummit = async () => {
+          dispatch(setLoading(true))
         if(!validate(valueForm,setInvalidFields) ) return;
         const res= await apiRegister(valueForm)
+        dispatch(setLoading(false))
         if(!res.status)  { alert('Email đã tồn tại'); return;}
         localStorage.setItem('access_token', JSON.stringify(res.data.authorization.access_token));
         localStorage.setItem('client_id', JSON.stringify(res.data.user_id));
@@ -44,7 +40,6 @@ const Register: React.FC = () => {
         dispatch(setIsLoginSuccess(true));
         window.location.reload();
   };
-
   return (
     <>
       <InputComponent type="text" name="name" placeholder="Nhập tên" 

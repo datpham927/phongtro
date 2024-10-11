@@ -69,8 +69,8 @@ class CrawlerControllers extends Controller
             ]);
         $this->crawlerListPost($categoryLink['url'], $category['id']);
         }
-        //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "41780d41-b267-46ba-9bf1-9375d8169eea");
-        //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "41780d41-b267-46ba-9bf1-9375d8169eea");
+        //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "388b3a30-2e16-46db-b160-9f0a1a473f4f");
+        //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "388b3a30-2e16-46db-b160-9f0a1a473f4f");
       
          DB::commit();
         return response()->json([
@@ -136,15 +136,53 @@ class CrawlerControllers extends Controller
         // $postLink $brand_id  $categoryId  
         $html=file_get_contents($postLink);   
         $crawler=new Crawler( $html);
+            // ------------------ ADDRESS ------------------
+            $addressDetail=$crawler->filter(".post-address")->text();
+            $addressArray=explode(', ', $addressDetail);
+        if( count($addressArray)>3){
+            $address["id"]=Util::uuid(); 
+            $address["city_name"]=$addressArray[3];
+            $address["district_name"]= $addressArray[2];
+            $address["ward_name"]= $addressArray[1]; 
+            $address["city_slug"]= Util::slug($addressArray[3]);
+            $address["district_slug"]=Util::slug($addressArray[2]);
+            $address["ward_slug"]=Util::slug($addressArray[1]); 
+            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
+            $address["map"]= '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.5956177445114!2d108.24024507365495!3d16.034552740368213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142175ea43a1001%3A0x1b74ea0a2ed3227b!2zS8O9IHTDumMgeMOhIFNpbmggdmnDqm4gVFAgxJDDoCBO4bq1bmcgLSBQaMOtYSDEkMO0bmc!5e0!3m2!1svi!2s!4v1726499130448!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'; 
+        }else{
+            $address["id"]=Util::uuid(); 
+            $address["city_name"]= explode(', ', $addressDetail)[2];
+            $address["district_name"]= explode(', ', $addressDetail)[1];
+            $address["ward_name"]= explode(', ', $addressDetail)[0]; 
+            $address["city_slug"]= Util::slug(explode(', ', $addressDetail)[2]);
+            $address["district_slug"]=Util::slug(explode(', ', $addressDetail)[1]);
+            $address["ward_slug"]=Util::slug(explode(', ', $addressDetail)[0]); 
+            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
+            $address["map"]= $crawler->filter("#__maps_content")->html(); 
+        }
+       $foundAddress = Post_address::where([
+          "city_name"=> $address["city_name"], 
+          "district_name"=>  $address["district_name" ],
+          "ward_name"=>  $address["ward_name"] 
+       ])->first();
+       $addressId = '';
+       if (empty($foundAddress)) {
+           $addressId = $this->createAddress($address)->id; // Truy cập thuộc tính id của đối tượng được trả về bởi createAddress
+       } else {
+           $addressId = $foundAddress->id; // Truy cập thuộc tính id của đối tượng $foundAddress
+       }
          // ------------------ POST ------------------
          $postData["id"]=Util::uuid();
+         $postData["address_id"]=$addressId ;
          $postData["user_id"]= $this->users[rand(0, 3)];
          $postData["category_id"]=$categoryId;
          $postData["title"]=$crawler->filter(".page-h1 a")->text();
          $postData["thumb"]=$postThumb;
          $postData["description"]=$crawler->filter(".section-content")->html();
          $postData["slug"]=Util::slug($crawler->filter(".page-h1 a")->text());
-        //  dd( $postData);
+         $postData["expire_at"]=Util::getRandomDateFromNow();
+         $postData["is_approved"]=true;
+         //  dd( $postData);
          $post= Post::create($postData);
          // -------------  image  ------------- 
          $dataImages = [];
@@ -167,8 +205,9 @@ class CrawlerControllers extends Controller
          //  dd($dataImages);
          // ------------------ PRICE ------------------
          $price["id"]=Util::uuid();
-         $price["order"]=Util::extractNumber($crawler->filter(".item.price span")->text());
-         $price["value"]=$crawler->filter(".item.price span")->text();
+         $orderRandom=Util::convertToMillion(Util::randomDecimal());
+         $price["order"]= $orderRandom["order"];
+         $price["value"]= $orderRandom["value"] ;
           $price["post_id"]= $post["id"];
         //  dd( $price);
          Post_price::create($price);
@@ -186,39 +225,17 @@ class CrawlerControllers extends Controller
          $type= $crawler->filter("tr")->eq(3)->filter("td")->eq(1)->text() ;
          $target= $crawler->filter("tr")->eq(4)->filter("td")->eq(1)->text()  ; 
          $attribute["type_post"]= $type;
-         $attribute["target"]=$target;
-         $attribute["expire"]=Util::getRandomDateFromNow();
+         $attribute["target"]=$target; 
          $attribute["post_id"]= $post["id"];
         //  dd( $attribute);
         Post_attribute::create($attribute);
-         // ------------------ ADDRESS ------------------
-         $addressDetail=$crawler->filter(".post-address")->text();
-         $addressArray=explode(', ', $addressDetail);
-         if( count($addressArray)>3){
-            $address["id"]=Util::uuid(); 
-            $address["city_name"]=$addressArray[3];
-            $address["district_name"]= $addressArray[2];
-            $address["ward_name"]= $addressArray[1]; 
-            $address["city_slug"]= Util::slug($addressArray[3]);
-            $address["district_slug"]=Util::slug($addressArray[2]);
-            $address["ward_slug"]=Util::slug($addressArray[1]); 
-            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-            $address["map"]= $crawler->filter("#__maps_content")->html(); 
-            $address["post_id"]= $post["id"];
-         }else{
-            $address["id"]=Util::uuid(); 
-            $address["city_name"]= explode(', ', $addressDetail)[2];
-            $address["district_name"]= explode(', ', $addressDetail)[1];
-            $address["ward_name"]= explode(', ', $addressDetail)[0]; 
-            $address["city_slug"]= Util::slug(explode(', ', $addressDetail)[2]);
-            $address["district_slug"]=Util::slug(explode(', ', $addressDetail)[1]);
-            $address["ward_slug"]=Util::slug(explode(', ', $addressDetail)[0]); 
-            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-            $address["map"]= $crawler->filter("#__maps_content")->html(); 
-            $address["post_id"]= $post["id"];
-         }
-        
-         Post_address::create($address);
+         
     }
-
+    public function createAddress($address){
+        $address["id"]=Util::uuid();
+        $address["city_slug"]= Util::slug($address[ "city_name"] );
+        $address["district_slug"]= Util::slug($address[ "district_name"] );
+        $address["ward_slug"]= Util::slug($address[ "ward_name"] );
+       return Post_address::create($address);
+    }
 }

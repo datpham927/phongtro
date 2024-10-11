@@ -18,7 +18,7 @@ class PostDetailResource extends JsonResource
         $area    = $this->area;
         $price    = $this->price;
         $attribute    = $this->attribute;
-
+        $user    = $this->user;
         return [
             'id'            => $this->id,
             'title'    => $this->title,
@@ -26,11 +26,15 @@ class PostDetailResource extends JsonResource
             'images' => ImageResource::collection($this->whenLoaded('images')), 
             'slug'         => $this->slug,
             'description'         => $this->description,
+            "created_at"=> $this->created_at,
+            "expire_at"=> $this->created_at,
             'category'        => [
                 "id"=>$this->category->id,
-                "name"=>$this->category->name
+                "name"=>$this->category->name,
+                "slug"=>$this->category->slug
             ],
             'address' => [
+                'id'      =>$address?->id,
                 'city_name'      =>$address?->city_name,
                 'district_name'      =>$address?->district_name,
                 'ward_name'          =>$address?->ward_name,
@@ -40,14 +44,25 @@ class PostDetailResource extends JsonResource
                 'address_detail'  =>$address?->address_detail,
                 'map'  =>$address?->map,
             ],
-            'area'=>$area?->value,
-            'price' =>$price?->value,
+            'area'=>[
+              "order"=>  $area?->order,
+              "value"=>  $area?->value
+            ],
+            'price' =>[
+                "order"=>  $price?->order,
+                "value"=>  $price?->value
+              ],
             'attribute' => [ 
                 'target'      =>$attribute?->target,
-                'value'      =>$attribute?->type_post,
-                'expire'      =>$attribute?->expire,
+                'value'      =>$attribute?->type_post, 
                 'created_at'      =>$attribute?->created_at,
             ],
+            'user'=>[
+                'id' => $this->user?->id,
+                'name'=>$user->name,
+                'phone'=>$user->phone,
+                'zalo'=>$user->zalo,
+            ]
           
         ];
     }

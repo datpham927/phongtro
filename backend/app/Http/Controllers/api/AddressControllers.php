@@ -24,12 +24,63 @@ class AddressControllers extends Controller
                   return ResponseHelper::error("Error", $th);
               }
       }
-      public function getAllWard($district_slug){
+      public function getAllWard($city_slug,$district_slug,){
             try {
-                  $response = $this->AddressService->findAllWard($district_slug);
+                  $response = $this->AddressService->findAllWard($city_slug,$district_slug);
                   return ResponseHelper::success($response, "Successfully", 200);
               }  catch (\Throwable $th) {
                   return ResponseHelper::error("Error", $th);
               }
+      }
+      public function getAllDistrictBelongCategory($category_slug,$city_slug){
+        try {
+              $response = $this->AddressService->findAllDistrictBelongCategory($category_slug,$city_slug);
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+  }
+  public function getAllWardBelongCategory($category_slug,$city_slug,$district_slug){
+        try {
+              $response = $this->AddressService->findAllWardBelongCategory($category_slug,$city_slug,$district_slug);
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+  }
+
+
+      public function getAddress($ward_slug){
+        try {
+              $response = $this->AddressService->findNameWard($ward_slug);
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+      }
+
+      public function getCities(){
+        try {
+              $response = $this->AddressService->findCities();
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+      }
+      public function getDistricts($city_slug){
+        try {
+              $response = $this->AddressService->findDistricts($city_slug);
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
+      }
+      public function getWards($district_slug){
+        try {
+              $response = $this->AddressService->findWards($district_slug);
+              return ResponseHelper::success($response, "Successfully", 200);
+          }  catch (\Throwable $th) {
+              return ResponseHelper::error("Error", $th);
+          }
       }
 }

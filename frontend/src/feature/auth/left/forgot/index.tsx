@@ -35,7 +35,7 @@ const Forgot: React.FC = () => {
                         placeholder="dpshopvn@gmail.com"
                     />
                 </div>
-                {invalidFields.length>0&& <p className="text-red-400 text-sm">{invalidFields.find(e=>e.name=='email')?.message}</p>}
+                {invalidFields?.length>0&& <p className="text-red-400 text-sm">{invalidFields?.find(e=>e.name=='email')?.message}</p>}
                 <div className="flex flex-col gap-2 mt-6">
                     <button
                         className="w-full bg-pink-500 py-2 rounded-sm text-white text-xl font-normal hover:opacity-80  transition duration-200 "

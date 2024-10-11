@@ -13,7 +13,7 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({
 }) => {
   return (
     <button
-      className={`flex py-2 px-3 text-base justify-center rounded-md hover:underline ${className}`}
+      className={`flex items-center py-2 px-3 text-base justify-center rounded-md hover:underline ${className}`}
       onClick={onClick}
     >
       {text}

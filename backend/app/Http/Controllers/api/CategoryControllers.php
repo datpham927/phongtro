@@ -26,7 +26,15 @@ class CategoryControllers extends Controller
             return ResponseHelper::error("Error",$th);
         }
     } 
-
+    public function getCategory(Request $request ,$id)
+    { 
+        try {
+            $response= $this->categoryService->findCategory($id);
+            return ResponseHelper::success($response,"Successfully",200);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error("Error",$th);
+        }
+    } 
     
      
     public function create(Request $request)

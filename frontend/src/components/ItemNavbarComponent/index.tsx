@@ -1,21 +1,12 @@
 import React, { memo } from "react";
+import { IFilterCategory, IFilterDouble } from "../../interfaces/filter";
 
-interface FilterDouble {
-  min: number;
-  max: number;
-  value: string;
-}
-
-interface FilterCategory {
-  id: string;
-  name: string;
-  slug: string;
-}
+ 
 interface ItemNavbarComponentProps {
   title: string;
-  content: FilterDouble[] | FilterCategory[];
-  isDouble: boolean;
-  handleOnClick?: (e: FilterDouble | FilterCategory) => void;
+  content: IFilterDouble[] | IFilterCategory[];
+  isDouble?: boolean;
+  handleOnClick?:any|undefined
 }
 const ItemNavbarComponent: React.FC<ItemNavbarComponentProps> = ({
   title,
@@ -30,7 +21,7 @@ const ItemNavbarComponent: React.FC<ItemNavbarComponentProps> = ({
         {content?.map((item) => (
           <div
             key={"value" in item ? item.value : item.name}
-            onClick={() => handleOnClick && handleOnClick(item)}
+            onClick={() => handleOnClick(item)}
             className="flex items-center text-neutral-700 text-sm py-2 border-solid border-b-[1px] border-gray-100"
           >
             <ion-icon name="chevron-forward-outline"></ion-icon>

@@ -1,22 +1,22 @@
-export const memuSidebar = [
+import { PATH } from "./constant";
+
+export const menuSidebar = [
   {
     id: 1,
     text: "Đăng tin cho thuê",
-    path: "/he-thong/tao-moi-bai-dang",
+    path: `${PATH.SYSTEM}/${PATH.CREATE_POST}`,
+    icon:"https://phongtro123.com/images/dashboard-add-post.svg"
   },
   {
     id: 2,
     text: "Quản lý tin đăng",
-    path: "/he-thong/quan-ly-bai-dang",
+    path: `${PATH.SYSTEM}/${PATH.MANAGE_POST}`,
+    icon:"https://phongtro123.com/images/dashboard-manage-post.svg"
   },
   {
     id: 4,
-    text: "Sửa thông tin cá nhân",
-    path: "/he-thong/sua-thong-tin-ca-nhan",
-  },
-  {
-    id: 5,
-    text: "Liên hệ",
-    path: "/he-thong/lien-he",
-  },
+    text: "Thông tin cá nhân",
+    path: `${PATH.SYSTEM}/${PATH.EDIT_ACCOUNT}`,
+    icon:"https://phongtro123.com/images/dashboard-user.svg"
+  } 
 ];

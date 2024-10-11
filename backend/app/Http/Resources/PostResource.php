@@ -8,44 +8,41 @@ class PostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
-     *
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {
-        $address = $this->address;
-        $area = $this->area;
-        $price = $this->price;
-        $user = $this->user;
-        $images = $this->images;
         return [
             'id' => $this->id,
             'title' => $this->title,
             'thumb' => $this->thumb,
             'slug' => $this->slug,
             'description' => $this->description,
+            "created_at" => $this->created_at,
+            "expire_at" => $this->expire_at,
             'address' => [
-                'city_name' => $address?->city_name,
-                'district_name' => $address?->district_name,
-                'ward_name' => $address?->ward_name,
-                'city_slug' => $address?->city_slug,
-                'district_slug' => $address?->district_slug,
-                'ward_slug' => $address?->ward_slug,
+                'city_name' => $this->address?->city_name,
+                'district_name' => $this->address?->district_name,
+                'ward_name' => $this->address?->ward_name,
+                'city_slug' => $this->address?->city_slug,
+                'district_slug' => $this->address?->district_slug,
+                'ward_slug' => $this->address?->ward_slug,
             ],
             'area' => [
-                'order' => $area?->order,
-                'value' => $area?->value,
+                'order' => $this->area?->order,
+                'value' => $this->area?->value,
             ],
             'price' => [
-                'order' => $price?->order,
-                'value' => $price?->value,
+                'order' => $this->price?->order,
+                'value' => $this->price?->value,
             ],
             'user' => [
-                'name' => $user?->name,
-                'phone' => $user?->phone,
-                'avatar' => $user?->avatar,
+                'id' => $this->user?->id,
+                'name' => $this->user?->name,
+                'phone' => $this->user?->phone,
+                'avatar' => $this->user?->avatar,
             ],
-            "images"=>  $images
+            "images" => $this->images->count(),
         ];
     }
 }

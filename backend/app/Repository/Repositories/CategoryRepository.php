@@ -5,23 +5,26 @@ namespace App\Repository\Repositories;
 use App\Models\Category;
 use App\Repository\Interfaces\CategoryRepositoryInterface;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
     protected $category;
-
     public function __construct(Category $category)
     {
         $this->category = $category;
     }
-    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filter = null, $select = null)
+    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null, $select = null)
 {
     $skip = ($page - 1) * $limit;
     $sortby = $sort === "ctime" ? 'desc' : 'asc'; // Sorting by creation time in descending order if 'ctime' is specified, otherwise ascending.
     // Start the query
-    $query = $this->category::query(); // Using query() for more flexibility
-    // Apply filtering if any filters are provided
-    if ($filter) {  $query->where($filter);  }
+    $query = $this->category->select('categories.*', DB::raw('count(p.id) as post_quantity'))
+    ->leftJoin('posts as p', 'p.category_id', '=', 'categories.id')
+    ->groupBy('categories.id');
+    // Apply filtersing if any filters are provided
+    if ($filters) {  $query->where($filters);  }
+     $totalCategories=(clone  $query)->count(); 
     // Apply sorting
     $query->orderBy('created_at', $sortby);
     // Apply pagination (skip and limit)
@@ -29,7 +32,13 @@ class CategoryRepository implements CategoryRepositoryInterface
     // Apply select columns if specified
     if ($select) { $query->select($select);}
     // Execute the query and return the results
-    return $query->get() ?: null; // Return the result set or null if no results found
+    $totalPage= $limit > 0 ? ceil($totalCategories/$limit) : 1; 
+    return [
+        'totalPage' => intval($totalPage),
+        'currentPage' => intval($page),
+        'totalCategories' => intval($totalCategories),
+        'categories' => $query->get() ?: null, // Assuming PostResource is used for formatting
+    ]; 
 }
 
     

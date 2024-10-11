@@ -6,6 +6,7 @@ use App\Util;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CategoryService implements CategoryServiceInterface
 {
@@ -19,8 +20,7 @@ class CategoryService implements CategoryServiceInterface
             $page=$request['page'];
             $sort=$request['sort'];
             $filter=[];
-            $select=null;
-         return $this->categoryRepository->findAll($limit, $sort, $page,$filter, $select);
+            return $this->categoryRepository->findAll($limit, $sort, $page,$filter);
     }
     public function create($request){
             $requestData = $request->all();
@@ -41,7 +41,13 @@ class CategoryService implements CategoryServiceInterface
         $requestData = $request->all();
         $requestData['slug'] =Util::slug($request->input('name'));
         $validator = Validator::make($requestData, [ 
-            'name' => 'required|string|max:255|unique:categories',
+          'name' => [
+            'required',
+            'string',
+            'max:255',
+            // Kiểm tra tính duy nhất của 'name', bỏ qua ID của category hiện tại
+            Rule::unique('categories')->ignore($id),
+        ],
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255',
             'sub_title' => 'required|string|max:255',
@@ -52,5 +58,9 @@ class CategoryService implements CategoryServiceInterface
     }
     public function destroy($id){
          $this->categoryRepository->findByIdAndDelete($id);
+    }
+
+    public function findCategory($id){
+        return $this->categoryRepository->findById($id);
     }
 }

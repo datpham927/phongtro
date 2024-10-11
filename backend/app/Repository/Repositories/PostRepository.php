@@ -13,29 +13,108 @@ class PostRepository implements PostRepositoryInterface
 {
     protected $post;
 
-    public function __construct(Post $post)
-    {
+    public function __construct(Post $post) {
         $this->post = $post;
     }
-    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filter = null, $select = null)
-{
-    $skip = ($page - 1) * $limit;
-    $sortby = $sort === "ctime" ? 'desc' : 'asc'; // Sorting by creation time in descending order if 'ctime' is specified, otherwise ascending.
-    // Start the query
-    $query = $this->post::query(); // Using query() for more flexibility
-    // Apply filtering if any filters are provided
-    if ($filter) {  $query->where($filter);  }
-    // Apply sorting
-    $query->orderBy('created_at', $sortby);
-    // Apply pagination (skip and limit)
-    if ($limit > 0) {  $query->skip($skip)->take($limit); }
-    // Apply select columns if specified
-    if ($select) { $query->select($select);}
-    // Execute the query and return the results
-    return PostResource::collection($query->get());   // Return the result set or null if no results found
-}
+     public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null){
+    // Khởi tạo query builder
+    $query = $this->post->newQuery(); 
+    // Áp dụng bộ lọc theo category_id nếu có
+    if (!empty($filters['category_slug'])) {
+        $query->whereHas('category', function($query) use ($filters) {
+            $query->where('slug', $filters['category_slug']);
+        });
+        unset($filters['category_slug']);
+    }
+    // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
+    if (!empty($filters['city_slug']) || !empty($filters['district_slug']) || !empty($filters['ward_slug'])) {
+        $query->whereHas('address', function($query) use ($filters) {
+            // Kiểm tra city_slug và áp dụng điều kiện
+            if (!empty($filters['city_slug'])) {
+                $query->where('city_slug', $filters['city_slug']);
+            }
+            // Kiểm tra district_slug và áp dụng điều kiện
+            if (!empty($filters['district_slug'])) {
+                $query->where('district_slug', $filters['district_slug']);
+            }
+            // Kiểm tra ward_slug và áp dụng điều kiện
+            if (!empty($filters['ward_slug'])) {
+                $query->where('ward_slug', $filters['ward_slug']);
+            }
+        });
+        unset($filters['city_slug'],$filters['ward_slug'],$filters['district_slug']);
+    } 
+    // Áp dụng bộ lọc theo khoảng giá nếu có
+    if (!empty($filters['price_from']) || !empty($filters['price_to'])) {
+        $query->whereHas('price', function($query) use ($filters) {
+            $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
+        });
+        unset($filters['price_from'],$filters['price_to']);
+    } 
+    // Áp dụng bộ lọc theo khoảng diện tích nếu có
+    if (!empty($filters['area_from'])  ||  !empty($filters['area_to'])) { 
+        $query->whereHas('area', function($query) use ($filters) {
+            $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
+        });
+        unset($filters['area_from'],$filters['area_to']);
 
+    }
+    $query->where($filters);
+    // tất cả bài post
+    $totalProducts= $query->get()->count();
+    $totalPage=ceil($totalProducts/$limit);
+    // Áp dụng sắp xếp
+    $sortby = $sort === 'ctime' ? 'desc' : 'asc';
+    $query->orderBy('posts.created_at', $sortby);
+    // Áp dụng phân trang
+    $skip = ($page - 1) * $limit;
+    if ($limit > 0) { $query->skip($skip)->take($limit); }
+    // Thực thi truy vấn và trả về kết quả dưới dạng resource
+    // return PostResource::collection($query->get());
+    return [
+        'totalPage' => $totalPage,
+        'currentPage' => intval($page),
+        'totalPosts' =>$totalProducts,
+        'posts' => PostResource::collection($query->get()), // Assuming $post is a paginated result
+    ];   
+    }
+
+    public function findAllPostExpiredForShop($limit, $sort, $page, $shopId)
+    {
+        // Truy vấn lấy các bài viết hết hạn
+        $expiredPostsQuery = $this->post::where('user_id', $shopId)
+            ->where('expire_at', '<', now());
     
+        // Lấy tổng số bài viết hết hạn (clone query để không ảnh hưởng đến pagination)
+        $totalPosts = (clone $expiredPostsQuery)->count();
+    
+        // Tính tổng số trang
+        $totalPage = $limit > 0 ? ceil($totalPosts / $limit) : 1;
+        // Áp dụng sắp xếp, skip và take (limit)
+        $expiredPostsQuery->orderBy('expire_at', $sort);
+        // Xử lý phân trang
+        $skip = ($page - 1) * $limit;
+        if ($limit > 0) {
+            $expiredPostsQuery->skip($skip)->take($limit);
+        }
+    
+        // Lấy kết quả
+        $posts = $expiredPostsQuery->get();
+    
+        return [
+            'totalPage' => intval($totalPage),
+            'currentPage' => intval($page),
+            'totalPosts' => intval($totalPosts),
+            'posts' => PostResource::collection($posts), // Assuming PostResource is used for formatting
+        ];
+    }
+    
+    
+
+    public function findRelatedPostByAddress ($addressId){
+        $relatedPost=$this->post::where(["address_id"=>$addressId])->limit(10)->get();
+        return   PostResource::collection($relatedPost);
+    }
     public function create( $data)
     {
         return $this->post->create($data);
@@ -76,43 +155,31 @@ class PostRepository implements PostRepositoryInterface
     ])->find($pid);
     // Trả về resource mới với bài post đã load các mối quan hệ
     return new PostDetailResource($post);
-}
-public function search($limit = 5, $sort = 'asc', $page = 1, array $filters = []) {
-    // Khởi tạo query builder
-    $query = $this->post->newQuery();
-
-    // Áp dụng bộ lọc theo category_id nếu có
-    if (!empty($filters['category_id'])) {
-        $query->where('category_id', $filters['category_id']);
-    }
-    // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
-    if (!empty($filters['city_slug']) && !empty($filters['district_slug']) && !empty($filters['ward_slug'])) {
-        $query->whereHas('address', function($query) use ($filters) {
-                $query->where('city_slug', $filters['city_slug'])
-                ->where('district_slug', $filters['district_slug'])
-                ->where('ward_slug', $filters['ward_slug']);
-        });
-    }
-    // Áp dụng bộ lọc theo khoảng giá nếu có
-    if (!empty($filters['price_from']) && !empty($filters['price_to'])) {
-        $query->whereHas('price', function($query) use ($filters) {
-            $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
-        });
-    }
-    // Áp dụng bộ lọc theo khoảng diện tích nếu có
-    if (!empty($filters['area_from']) && !empty($filters['area_to'])) {
-        $query->whereHas('area', function($query) use ($filters) {
-            $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
-        });
-    }
-    // Áp dụng sắp xếp
+} 
+public function findAllUnapprovedPosts($limit,$sort, $page){
+     // Truy vấn lấy các bài viết hết hạn
+     $expiredPostsQuery = $this->post::where('is_approved',false); 
+    // Lấy tổng số bài viết hết hạn (clone query để không ảnh hưởng đến pagination)
     $sortby = $sort === 'ctime' ? 'desc' : 'asc';
-    $query->orderBy('posts.created_at', $sortby);
-    // Áp dụng phân trang
+    $expiredPostsQuery->orderBy('posts.created_at', $sortby);
+    $totalPosts = (clone $expiredPostsQuery)->count();
+    // Tính tổng số trang
+    $totalPage = $limit > 0 ? ceil($totalPosts / $limit) : 1;  
     $skip = ($page - 1) * $limit;
-    if ($limit > 0) { $query->skip($skip)->take($limit); }
-    // Thực thi truy vấn và trả về kết quả dưới dạng resource
-    return PostResource::collection($query->get());
+    if ($limit > 0) {$expiredPostsQuery->skip($skip)->take($limit);}
+    // Lấy kết quả
+    $posts = $expiredPostsQuery->get();
+ return [
+     'totalPage' => intval($totalPage),
+     'currentPage' => intval($page),
+     'totalPosts' => intval($totalPosts),
+     'posts' => PostResource::collection($posts), // Assuming PostResource is used for formatting
+ ];
 }
-
+        public function findByIdAndApprovePost($pid){
+            $post=$this->findById($pid);
+            if(! $post)throw new Exception("Post does not exist!",404);
+            $post->update(["is_approved"=>true]);
+            return $post;
+        }
 }

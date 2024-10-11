@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { apiRefreshToken } from '../services/apiAuth';
-import { parse } from 'path';
 
 export const httpRequest = axios.create({
     baseURL: import.meta.env.VITE_REACT_API_URL_BACKEND || 'http://localhost:4000/api/',
 });
 export const axiosJWT = axios.create({
-    baseURL: import.meta.env.VITE_REACT_API_URL_BACKEND || 'http://localhost:4000/api/',
+     withCredentials: true,// không có cái này thì tình duyệt sẽ không nhận được cookie
+    //  được sử dụng để cho phép gửi cookie hoặc các thông tin xác thực (credentials)
+    //  như token JWT, chứng chỉ HTTP, hoặc các thông tin khác khi gửi yêu cầu đến một
+    //  máy chủ từ một miền khác (cross-origin request).
+     baseURL: import.meta.env.VITE_REACT_API_URL_BACKEND || 'http://localhost:4000/api/',
 });
 
 axiosJWT.interceptors.request.use(
@@ -34,18 +37,15 @@ axiosJWT.interceptors.response.use(
     async (error) => {
       const originalRequest = error.config;
       // Kiểm tra nếu lỗi là 401 (Unauthorized) và request chưa được thử lại
-      if (error.response.status === 401 && !originalRequest._retry) {
+      if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true; // Đánh dấu request đã thử lại
         try {
-          const refreshToken = localStorage.getItem("refresh_token"); // Lấy refresh token từ localStorage
-          if(!refreshToken) return;
-          const res = await apiRefreshToken(JSON.parse(refreshToken)); // Gọi API để lấy access token mới
+          const res = await apiRefreshToken(); // Gọi API để lấy access token mới
           if (res) {
             // Cập nhật lại header Authorization với token mới
             originalRequest.headers['Authorization'] = `Bearer ${res.data.authorization.access_token}`;
             localStorage.setItem('access_token', JSON.stringify(res.data.authorization.access_token));
             localStorage.setItem('client_id', JSON.stringify(res.data.user_id));
-            localStorage.setItem('refresh_token', JSON.stringify(res.data.authorization.refresh_token));
             return axiosJWT(originalRequest); // Gửi lại request ban đầu với token mới
           }
         } catch (error) {

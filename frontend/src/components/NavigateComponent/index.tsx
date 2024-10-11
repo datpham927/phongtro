@@ -1,21 +1,24 @@
 // import { setPostFilterCode } from "../redux/postSlice/postSlice";
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { PATH } from "../../utils/constant";
+import { useEffect } from "react";
+import { setCategories } from "../../redux/category/categorySlice";
+import { apiGetAllCategory } from "../../services/apiCategory";
 
 const NavigateComponent = () => {
   const { categories } = useAppSelector((state) => state.category);
-  const [fixedNavigate, setFixedNavigate] = useState(false);
-
+  const dispatch=useAppDispatch()
   useEffect(() => {
-    const handleOnScroll = (e:any) => {
-      setFixedNavigate(true);
-      console.log(e?.target?.scrollHeight);
+    const fetchApi = async () => {
+      const res = await apiGetAllCategory(null);
+      if (res?.status) {
+        dispatch(setCategories(res?.data.categories));
+      }
     };
-    document.addEventListener("scroll", handleOnScroll);
-  });
-
+    fetchApi();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const notActive =
     "text-white text-sm font-semibold px-3 py-[10px]  hover:bg-red-custom";
   const active =
@@ -23,8 +26,7 @@ const NavigateComponent = () => {
 
   return (
     <div
-      className={`bg-blue-custom w-full   ${fixedNavigate ? "fixed top-0 w-full  " : ""
-        }`}
+      className='bg-blue-custom w-full z-[999] top-0 sticky '
     >
       <div className="w-[1100px] mx-auto  flex items-center">
         <NavLink

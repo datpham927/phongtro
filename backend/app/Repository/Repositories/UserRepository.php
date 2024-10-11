@@ -1,25 +1,38 @@
 <?php
-
 namespace App\Repository\Repositories;
-
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repository\Interfaces\UserRepositoryInterface;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
 {
     protected $user;
-
     public function __construct(User $user)
     {
         $this->user = $user;
     }
-
-  
-    function findAll($limit=5, $sort, $page=1,array $filter=null, $select=null)
+    public function findAll($limit = 5, $sort = 'id:asc', $page = 1, array $filters = null)
     {
-    
+        $query = $this->user->select('users.*', DB::raw('count(p.id) as post_quantity'))
+            ->leftJoin('posts as p', 'p.user_id', '=', 'users.id')
+            ->groupBy('users.id')
+            ->where('users.id', '!=', $filters['admin_id']);
+        // Tính tổng số người dùng và phân trang
+        $totalUsers = $query->get()->count();
+        $totalPage = ceil($totalUsers / $limit);
+        $offset = ($page - 1) * $limit;
+        $users = $query->limit($limit)->offset($offset)->get();
+        return [
+            'totalPage' => intval($totalPage), 
+            'currentPage' => intval($page),  
+            'totalUser' => intval($totalUsers),  
+            'users' =>$users,  
+        ];
     }
+    
+
 
     public function create( $data)
     {
@@ -57,7 +70,4 @@ class UserRepository implements UserRepositoryInterface
             ->first();
         return $user;
     }
-
-    
-    
 }

@@ -14,8 +14,33 @@ class AddressService implements AddressServiceInterface
     public function findAllDistrict($city_slug){
           return $this->addressRepository->findDistrictByCitySlug($city_slug);
     }
-    public function findAllWard($district_slug){
-        return $this->addressRepository->findWardByDistrictSlug($district_slug);
+    public function findAllWard($city_slug,$district_slug){
+        return $this->addressRepository->findWardByCityAndDistrictSlug($city_slug,$district_slug);
 
+    }
+
+    public function findAllDistrictBelongCategory($category_slug,$city_slug){
+        return $this->addressRepository->findDistrictBelongCategoryByCitySlug($category_slug,$city_slug);
+  }
+  public function findAllWardBelongCategory($category_slug,$city_slug,$district_slug){
+      return $this->addressRepository->findWardBelongCategoryByCityAndDistrictSlug($category_slug,$city_slug,$district_slug);
+
+  }
+
+    public function findNameWard($ward_slug){
+        return $this->addressRepository->findNameWardByWardSlug($ward_slug);
+    }
+
+
+    public function  findCities (){
+        return $this->addressRepository->findCities();
+    }
+
+    public function  findDistricts($city_slug){
+        return $this->addressRepository->findDistricts($city_slug);
+    }
+
+    public function  findWards ($district_slug){
+        return $this->addressRepository->findWards($district_slug);
     }
 }

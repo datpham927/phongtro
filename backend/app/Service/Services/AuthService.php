@@ -8,11 +8,9 @@ use App\Repository\Interfaces\UserRepositoryInterface;
 use App\Service\Interfaces\AuthServiceInterface;
 use Exception;
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -83,7 +81,7 @@ class AuthService implements AuthServiceInterface
         $accessToken=$tokens["access_token"];  
         $refreshToken=$tokens["refresh_token"];
         //   thêm vào database
-          RefreshToken::create([
+        RefreshToken::create([
             'user_id' => $user->id,
             'refresh_token' => $refreshToken
         ]);
@@ -99,11 +97,12 @@ class AuthService implements AuthServiceInterface
     // Tìm refresh token liên quan đến user_id
     $refreshToken = RefreshToken::where('user_id',  $request->user_id)->first();
     if ($refreshToken)  $refreshToken->delete();
+    Cookie::queue(Cookie::forget('refresh_token'));
 }
     // Phương thức để làm mới token
     public function refreshToken($request)
     {
-        $requestToken = $request->input('refresh_token') ;
+        $requestToken = $request->cookie('refresh_token') ;
         // Retrieve the refresh token from the database
         $refreshTokenDB = RefreshToken::where('refresh_token', $requestToken)->first();
         if (!$refreshTokenDB) { throw new Exception('Refresh Token Not Found', 401);  }
@@ -121,13 +120,15 @@ class AuthService implements AuthServiceInterface
     }
     // Phương thức xây dựng phản hồi chứa thông tin người dùng và token
     private function buildAuthResponse($user, $access_token,$refreshToken) {
+        $exp_rToken = 60 * 24 * 60; // 60 ngày tính theo phút (60 phút * 24 giờ * 60 ngày)
+        $cookie = Cookie::make('refresh_token', $refreshToken, $exp_rToken, null, null, true, true, false, 'Lax');
         return [
             'user_id' => $user->id,
             'authorization' => [
-                'access_token' => $access_token,
-                "refresh_token"=>$refreshToken,
+                'access_token' => $access_token, 
                 'token_type' => 'bearer',
             ],
+            'cookie'=>$cookie
         ];
     }
       public function resetPasswordPost($request){
@@ -179,7 +180,7 @@ class AuthService implements AuthServiceInterface
         $accessToken = JWT::encode([
             'user_id' => $user->id,
             'email' => $user->email,
-            'exp' => time() + 10// 10 ngày
+            'exp' => time() +  60 * 24 * 60*10// 10 ngày
         ], $accessTokenSecret, 'HS256');
         $exp_rToken = time() + 60 * 24 * 60 * 60; // 60 ngày
         $refreshToken = JWT::encode([

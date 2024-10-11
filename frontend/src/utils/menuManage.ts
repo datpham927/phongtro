@@ -1,17 +1,18 @@
+import { editIcon, exitIcon, manageIcon } from "../assets";
+import { PATH } from "./constant";
+
 export const menuManage = [
   {
     id: 1,
-    text: "Đăng tin cho thuê",
-    path: "/he-thong/tao-moi-bai-dang",
+    text: "Quản lý tin đăng",
+    path: `${PATH.SYSTEM}/${PATH.MANAGE_POST}`,
+    icon:manageIcon
   },
   {
     id: 2,
-    text: "Quản lý tin đăng",
-    path: "/he-thong/quan-ly-bai-dang",
+    text: "Sửa thông tin cá nhân",
+    path: `${PATH.SYSTEM}/${PATH.EDIT_ACCOUNT}`,
+    icon:editIcon
   },
-  {
-    id: 4,
-    text: "Thông tin tài khoản",
-    path: "/he-thong/thong-tin-tai-khoan",
-  }
+ 
 ];

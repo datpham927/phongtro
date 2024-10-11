@@ -24,6 +24,39 @@ class PostControllers extends Controller
             return ResponseHelper::error("Error", $th);
         }
     }
+    public function getAllUnapprovedPosts(Request $request) {
+        try {
+            $posts = $this->postService->findAllUnapprovedPosts($request);
+            return ResponseHelper::success($posts, "Posts retrieved successfully", 200);
+        } catch (\Throwable $e) {
+            return ResponseHelper::error("Failed to retrieve posts", $e);
+        }
+    }
+    
+    public function getAllForShop(Request $request) {
+        try {
+            $response = $this->postService->findAllForShop($request);
+            return ResponseHelper::success($response, "Successfully", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Error", $th);
+        }
+    }
+    public function getAllPostExpiredForShop(Request $request) {
+        try {
+            $response = $this->postService->findAllPostExpiredForShop($request);
+            return ResponseHelper::success($response, "Successfully", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Error", $th);
+        }
+    }
+    public function getRelatedPost(Request $request,$address_id) {
+        try {
+            $response = $this->postService->findRelatedPost($address_id);
+            return ResponseHelper::success($response, "Successfully", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Error", $th);
+        }
+    }
     public function create(StorePostRequest $request) {
         try {
             $response = $this->postService->create($request);
@@ -56,14 +89,14 @@ class PostControllers extends Controller
             return ResponseHelper::error("Create error", $th);
         }
     }
-
-    public function searchPost(Request $request) {
+    public function ApprovePost($pid) {
         try {
-            $response = $this->postService->searchPost($request);
-            return ResponseHelper::success($response, "Successfully", 200);
+            $response = $this->postService->findApprovePost($pid);
+            return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Error", $th);
+            return ResponseHelper::error("Create error", $th);
         }
     }
+ 
     //  ----------------------
 }

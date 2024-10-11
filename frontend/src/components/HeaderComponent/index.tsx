@@ -1,34 +1,24 @@
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
-import ButtonComponent from "../ButtonComponent/ButtonComponent";
-import { menuManage } from "../../utils/menuManage";
+import ButtonComponent from "../ButtonComponent/ButtonComponent"; 
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import UserComponent from "../UserComponent/UserComponent";
-import { setFeatureAuth, setOpenFeatureAuth } from "../../redux/action/actionSlice";
-import { setCategories } from "../../redux/category/categorySlice";
-import { getAllCategory } from "../../services/apiCategory";
+import {   useState } from "react";
+import UserComponent from "../UserComponent";
+import { setFeatureAuth, setOpenFeatureAuth } from "../../redux/action/actionSlice"; 
 import { setDetailUser } from "../../redux/user/userSlice";
 import { setIsLoginSuccess } from "../../redux/auth/authSlice";
 import { apiLogout } from "../../services/apiAuth";
-import { showNotification } from "../common/showNotification";
+import { menuSidebar } from "../../utils/menuSidebar";
+import { menuSidebarAdmin } from "../../utils/menuSidebarAdmin";
 
-function HeaderComponent() {
+const HeaderComponent=()=> {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   // const { openFeatureAuth, featureAuth  } = useAppSelector((state) => state.action);
   const {  isLogged  } = useAppSelector((state) => state.auth);
+  const user = useAppSelector((state) => state.user);
+
   const navigate=useNavigate()
-  useEffect(() => {
-    const fetchApi = async () => {
-      const res = await getAllCategory();
-      if (res?.status) {
-        dispatch(setCategories(res?.data));
-      }
-    };
-    fetchApi();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleLogout = async () => {
         const res = await apiLogout();
@@ -37,16 +27,9 @@ function HeaderComponent() {
         dispatch(setDetailUser({}));
         dispatch(setIsLoginSuccess(false));
         window.location.reload();
-        showNotification('Đăng xuất thành công', true);
         navigate("/")
-}
-
-
-  // () => {
-  //   han
-  //   // toastMessage("Đăng xuất thành công");
-  // }
-  
+} 
+ 
   return (
     <div>
       <div className="flex justify-between w-[1100px] mx-auto">
@@ -63,17 +46,19 @@ function HeaderComponent() {
             <>
               <ButtonComponent text="Quản lý tài khoản" onClick={() => setModal(!modal)}/>
               {modal && (
-                <div className="absolute flex flex-col top-[80%] bg-white w-[200px] p-3 rounded-sm shadow-custom z-10">
-                  {menuManage.map((e) => (
+                <div className="absolute flex flex-col  top-[80%] bg-white w-[200px] p-3 rounded-sm shadow-custom z-[1000]">
+                  {(user.type=='admin'? menuSidebarAdmin: menuSidebar).map((e) => (
                     <Link to={e.path} key={e.id}
-                      className=" border-solid border-b-[1px] border-gray-300 py-2 text-sm text-blue-custom cursor-pointer hover:text-orange-500">
+                      className="flex items-center gap-2 border-solid border-b-[1px] border-gray-300 py-2 text-sm text-blue-custom cursor-pointer hover:text-orange-500">
+                      <img className="w-[15px] h-[15px]" src={e.icon}></img>
                       {e.text}
                     </Link>
                   ))}
                   <span
-                    className=" border-solid py-2 text-sm text-blue-custom cursor-pointer  hover:text-orange-500"
+                    className="flex items-center gap-2 border-solid py-2 text-sm text-blue-custom cursor-pointer  hover:text-orange-500"
                     onClick={handleLogout}
                   >
+                       <img className="w-[15px] h-[15px]" src="https://phongtro123.com/images/dashboard-logout.svg"></img>
                     Thoát
                   </span>
                 </div>
