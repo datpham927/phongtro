@@ -25,7 +25,7 @@ const InputPassWordComponent: React.FC<InputPasswordProps> = ({
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   // Tìm thông báo lỗi tương ứng với trường nhập liệu
-  const errorMessage = invalidFields.find(field => field.name === name)?.message;
+  const errorMessage = invalidFields?.find(field => field.name === name)?.message;
 
   return (
   <>

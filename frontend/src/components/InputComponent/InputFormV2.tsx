@@ -48,7 +48,7 @@ function InputFormV2({
       </div>
       {invalidFields?.length > 0 && invalidFields.some((field) => field.name === name) ? (
         <span className="text-red-500 text-sm">
-          {invalidFields.find((field) => field.name === name)?.message}
+          {invalidFields?.find((field) => field.name === name)?.message}
         </span>
       ) : null}
     </div>

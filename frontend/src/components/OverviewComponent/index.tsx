@@ -180,7 +180,7 @@ function OverviewComponent({
         {invalidFields?.length > 0 &&
         invalidFields.some((e:any) => e.name === "images") && (
           <span className="my-1 text-sm text-red-custom">
-            {invalidFields.find((e:any) => e.name === "images")?.message}
+            {invalidFields?.find((e:any) => e.name === "images")?.message}
           </span>
         )}
       </div> 

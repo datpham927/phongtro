@@ -3,6 +3,8 @@
 use App\Http\Controllers\api\AuthControllers;
 use App\Http\Controllers\api\CategoryControllers;
 use App\Http\Controllers\api\AddressControllers;
+use App\Http\Controllers\api\ConversationControllers;
+use App\Http\Controllers\api\MessageController;
 use App\Http\Controllers\api\PostControllers;
 use App\Http\Controllers\api\UserControllers;
 use App\Http\Controllers\CrawlerControllers;
@@ -79,4 +81,12 @@ Route::prefix('v1/address')->group(function () {
     Route::get('/get-city', [AddressControllers::class, 'getCities']);
     Route::get('/{city_slug}/get-district', [AddressControllers::class, 'getDistricts']);
     Route::get('/{district_slug}/get-ward', [AddressControllers::class, 'getWards']);
+});
+Route::middleware(Login::class)->prefix('v1/conversation')->group(function () {
+    Route::post('/add', [ConversationControllers::class, 'create']);
+    Route::get('/all', [ConversationControllers::class, 'getAll']);
+});
+Route::middleware(Login::class)->prefix('v1/message')->group(function () {
+    Route::post('/{conversation_id}/add', [MessageController::class, 'sendMessage']);
+    Route::get('/{conversation_id}/all', [MessageController::class, 'getAllMessage']);
 });

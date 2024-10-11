@@ -21,7 +21,7 @@ const ProvinceComponent: React.FC = () => {
 
   useEffect(() => {
     if (slug) {
-      const category = categories.find((e) => e.slug === slug);
+      const category = categories?.find((e) => e.slug === slug);
       setTitleWelcome({
         title: category?.title,
         description: category?.sub_title,

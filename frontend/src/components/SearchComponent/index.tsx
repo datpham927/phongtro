@@ -77,14 +77,14 @@ function SearchComponent() {
     <div className=" grid grid-cols-5 gap-[8px] p-[10px] bg-amber-400 my-3 rounded-lg">
       <SearchItemComponent
         icon={<ion-icon name="close-circle-outline"></ion-icon>}
-        title={categories.find(e => e.slug === queriesModel.category_slug)?.name}
+        title={categories?.find(e => e.slug === queriesModel.category_slug)?.name}
         defaultText={"Tất cả"}
         imgUrl='https://phongtro123.com/images/building-icon.svg'
         onClick={() => handleOpenModal(categories, "category",'Chọn loại bất động sản')}
       />
      <SearchItemComponent
         icon={<ion-icon name="chevron-forward-outline"></ion-icon>}
-        title={province.find((e:any) => e.city_slug === params.city_slug)?.city_name}
+        title={province?.find((e:any) => e.city_slug === params.city_slug)?.city_name}
         defaultText={"Toàn quốc"}
          imgUrl='https://phongtro123.com/images/location-icon.svg'
         onClick={() => handleOpenModal(province, "province",'Chọn tỉnh thành')}

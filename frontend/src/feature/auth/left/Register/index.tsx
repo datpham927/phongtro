@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setFeatureAuth, setOpenFeatureAuth } from "../../../../redux/action/actionSlice";
+import { setFeatureAuth, setLoading, setOpenFeatureAuth } from "../../../../redux/action/actionSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
 import validate from "../../../../utils/validate";
 import { apiRegister } from "../../../../services/apiAuth";
@@ -27,10 +27,11 @@ const Register: React.FC = () => {
     setInvalidFields([]);
     setValueForm({ ...valueForm, [e.target.name]: e.target.value });
   };
-
   const handelSummit = async () => {
+          dispatch(setLoading(true))
         if(!validate(valueForm,setInvalidFields) ) return;
         const res= await apiRegister(valueForm)
+        dispatch(setLoading(false))
         if(!res.status)  { alert('Email đã tồn tại'); return;}
         localStorage.setItem('access_token', JSON.stringify(res.data.authorization.access_token));
         localStorage.setItem('client_id', JSON.stringify(res.data.user_id));
@@ -39,7 +40,6 @@ const Register: React.FC = () => {
         dispatch(setIsLoginSuccess(true));
         window.location.reload();
   };
-
   return (
     <>
       <InputComponent type="text" name="name" placeholder="Nhập tên" 

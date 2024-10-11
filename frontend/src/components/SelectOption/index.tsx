@@ -65,7 +65,7 @@ function SelectOption({
       {invalidFields?.length > 0 &&
         invalidFields.some((e:any) => e.name === type) && (
           <span className="my-1 text-sm text-red-custom">
-            {invalidFields.find((e:any) => e.name === type)?.message}
+            {invalidFields?.find((e:any) => e.name === type)?.message}
           </span>
         )}
     </div>
