@@ -39,14 +39,7 @@ class PostService implements PostServiceInterface
         unset($request['limit'], $request['page'], $request['sort']);
         $filters = $request->all();
         $filters['user_id'] = $request['user_id'];
-        // Khi bạn muốn lưu dữ liệu phức tạp vào một file, chẳng hạn như cache 
-        // hoặc lưu trữ tạm thời, bạn có thể serialize dữ liệu và ghi nó vào file.
-        // Khi cần đọc lại, chỉ cần đọc nội dung file và unserialize nó để khôi 
-        // phục dữ liệu ban đầu.
-        $cacheKey = "posts:shop:{$filters['user_id']}:{$limit}:{$page}:" . serialize($filters);
-        return Cache::remember($cacheKey, 3600*24, function () use ($limit, $sort, $page, $filters) {
-            return $this->postRepository->findAll($limit, $sort, $page, $filters);
-        });
+        return $this->postRepository->findAll($limit, $sort, $page, $filters);
     }
 
     public function findAllPostExpiredForShop($request)
@@ -60,10 +53,7 @@ class PostService implements PostServiceInterface
 
     public function findRelatedPost($addressId)
     {
-        $cacheKey = "posts:related:address:{$addressId}";
-        return Cache::remember($cacheKey, 3600*24, function () use ($addressId) {
-            return $this->postRepository->findRelatedPostByAddress($addressId);
-        });
+        return $this->postRepository->findRelatedPostByAddress($addressId);
     }
 
     public function create($request)
@@ -223,7 +213,6 @@ class PostService implements PostServiceInterface
 
     private function clearCache()
     {
-        Cache::forget("posts:all:*");
         Cache::forget("posts:shop:*");
         Cache::forget("posts:related:*");
         Cache::forget("posts:detail*");
