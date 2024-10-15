@@ -22,7 +22,7 @@ return new class extends Migration
             // Thời gian tạo và cập nhật
             $table->timestamps();
             // Định nghĩa khóa ngoại
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade') ->onUpdate('cascade') ;
         });
         
     }

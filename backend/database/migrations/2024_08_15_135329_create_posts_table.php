@@ -22,7 +22,8 @@ return new class extends Migration
             $table->uuid('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('address_id')->references('id')->on('post_addresses')->onDelete('cascade');
+            $table->foreign('address_id')->references('id')
+            ->on('post_addresses');
             $table->string('expire_at')->nullable();
             $table->boolean('is_approved')->default(false);
             $table->timestamps();

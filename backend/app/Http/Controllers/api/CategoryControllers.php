@@ -43,7 +43,7 @@ class CategoryControllers extends Controller
             $response= $this->categoryService->create( $request);
             return ResponseHelper::success($response,"Create successfully",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Create error",$th);
+            return ResponseHelper::error("Error",$th);
         }
     }
  

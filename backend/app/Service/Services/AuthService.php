@@ -49,16 +49,13 @@ class AuthService implements AuthServiceInterface
         $accessToken=$tokens["access_token"];  
         $refreshToken=$tokens["refresh_token"];
           // thêm vào database
-          RefreshToken::create([
+        RefreshToken::create([
             'user_id' => $user->id,
             'refresh_token' => $refreshToken
         ]);
-
-       
         // Trả về thông tin người dùng và token
         return $this->buildAuthResponse($user,$accessToken,$refreshToken);
     }
-
     // Phương thức để đăng nhập người dùng
     public function login($request)
     {

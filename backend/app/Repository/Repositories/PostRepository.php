@@ -114,7 +114,7 @@ class PostRepository implements PostRepositoryInterface
     {
         return $this->post->create($data);
     }
-    public function findByIdAndUpdate($id,  $data, $options = [])
+    public function findByIdAndUpdate($id,  $data)
     {
         $post=$this->findById($id);
         if(! $post)throw new Exception("Post does not exist!",404);

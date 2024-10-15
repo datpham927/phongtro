@@ -46,7 +46,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->category->create($data);
     }
-    public function findByIdAndUpdate($id,  $data, $options = [])
+    public function findByIdAndUpdate($id,  $data)
     {
         $category=$this->findById($id);
         if(!$category)throw new Exception("Category does not exist!",404);

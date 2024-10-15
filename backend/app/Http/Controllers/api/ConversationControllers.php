@@ -20,7 +20,7 @@ class ConversationControllers extends Controller
             $response= $this->conversationService->create($request);
             return ResponseHelper::success($response,"Successfully",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Create error",$th);
+            return ResponseHelper::error("Error",$th);
         }
     }
 
@@ -30,7 +30,7 @@ class ConversationControllers extends Controller
             $response= $this->conversationService->finAll( $request['user_id']);
             return ResponseHelper::success($response,"Successfully",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Create error",$th);
+            return ResponseHelper::error("Error",$th);
         }
     }
 }
