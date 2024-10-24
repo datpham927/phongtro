@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->uuid('conversation_id');
             $table->uuid(  'sender_id');
+            $table->uuid(  'receiver_id');
             $table->text('message');
             $table->boolean('is_read')->default(false);
             $table->timestamps();
