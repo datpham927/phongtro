@@ -14,8 +14,8 @@ return [
     | since RSA and ECDSA use a private/public key combo (See below).
     |
     */
-'access_token_secret' => env('JWT_SECRET_ACCESS_TOKEN'),
-'refresh_token_secret' => env('JWT_SECRET_REFRESH_TOKEN'),
+    'access_token_secret' => env('JWT_SECRET_ACCESS_TOKEN'),
+    'refresh_token_secret' => env('JWT_SECRET_REFRESH_TOKEN'),
 
     'secret' => env('JWT_SECRET'),
 

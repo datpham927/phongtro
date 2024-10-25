@@ -19,7 +19,7 @@ class MessageResource extends JsonResource
             'conversation_id'     => $this->conversation_id,
             'message'             => $this->message,
             'is_read'             => $this->is_read,
-            'created_at'          => $this->is_read,
+            'created_at'          => $this->created_at,
         ];
     }
 }

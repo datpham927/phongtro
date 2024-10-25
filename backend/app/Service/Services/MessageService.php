@@ -1,6 +1,7 @@
 <?php
 namespace App\Service\Services;
 
+use App\Events\MessageSent;
 use App\Http\Resources\MessageResource;
 use App\Models\Conversation;
 use App\Models\Message;
@@ -8,6 +9,7 @@ use App\Service\Interfaces\ConversationServiceInterface;
 use App\Service\Interfaces\MessageServiceInterface;
 use App\Util;
 use Exception;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Event\Code\Throwable;
@@ -37,12 +39,17 @@ class MessageService  implements MessageServiceInterface
     if ($validator->fails()) { throw new ValidationException($validator); }
           $text= $request["message"];
           $sender_id= $request["user_id"];
+          $receiver_id= $request["receiver_id"];
           $message = Message::create([
             "id"=>Util::uuid(),
             "sender_id" => $sender_id,
+            "receiver_id" => $receiver_id, 
             "conversation_id" => $conversation_id,
             "message" => $text,
             ]);
+          // event(new MessageSent($message, $sender_id,$receiver_id));
+          event(new MessageSent($text ,$receiver_id ));
+          
           return  $message;
     }
 }
