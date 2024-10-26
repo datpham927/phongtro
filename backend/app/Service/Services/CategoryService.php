@@ -22,10 +22,10 @@ class CategoryService implements CategoryServiceInterface
         $page = $request['page'];
         $sort = $request['sort'];
         $filter = [];
-        $cacheKey = "categories:{$limit}:{$page}:{$sort}";
-        return Cache::remember($cacheKey, 3600*24*24, function () use ($limit, $sort, $page, $filter) {
+        // $cacheKey = "categories:{$limit}:{$page}:{$sort}";
+        // return Cache::remember($cacheKey, 3600*24*24, function () use ($limit, $sort, $page, $filter) {
             return $this->categoryRepository->findAll($limit, $sort, $page, $filter);
-        });
+        // });
     }
 
     public function create($request)
