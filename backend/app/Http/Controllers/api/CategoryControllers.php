@@ -19,12 +19,12 @@ class CategoryControllers extends Controller
     }
     public function getAll(Request $request )
     { 
-        try {
-            $response= $this->categoryService->findAll($request);
-            return ResponseHelper::success($response,"Successfully",200);
-        } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
-        }
+        // try {
+            // $response= $this->categoryService->findAll($request);
+            return ResponseHelper::success("sds","Successfully",200);
+        // } catch (\Throwable $th) {
+        //     return ResponseHelper::error("Error",$th);
+        // }
     } 
     public function getCategory(Request $request ,$id)
     { 

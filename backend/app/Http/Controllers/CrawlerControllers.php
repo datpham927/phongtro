@@ -57,6 +57,7 @@ class CrawlerControllers extends Controller
     ];
    
     public function crawler(){
+        set_time_limit(120);
       try {
         DB::beginTransaction();
         foreach ($this->categoryLinks as $categoryLink) {
