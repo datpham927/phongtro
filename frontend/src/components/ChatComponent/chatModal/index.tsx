@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EastIcon from '@mui/icons-material/East';
 import WestIcon from '@mui/icons-material/West';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import ChatLeft from './ChatLeft';
 import ChatRight from './ChatRight';
@@ -17,10 +16,7 @@ const ChatModal = () => {
     const { isOpenChat,isLoadChat } = useAppSelector((state) => state.action);
     // const { loadDataConversation } = useAppSelector((state) => state.action);
     // const { isLoginSuccess } = useAppSelector((state) => state.auth);
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const location = useLocation();
-
     // useEffect(() => {
     //     if (location.pathname.includes('message') && !isLoginSuccess) {
     //         navigate('/');

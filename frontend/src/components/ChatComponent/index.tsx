@@ -7,7 +7,6 @@ import { apiGetConversations } from '../../services/apiConversation';
 
 const ChatComponent: React.FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [unseenConversations, setUnseenConversations] = useState<number>(0);
     const dispatch = useAppDispatch();
     // const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const { isOpenChat } = useAppSelector((state) => state.action);
