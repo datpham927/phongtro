@@ -20,9 +20,11 @@ class CategoryRepository implements CategoryRepositoryInterface
         $sortby = $sort === "ctime" ? 'desc' : 'asc'; // Sắp xếp theo thời gian tạo theo thứ tự giảm dần nếu 'ctime' được chỉ định, ngược lại là tăng dần.
     
         // Bắt đầu truy vấn
-        $query = $this->category->select('categories.*', DB::raw('count(p.id) as post_quantity'))
+        $query = $this->category->select('categories.id', DB::raw('count(p.id) as post_quantity'))
             ->leftJoin('posts as p', 'p.category_id', '=', 'categories.id')
-            ->groupBy('categories.id', 'categories.created_at', 'categories.name'); // Thêm các trường cần thiết vào đây
+            ->groupBy('categories.id'
+            
+            ); // Thêm các trường cần thiết vào đây
     
         // Áp dụng bộ lọc nếu có bộ lọc được cung cấp
         if ($filters) {  
