@@ -2,7 +2,9 @@
     "private": true,
   "scripts": {
     "start-laravel": "concurrently \"php artisan serve\" \"php artisan websockets:serve\""
-    },
+   ,"dev": "vite",
+        "build": "vite build"  
+  },
 
     "devDependencies": {
         "axios": "^1.1.2",
