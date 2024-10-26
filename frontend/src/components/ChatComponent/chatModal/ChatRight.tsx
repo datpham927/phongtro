@@ -14,7 +14,7 @@ interface Message {
     id: string;
     created_at: string;
 }
-const ChatRight: React.FC<{ conversation: IConversation; isOpen: boolean }> = ({ conversation, isOpen }) => {
+const ChatRight: React.FC<{ conversation: IConversation|any; isOpen: boolean }> = ({ conversation, isOpen }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [isOpenBox, setIsOpenBox] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(false);

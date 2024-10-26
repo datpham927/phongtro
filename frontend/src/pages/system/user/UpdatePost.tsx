@@ -6,7 +6,7 @@ import { IDetailPost, IPostPayload } from "../../../interfaces/Post";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { convertToSlug } from "../../../utils/format/convertToSlug"; 
 import { convertMillionToDecimal } from "../../../utils/format/convertMillionToDecimal";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { setLoading } from "../../../redux/action/actionSlice"; 
 
 function UpdatePost() {

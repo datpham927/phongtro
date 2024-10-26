@@ -54,11 +54,11 @@ const ChatComponent: React.FC = () => {
                 }}
             >
                 <MessageIcon fontSize="large" />
-                {unseenConversations > 0 && (
+                {/* {unseenConversations > 0 && (
                     <div className="absolute text-[13px] px-[5px]  rounded-[50%] top-0 right-0 h-fit bg-[#A769FD]">
                         {unseenConversations}
                     </div>
-                )}
+                )} */}
             </div>
             {isOpen && <ChatModal />}
         </div>

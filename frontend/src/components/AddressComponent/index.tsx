@@ -31,7 +31,6 @@ function AddressComponent({
   setPayload,
   invalidFields,
   setInvalidFields,
-  isEdit,
 }: AddressComponentProps) {
   const [provinces, setProvinces] = useState<IProvince[]>([]);
   const [districts, setDistricts] = useState<IDistrict[]>([]);
