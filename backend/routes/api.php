@@ -91,6 +91,4 @@ Route::middleware(Login::class)->prefix('v1/message')->group(function () {
     Route::get('/{conversation_id}/all', [MessageController::class, 'getAllMessage']);
 });
 
-Route::get('/test', function () {
-    throw new Exception("Test exception"); // Dùng để kiểm tra log lỗi
-});
+ 

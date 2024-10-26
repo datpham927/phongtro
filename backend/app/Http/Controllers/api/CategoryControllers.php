@@ -23,7 +23,7 @@ class CategoryControllers extends Controller
         
         try {
             $response= $this->categoryService->findAll($request);
-            return ResponseHelper::success("sds","Successfully",200);
+            return ResponseHelper::success($response,"Successfully",200);
         } catch (\Throwable $th) {
             return ResponseHelper::error("Error",$th);
         }
