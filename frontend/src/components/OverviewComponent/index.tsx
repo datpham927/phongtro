@@ -32,7 +32,7 @@ function OverviewComponent({
     if (!files) return;
     let imagesArray: string[] = [];
     const formData = new FormData();
-    for (let i of Array.from(files)) {
+    for (const i of Array.from(files)) {
       formData.append("file", i);
       formData.append('upload_preset', import.meta.env.VITE_REACT_UPLOAD_PRESET);
       const response = await apiUploadImage(formData);

@@ -1,7 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
- 
-import moment from 'moment';
 import { noUser } from '../../assets';
 import { IConversation } from '../../interfaces/conversation';
 
@@ -11,7 +9,7 @@ interface ItemConversationProps {
     userId: string;
     onClick?: () => void;
 }
-// eslint-disable-next-line react-refresh/only-export-components
+ 
 const ItemConversation: React.FC<ItemConversationProps> = ({ conversation, isActive, userId, onClick }) => {
     const [user, setUser] = useState<any>();
     useEffect(() => {
@@ -40,5 +38,5 @@ const ItemConversation: React.FC<ItemConversationProps> = ({ conversation, isAct
     );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
+ 
 export default memo(ItemConversation);

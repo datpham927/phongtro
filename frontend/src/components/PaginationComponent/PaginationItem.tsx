@@ -19,5 +19,5 @@ const PaginationItem: React.FC<PropsInterface> = ({ currentPage, children, handl
     );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
+ 
 export default memo(PaginationItem);

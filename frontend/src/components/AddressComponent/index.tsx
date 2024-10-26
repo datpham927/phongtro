@@ -1,11 +1,9 @@
 import { memo, useEffect, useState } from "react";
 import InputReadOnly from "../InputComponent/InputReadOnly";
 import { getApiPublicDistrict, getApiPublicProvince, getApiPublicWards } from "../../services/apiAddress";
-import { IDetailPost, IPostPayload } from "../../interfaces/Post";
+import {   IPostPayload } from "../../interfaces/Post";
 import InputForm from "../InputComponent/InputForm";
 import SelectOption from "../SelectOption";
-import { convertToSlug } from "../../utils/format/convertToSlug";
-import { useParams } from "react-router-dom";
 
 interface AddressComponentProps {
   payload: IPostPayload; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc payload của bạn

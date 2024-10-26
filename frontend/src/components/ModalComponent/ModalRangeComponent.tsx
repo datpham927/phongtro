@@ -1,9 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import {
    convertDecimal,
-   getNumberArea,
-   getNumberPrice,
-   splitStringToNumber,
 } from "../../utils/format/convertVietnamese";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import { roundNumber } from "../../utils/format/roundNumber";

@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Post } from "../../interfaces/Post";
+import { IPost } from "../../interfaces/Post";
 
 
 interface PostState {
-  listPost: Post[];
+  listPost: IPost[];
 }
 
 const initialState: PostState = {
@@ -14,7 +14,7 @@ const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    setListPost: (state, action: PayloadAction<Post[]>) => {
+    setListPost: (state, action: PayloadAction<IPost[]>) => {
       state.listPost = action.payload;
     },
   },

@@ -37,7 +37,7 @@ const ChatModal = () => {
             setIsLoading(false);
         };
          fetchApi();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+         
     // }, [loadDataConversation]);
     }, [isLoadChat]);
     // const { mobile_ui } = useAppSelector((state) => state.action);
