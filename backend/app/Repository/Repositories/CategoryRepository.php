@@ -15,31 +15,45 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->category = $category;
     }
     public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null, $select = null)
-{
-    $skip = ($page - 1) * $limit;
-    $sortby = $sort === "ctime" ? 'desc' : 'asc'; // Sorting by creation time in descending order if 'ctime' is specified, otherwise ascending.
-    // Start the query
-    $query = $this->category->select('categories.*', DB::raw('count(p.id) as post_quantity'))
-    ->leftJoin('posts as p', 'p.category_id', '=', 'categories.id')
-    ->groupBy('categories.id');
-    // Apply filtersing if any filters are provided
-    if ($filters) {  $query->where($filters);  }
-     $totalCategories=(clone  $query)->count(); 
-    // Apply sorting
-    $query->orderBy('created_at', $sortby);
-    // Apply pagination (skip and limit)
-    if ($limit > 0) {  $query->skip($skip)->take($limit); }
-    // Apply select columns if specified
-    if ($select) { $query->select($select);}
-    // Execute the query and return the results
-    $totalPage= $limit > 0 ? ceil($totalCategories/$limit) : 1; 
-    return [
-        'totalPage' => intval($totalPage),
-        'currentPage' => intval($page),
-        'totalCategories' => intval($totalCategories),
-        'categories' => $query->get() ?: null, // Assuming PostResource is used for formatting
-    ]; 
-}
+    {
+        $skip = ($page - 1) * $limit;
+        $sortby = $sort === "ctime" ? 'desc' : 'asc'; // Sắp xếp theo thời gian tạo theo thứ tự giảm dần nếu 'ctime' được chỉ định, ngược lại là tăng dần.
+    
+        // Bắt đầu truy vấn
+        $query = $this->category->select('categories.*', DB::raw('count(p.id) as post_quantity'))
+            ->leftJoin('posts as p', 'p.category_id', '=', 'categories.id')
+            ->groupBy('categories.id', 'categories.created_at', 'categories.name'); // Thêm các trường cần thiết vào đây
+    
+        // Áp dụng bộ lọc nếu có bộ lọc được cung cấp
+        if ($filters) {  
+            $query->where($filters);  
+        }
+    
+        $totalCategories = (clone $query)->count(); 
+        
+        // Áp dụng sắp xếp
+        $query->orderBy('categories.created_at', $sortby); // Chú ý rằng bạn nên chỉ định bảng ở đây để tránh nhầm lẫn
+    
+        // Áp dụng phân trang (skip và limit)
+        if ($limit > 0) {  
+            $query->skip($skip)->take($limit); 
+        }
+        
+        // Áp dụng chọn cột nếu được chỉ định
+        if ($select) { 
+            $query->select($select);
+        }
+    
+        // Thực thi truy vấn và trả về kết quả
+        $totalPage = $limit > 0 ? ceil($totalCategories / $limit) : 1; 
+        return [
+            'totalPage' => intval($totalPage),
+            'currentPage' => intval($page),
+            'totalCategories' => intval($totalCategories),
+            'categories' => $query->get() ?: null,
+        ];  
+    }
+    
 
     
     public function create( $data)
