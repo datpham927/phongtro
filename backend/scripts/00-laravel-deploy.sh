@@ -11,16 +11,14 @@ php artisan route:cache
 
 echo "Checking database connection..."
 # Kiểm tra kết nối cơ sở dữ liệu và lưu lỗi vào biến
-ERROR_OUTPUT=$(php artisan migrate --pretend 2>&1)
-
-if [ $? -eq 0 ]; then
+if php artisan migrate --pretend; then
     echo "Database connection is working."
 else
     echo "Database connection failed!"
-    echo "Error: $ERROR_OUTPUT"
+    # In ra thông báo lỗi trực tiếp từ stdout và stderr
+    echo "Error: $(php artisan migrate --pretend 2>&1)"
     exit 1
 fi
-
 echo "Running migrations..."
 php artisan migrate --force
 
