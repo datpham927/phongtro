@@ -18,12 +18,18 @@ return new class extends Migration
             $table->string('thumb')->nullable();
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
+            $table->string('address_detail')->nullable();
+            $table->text('map')->nullable();
+            $table->string('target')->nullable();
             $table->uuid('address_id')->nullable(); // Change this from text to uuid
             $table->uuid('category_id');
+            $table->uuid('post_type_id');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('address_id')->references('id')
             ->on('post_addresses');
+            $table->foreign('post_type_id')->references('id')
+            ->on('post_types');
             $table->string('expire_at')->nullable();
             $table->boolean('is_approved')->default(false);
             $table->timestamps();

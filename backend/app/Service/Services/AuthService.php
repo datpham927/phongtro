@@ -3,11 +3,11 @@
 namespace App\Service\Services;
 
 use App\Mail\AuthMail;
-use App\Models\RefreshToken;
 use App\Repository\Interfaces\UserRepositoryInterface;
 use App\Service\Interfaces\AuthServiceInterface;
 use Exception;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -48,11 +48,8 @@ class AuthService implements AuthServiceInterface
         $tokens= $this->createTokenPairs($user);
         $accessToken=$tokens["access_token"];  
         $refreshToken=$tokens["refresh_token"];
-          // thêm vào database
-        RefreshToken::create([
-            'user_id' => $user->id,
-            'refresh_token' => $refreshToken
-        ]);
+         
+         
         // Trả về thông tin người dùng và token
         return $this->buildAuthResponse($user,$accessToken,$refreshToken);
     }
@@ -70,48 +67,34 @@ class AuthService implements AuthServiceInterface
         if ($validator->fails()) { throw new ValidationException($validator);}
         // Thực hiện đăng nhập 
         if (!Auth::attempt($credentials)) { throw new Exception('Email hoặc mật khẩu không chính xác', 403) ;} 
-        $user=Auth::user();
-        $refreshTokenDb = RefreshToken::where('user_id',$user->id)->first();
-        if ($refreshTokenDb) throw new Exception('Tài khoản của bạn đã được đăng nhập', 202); 
+        $user=Auth::user(); 
         // tạo token
         $tokens= $this->createTokenPairs($user);
         $accessToken=$tokens["access_token"];  
-        $refreshToken=$tokens["refresh_token"];
-        //   thêm vào database
-        RefreshToken::create([
-            'user_id' => $user->id,
-            'refresh_token' => $refreshToken
-        ]);
-       
+        $refreshToken=$tokens["refresh_token"]; 
+        
         // Trả về thông tin người dùng và token
         return $this->buildAuthResponse($user,$accessToken,$refreshToken);
     }
     // Phương thức để đăng xuất người dùng
     public function logout($request) {
     // Lấy token từ header Authorization
-    $token = $request->bearerToken();
-    if (!$token) Throw new Exception('Token not provided',404); 
-    // Tìm refresh token liên quan đến user_id
-    $refreshToken = RefreshToken::where('user_id',  $request->user_id)->first();
-    if ($refreshToken)  $refreshToken->delete();
-    Cookie::queue(Cookie::forget('refresh_token'));
+        $token = $request->bearerToken();
+        if (!$token) Throw new Exception('Token not provided',404); 
+        Cookie::queue(Cookie::forget('refresh_token'));
 }
     // Phương thức để làm mới token
     public function refreshToken($request)
     {
         $requestToken = $request->cookie('refresh_token') ;
-        // Retrieve the refresh token from the database
-        $refreshTokenDB = RefreshToken::where('refresh_token', $requestToken)->first();
-        if (!$refreshTokenDB) { throw new Exception('Refresh Token Not Found', 401);  }
+        $decodedToken = JWT::decode($requestToken, new Key(config('jwt.refresh_token_secret'), 'HS256'));
         // Retrieve the user associated with the refresh token
-        $userDb = $this->userRepository->findById($refreshTokenDB->user_id);
+        $userDb = $this->userRepository->findById($decodedToken->user_id);
         if (!$userDb) { throw new Exception('User Not Found', 404); }
           // tạo token
           $tokens= $this->createTokenPairs($userDb);
           $accessToken=$tokens["access_token"];  
           $refreshToken=$tokens["refresh_token"];
-        // Update the refresh token in the database
-          $refreshTokenDB->update(['refresh_token' => $refreshToken]);
         // Build and return the authentication response 
         return $this->buildAuthResponse($userDb, $accessToken,$refreshToken);
     }
@@ -162,8 +145,6 @@ class AuthService implements AuthServiceInterface
         ]);
         return true;
     }
-
-
 
     private function createTokenPairs($user) {
         // Lấy thông tin secret từ file cấu hình

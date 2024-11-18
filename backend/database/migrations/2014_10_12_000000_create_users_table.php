@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary(); // UUID làm khóa chính
             $table->string('name');
+            $table->decimal('account_balance', 15, 2)->default(0);
             $table->string('phone')->nullable();
             $table->string('email')->unique();
             $table->string('zalo')->nullable(); // Cho phép giá trị NULL

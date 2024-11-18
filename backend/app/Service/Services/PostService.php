@@ -3,7 +3,6 @@ namespace App\Service\Services;
 
 use App\Models\Post_address;
 use App\Models\Post_area;
-use App\Models\Post_attribute;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Repository\Interfaces\PostRepositoryInterface;
@@ -152,7 +151,10 @@ class PostService implements PostServiceInterface
             "thumb" => $validatedData["thumb"],
             "description" => $validatedData["description"],
             "category_id" => $validatedData["category_id"],
-            "expire_at" => $validatedData["expire_at"]
+            "target" => $validatedData["target"],
+            "expire_at" => $validatedData["expire_at"],
+            "address_detail" => $validatedData["address_detail"],
+            "map" => $validatedData["map"]
         ];
     }
 
@@ -163,7 +165,6 @@ class PostService implements PostServiceInterface
             throw new Exception("Please enter complete information!", 400);
         }
         $this->createPostImage($validatedData["images"], $postId);
-        $this->createPostAttribute($validatedData["attribute"], $postId);
         $this->createPostPrice($validatedData["price"], $postId);
         $this->createPostArea($validatedData["area"], $postId);
     }
@@ -204,12 +205,7 @@ class PostService implements PostServiceInterface
         Post_price::create($price);
     }
 
-    private function createPostAttribute($attribute, $postId)
-    {
-        $attribute["post_id"] = $postId;
-        $attribute["id"] = Util::uuid();
-        Post_attribute::create($attribute);
-    }
+ 
 
     private function clearCache()
     {

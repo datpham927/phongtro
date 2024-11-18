@@ -43,7 +43,7 @@ function UpdatePost() {
           province: address.city_name,
           district: address.district_name,
           ward: address.ward_name, 
-          areaNumber: area.order,
+          areaNumber: area.number,
           priceNumber: price.order,
           categoryCode: category.id,
           map: address.map,

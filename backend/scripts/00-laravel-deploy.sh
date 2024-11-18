@@ -23,4 +23,4 @@ echo "Running migrations..."
 php artisan migrate --force
 
 echo "Seeding the database..."
-php artisan db:seed --class=UserSeeder
+ php artisan db:seed

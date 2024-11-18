@@ -71,12 +71,12 @@ public static function randomDecimal($min = 1, $max = 40, $decimals = 1) {
          if($value<200){
             $price= $value*1000000;
             return [
-                'order'=> $price,
+                'number'=> $price,
                   'value'=> $value. ' triệu/tháng'
             ];
          }
          return  [
-              'order'=> $value,
+              'number'=> $value,
               'value'=> $value. ' đồng/tháng'
         ];
          
