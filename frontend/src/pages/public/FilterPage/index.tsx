@@ -7,7 +7,7 @@ import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter';
 import { IPost } from '../../../interfaces/Post';
 import { apiGetPost } from '../../../services/apiPost';
 import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../../services/apiAddress';
-import { BreadcrumbComponent, ItemNavbarComponent, ListNewPost, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
+import {   ItemNavbarComponent, ListNewPost, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
 import { convertToMillion } from '../../../utils/convertMillion';
 import { setLoading } from '../../../redux/action/actionSlice';
 

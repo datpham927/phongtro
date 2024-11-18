@@ -62,7 +62,7 @@ class PostControllers extends Controller
             $response = $this->postService->create($request);
             return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Create error", $th);
+            return ResponseHelper::error("Error", $th);
         }
     }
     public function update(Request $request,$pid) {
@@ -86,7 +86,7 @@ class PostControllers extends Controller
             $response = $this->postService->findDetailPost($pid);
             return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Create error", $th);
+            return ResponseHelper::error("Error", $th);
         }
     }
     public function ApprovePost($pid) {
@@ -94,7 +94,7 @@ class PostControllers extends Controller
             $response = $this->postService->findApprovePost($pid);
             return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Create error", $th);
+            return ResponseHelper::error("Error", $th);
         }
     }
  

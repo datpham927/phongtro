@@ -39,7 +39,7 @@ class UserRepository implements UserRepositoryInterface
         return $this->user->create($data);
     }
 
-    public function findByIdAndUpdate($id,  $data, $options = [])
+    public function findByIdAndUpdate($id,  $data)
     {
         $user=$this->findById($id);
         if(! $user)throw new Exception("User does not exist!",404);

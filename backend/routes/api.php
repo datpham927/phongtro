@@ -7,13 +7,13 @@ use App\Http\Controllers\api\ConversationControllers;
 use App\Http\Controllers\api\MessageController;
 use App\Http\Controllers\api\PostControllers;
 use App\Http\Controllers\api\UserControllers;
-use App\Http\Controllers\CrawlerControllers;
+use App\Http\Controllers\CrawlerController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\Login;
 use Illuminate\Support\Facades\Route;
 
 // Route cho crawler
-Route::post('/crawler', [CrawlerControllers::class, 'crawler'])->name('crawler.index');
+Route::post('/crawler', [CrawlerController::class, 'crawler'])->name('crawler.index');
 
 // Nhóm các route liên quan đến xác thực người dùng
 Route::prefix('v1/auth')->group(function () {
@@ -90,3 +90,5 @@ Route::middleware(Login::class)->prefix('v1/message')->group(function () {
     Route::post('/{conversation_id}/add', [MessageController::class, 'sendMessage']);
     Route::get('/{conversation_id}/all', [MessageController::class, 'getAllMessage']);
 });
+
+ 

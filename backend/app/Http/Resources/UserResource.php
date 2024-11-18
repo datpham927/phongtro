@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'id'            => $this->id,
             'name'    => $this->name,
             'phone'     => $this->phone,
+            "account_balance"=>$this->account_balance,
             'zalo' => $this->zalo, 
             'facebook'         => $this->facebook,
             'avatar'         => $this->avatar,

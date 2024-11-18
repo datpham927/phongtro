@@ -40,6 +40,8 @@ axiosJWT.interceptors.response.use(
       if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true; // Đánh dấu request đã thử lại
         try {
+          const accessToken=localStorage.getItem('access_token');
+          if(!accessToken) return;
           const res = await apiRefreshToken(); // Gọi API để lấy access token mới
           if (res) {
             // Cập nhật lại header Authorization với token mới

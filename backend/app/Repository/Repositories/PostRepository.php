@@ -47,14 +47,14 @@ class PostRepository implements PostRepositoryInterface
             // Áp dụng bộ lọc theo khoảng giá nếu có
             if (!empty($filters['price_from']) || !empty($filters['price_to'])) {
                 $query->whereHas('price', function($query) use ($filters) {
-                    $query->whereBetween('order', [$filters['price_from'], $filters['price_to']]);
+                    $query->whereBetween('number', [$filters['price_from'], $filters['price_to']]);
                 });
                 unset($filters['price_from'],$filters['price_to']);
             } 
             // Áp dụng bộ lọc theo khoảng diện tích nếu có
             if (!empty($filters['area_from'])  ||  !empty($filters['area_to'])) { 
                 $query->whereHas('area', function($query) use ($filters) {
-                    $query->whereBetween('order', [$filters['area_from'], $filters['area_to']]);
+                    $query->whereBetween('number', [$filters['area_from'], $filters['area_to']]);
                 });
                 unset($filters['area_from'],$filters['area_to']);
 
@@ -114,7 +114,7 @@ class PostRepository implements PostRepositoryInterface
     {
         return $this->post->create($data);
     }
-    public function findByIdAndUpdate($id,  $data, $options = [])
+    public function findByIdAndUpdate($id,  $data)
     {
         $post=$this->findById($id);
         if(! $post)throw new Exception("Post does not exist!",404);
@@ -144,7 +144,6 @@ class PostRepository implements PostRepositoryInterface
         'address',      // Quan hệ với bảng 'post_address'
         'area',        // Quan hệ với bảng 'post_areas'
         'price',       // Quan hệ với bảng 'post_prices'
-        'attribute',   // Quan hệ với bảng 'post_attributes'
         'images',       // Quan hệ với bảng 'post_images'
         'category'      // Quan hệ với bảng 'categories'
     ])->find($pid);

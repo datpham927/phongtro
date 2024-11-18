@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('post_prices', function (Blueprint $table) {
             $table->uuid('id')->primary(); // UUID làm khóa chính
             $table->uuid('post_id');
-            $table->double('order')->default(0); //1
+            $table->double('number')->default(0); //1
             $table->string('value'); // 1triệu
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->uuid('id')->primary(); // UUID làm khóa chính
+            $table->uuid('id')->primary(); // UUID as primary key
             $table->string('name')->unique();
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
-            $table->string('sub_title')->nullable();
+            $table->text('sub_title')->nullable(); // Change from string to text
             $table->timestamps();
         });
+        
     }
 
     /**

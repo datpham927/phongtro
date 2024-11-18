@@ -21,10 +21,10 @@ class StorePostRequest extends FormRequest
             'images' => 'required|array|min:1',
             'images.*' => 'url',
             'area' => 'required|array',
-            'area.order' => 'required|integer|min:1',
+            'area.number' => 'required|integer|min:1',
             'area.value' => 'required|string',
             'price' => 'required|array',
-            'price.order' => 'required|numeric|min:0',
+            'price.number' => 'required|numeric|min:0',
             'price.value' => 'required|string ',
             'attribute' => 'required|array',
             'attribute.target' => 'required|string',
@@ -34,8 +34,8 @@ class StorePostRequest extends FormRequest
             'address.city_name' => 'required|string',
             'address.district_name' => 'required|string',
             'address.ward_name' => 'required|string',
-            'address.address_detail' => 'required|string',
-            'address.map' => 'nullable|string',
+            'address_detail' => 'required|string',
+            'map' => 'nullable|string',
         ];
     }
 }

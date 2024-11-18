@@ -6,7 +6,7 @@ interface ButtonOutlineProps {
     className?: string;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
+ 
 const ButtonOutline: React.FC<ButtonOutlineProps> = ({ children, onClick, className }) => {
     return (
         <button

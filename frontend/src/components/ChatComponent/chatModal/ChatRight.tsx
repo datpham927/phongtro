@@ -7,12 +7,12 @@ import ButtonOutline from '../../ButtonOutline';
 import ItemMessage from '../../ItemMessage';
 import { apiAddMessage, apiGetMessages } from '../../../services/apiMessage';
 import { IConversation } from '../../../interfaces/conversation';
-
+import Pusher from 'pusher-js';
 interface Message {
     sender_id: string;
     message: string;
     id: string;
-    createdAt: string;
+    created_at: string;
 }
 const ChatRight: React.FC<{ conversation: IConversation|any; isOpen: boolean }> = ({ conversation, isOpen }) => {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -21,24 +21,24 @@ const ChatRight: React.FC<{ conversation: IConversation|any; isOpen: boolean }> 
     const [value, setValue] = useState<string>('');
     const currentUser = useAppSelector((state) => state.user);
     const scroll = useRef<any>(null);
-    // const { socketRef } = useAppSelector((state) => state.action);
-
     useEffect(() => {
-        if (isOpen) {
-            setIsOpenBox(isOpen);
-            return;
-        }
-        setTimeout(() => {
-            setIsOpenBox(isOpen);
-        }, 299);
-    }, [isOpen]);
-
-    // get message from socket.io
-    // useEffect(() => {
-    //     socketRef?.on('getMessage', (data) => {
-    //         setMessages((prev) => [...prev, data]);
-    //     });
-    // }, [socketRef]);
+        if (isOpen) {setIsOpenBox(isOpen);return;}
+        setTimeout(() => {setIsOpenBox(isOpen);}, 299);
+    }, [isOpen]);   
+    
+    useEffect(() => {
+        const pusher = new Pusher(import.meta.env.VITE_REACT_PUSHER_APP_KEY, {
+            cluster: import.meta.env.VITE_REACT_PUSHER_APP_CLUSTER
+        });
+        const channel = pusher.subscribe( `chat-${currentUser.id}`);
+        channel.bind('sendMessage', function(data:any) {
+            setMessages(prevMessages => [...prevMessages, data]);
+        });
+        return () => {
+            channel.unbind_all();
+            channel.unsubscribe();
+        };
+    }, [currentUser.id]);
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -53,14 +53,11 @@ const ChatRight: React.FC<{ conversation: IConversation|any; isOpen: boolean }> 
     const handleSend = async () => {
         if (value) {
             setLoading(true);
-            const res = await apiAddMessage(conversation.id, value);
+            const otherUser = conversation.userOne.id === currentUser.id ? conversation.userTwo : conversation.userOne;
+            const res = await apiAddMessage(conversation.id,value,otherUser.id);
             setLoading(false);
             if (res.status) {
                 setMessages((prev) => [...prev, res.data]);
-                // socketRef?.emit('sendMessage', {
-                //     ...message.data,
-                //     receiver,
-                // });
                 setValue('');
             }
         }

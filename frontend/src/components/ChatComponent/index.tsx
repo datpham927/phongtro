@@ -7,7 +7,6 @@ import { apiGetConversations } from '../../services/apiConversation';
 
 const ChatComponent: React.FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [unseenConversations, setUnseenConversations] = useState<number>(0);
     const dispatch = useAppDispatch();
     // const { isLoginSuccess } = useAppSelector((state) => state.auth);
     const { isOpenChat } = useAppSelector((state) => state.action);
@@ -55,11 +54,11 @@ const ChatComponent: React.FC = () => {
                 }}
             >
                 <MessageIcon fontSize="large" />
-                {unseenConversations > 0 && (
+                {/* {unseenConversations > 0 && (
                     <div className="absolute text-[13px] px-[5px]  rounded-[50%] top-0 right-0 h-fit bg-[#A769FD]">
                         {unseenConversations}
                     </div>
-                )}
+                )} */}
             </div>
             {isOpen && <ChatModal />}
         </div>

@@ -7,7 +7,6 @@ import { setDetailUser } from '../redux/user/userSlice';
 
 const useFetchDetailUser = () => {
     const dispatch = useAppDispatch();
-    
     useEffect(() => {
         const userId=localStorage.getItem('client_id');
             if(!userId)return;

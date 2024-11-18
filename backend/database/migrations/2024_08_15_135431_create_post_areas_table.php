@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('post_areas', function (Blueprint $table) {
             $table->uuid('id')->primary(); // UUID làm khóa chính
             $table->uuid('post_id');
-            $table->double('order')->default(0); //10
+            $table->double('number')->default(0); //10
             $table->string('value'); // 10m
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')
+            ->onDelete('cascade') ->onUpdate('cascade') ;
             $table->timestamps();
         });
     }

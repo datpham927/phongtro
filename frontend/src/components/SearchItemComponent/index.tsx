@@ -23,7 +23,7 @@ function SearchItemComponent({
 
       <img className="w-[12px] h-[12px]" src={imgUrl}/>
       <span
-        className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${!!title ? "text-black font-medium" : "text-gray-400"
+        className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${title ? "text-black font-medium" : "text-gray-400"
         } `}
       >
         {title || defaultText}

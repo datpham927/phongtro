@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-import { convertVietnamese } from "../../utils/format/convertVietnamese";
 import { textInfo } from "../../utils/constant";
 import { memo } from "react";
 import { starToArr } from "../../utils/starToArr";

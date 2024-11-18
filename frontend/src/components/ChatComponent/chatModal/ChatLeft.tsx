@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import {  useAppSelector } from '../../../redux/hooks';
 import ReactLoading from 'react-loading';
 import ItemConversation from '../../ItemConversation';
 import NotExit from '../../common/NotExit';

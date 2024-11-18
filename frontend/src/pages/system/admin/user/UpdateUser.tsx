@@ -1,16 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
-
-import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent, SelectOption } from "../../../../components";
+import {   ButtonComponent } from "../../../../components";
 import { IUserDetail } from "../../../../interfaces/User";
-import InputReadOnly from "../../../../components/InputComponent/InputReadOnly";
 import InputForm from "../../../../components/InputComponent/InputForm";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { useNavigate, useParams } from "react-router-dom";
-import { apiGetDetailUser, apiUpdateProfile, apiUpdateUser } from "../../../../services/apiUser";
+import {   useParams } from "react-router-dom";
+import { apiGetDetailUser,  apiUpdateUser } from "../../../../services/apiUser";
 import validate from "../../../../utils/validate";
-import { setDetailUser } from "../../../../redux/user/userSlice";
 import { apiUploadImage } from "../../../../services/apiUploadPicture";
 import { FormControl, FormControlLabel,  Radio, RadioGroup } from "@mui/material";
 
