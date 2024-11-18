@@ -71,6 +71,7 @@ class PostService implements PostServiceInterface
     // tạo hóa đơn và trừ tiền
     if($postType->price>0){
         $this->processPostPayment($user, $postType);
+        $dataPost['is_approved']=true;
     }
     // đăng bài
     $addressId = $this->getOrCreateAddressId($validatedData['address']);
