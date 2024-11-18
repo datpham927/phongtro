@@ -1,10 +1,13 @@
 <?php
 namespace App\Service\Services;
 
+use App\Models\Invoice;
 use App\Models\Post_address;
 use App\Models\Post_area;
 use App\Models\Post_image;
 use App\Models\Post_price;
+use App\Models\PostType; 
+use App\Models\User;
 use App\Repository\Interfaces\PostRepositoryInterface;
 use App\Service\Interfaces\PostServiceInterface;
 use App\Util;
@@ -49,28 +52,54 @@ class PostService implements PostServiceInterface
         $shopId = $request['user_id'];
         return $this->postRepository->findAllPostExpiredForShop($limit, $sort, $page, $shopId);
     }
-
     public function findRelatedPost($addressId)
     {
         return $this->postRepository->findRelatedPostByAddress($addressId);
     }
-
     public function create($request)
-    {
-        $validatedData = $request->validated();
-        $address = $validatedData["address"];
-        if (empty($address)) {
-            throw new Exception("Please enter complete information!", 400);
-        }
-        $addressId = $this->getOrCreateAddressId($address);
-        $dataPost = $this->preparePostData($validatedData, $addressId);
-        $dataPost ["id"] = Util::uuid();
-        $post = $this->postRepository->create($dataPost);
-        $postId = $post["id"];
-        $this->validateAndCreatePostDetails($validatedData, $postId);
-        $this->clearCache();
-        return $post;
+{
+    // Lấy dữ liệu đã được validate
+    $validatedData = $request->validated();
+    // Kiểm tra và lấy loại bài đăng
+    $postType = PostType::find($validatedData['post_type_id']);
+    if (!$postType) { throw new Exception("Invalid post type", 400); }
+    // Kiểm tra số dư tài khoản người dùng có đủ để thanh toán
+    $user = User::find($validatedData['user_id']); 
+    if (!$user ||  $user->account_balance < $postType->price) {
+        throw new Exception("Insufficient account balance", 400);
     }
+    // tạo hóa đơn và trừ tiền
+    if($postType->price>0){
+        $this->processPostPayment($user, $postType);
+    }
+    // đăng bài
+    $addressId = $this->getOrCreateAddressId($validatedData['address']);
+    // Chuẩn bị dữ liệu bài đăng
+    $dataPost = $this->preparePostData($validatedData, $addressId);
+    // Tạo bài đăng
+    $post = $this->postRepository->create($dataPost);
+    // Tạo chi tiết bài đăng
+    $this->createPostDetails($validatedData, $post['id']);
+    // Xóa cache liên quan 
+    $this->clearCache();
+    return $post;
+}
+protected function processPostPayment($user, $postType)
+{
+    $invoiceData = [
+        'id' => Util::uuid(),
+        'transaction_type' => 'withdraw',
+        'user_id' => $user->id,
+        'amount' => $postType->price,
+        'description' => "Phí đăng bài " . $postType->name,
+    ];
+
+    $invoice = Invoice::create($invoiceData);
+    if ($invoice) {
+        $user->account_balance -= $postType->price;
+        $user->save(); // Lưu lại thay đổi số dư
+    }
+}
 
   public function update($request, $id)
 {
@@ -129,8 +158,7 @@ class PostService implements PostServiceInterface
             "city_name" => $address["city_name"],
             "district_name" => $address["district_name"],
             "ward_name" => $address["ward_name"]
-        ])->first();
-
+        ])->first(); 
         if ($foundAddress) {
             return $foundAddress->id;
         }
@@ -142,8 +170,9 @@ class PostService implements PostServiceInterface
     }
 
     private function preparePostData($validatedData, $addressId)
-    {
+    { 
         return [
+            'id'  => Util::uuid(),
             "user_id" => $validatedData["user_id"],
             'address_id' => $addressId,
             "slug" => Util::slug($validatedData["title"]),
@@ -151,19 +180,16 @@ class PostService implements PostServiceInterface
             "thumb" => $validatedData["thumb"],
             "description" => $validatedData["description"],
             "category_id" => $validatedData["category_id"],
-            "target" => $validatedData["target"],
             "expire_at" => $validatedData["expire_at"],
             "address_detail" => $validatedData["address_detail"],
-            "map" => $validatedData["map"]
+            "map" => $validatedData["map"],
+            "post_type_id" => $validatedData["post_type_id"],
+            "target" => $validatedData["target"] 
         ];
     }
 
-    private function validateAndCreatePostDetails($validatedData, $postId)
+    private function createPostDetails($validatedData, $postId)
     {
-        if (empty($validatedData["images"]) || empty($validatedData["area"]) ||
-            empty($validatedData["price"]) || empty($validatedData["attribute"])) {
-            throw new Exception("Please enter complete information!", 400);
-        }
         $this->createPostImage($validatedData["images"], $postId);
         $this->createPostPrice($validatedData["price"], $postId);
         $this->createPostArea($validatedData["area"], $postId);
@@ -204,8 +230,6 @@ class PostService implements PostServiceInterface
         $price["id"] = Util::uuid();
         Post_price::create($price);
     }
-
- 
 
     private function clearCache()
     {

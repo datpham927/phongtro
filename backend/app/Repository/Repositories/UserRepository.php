@@ -15,10 +15,11 @@ class UserRepository implements UserRepositoryInterface
     }
     public function findAll($limit = 5, $sort = 'id:asc', $page = 1, array $filters = null)
     {
+
         $query = $this->user->select('users.*', DB::raw('count(p.id) as post_quantity'))
             ->leftJoin('posts as p', 'p.user_id', '=', 'users.id')
             ->groupBy('users.id')
-            ->where('users.id', '!=', $filters['admin_id']);
+            ->where('users.type', '!=', 'admin');
         // Tính tổng số người dùng và phân trang
         $totalUsers = $query->get()->count();
         $totalPage = ceil($totalUsers / $limit);

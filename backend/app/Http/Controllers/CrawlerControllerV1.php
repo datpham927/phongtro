@@ -231,7 +231,7 @@ class CrawlerControllerV1 extends Controller
          
          $type= $crawler->filter("tr")->eq(3)->filter("td")->eq(1)->text() ;
          $target= $crawler->filter("tr")->eq(4)->filter("td")->eq(1)->text()  ; 
-         $attribute["type_post"]= $type;
+         $attribute["post_type"]= $type;
          $attribute["target"]=$target; 
          $attribute["post_id"]= $post["id"];
         //  dd( $attribute);

@@ -26,9 +26,6 @@ class StorePostRequest extends FormRequest
             'price' => 'required|array',
             'price.number' => 'required|numeric|min:0',
             'price.value' => 'required|string ',
-            'attribute' => 'required|array',
-            'attribute.target' => 'required|string',
-            'attribute.type_post' => 'required|string',
             'expire_at' => 'required|string',
             'address' => 'required|array',
             'address.city_name' => 'required|string',
@@ -36,6 +33,8 @@ class StorePostRequest extends FormRequest
             'address.ward_name' => 'required|string',
             'address_detail' => 'required|string',
             'map' => 'nullable|string',
+            "target" => 'required|string',
+            "post_type_id" => 'required|string'
         ];
     }
 }

@@ -66,17 +66,15 @@ class UserService implements UserServiceInterface
         // Cập nhật cache sau khi người dùng được cập nhật
         $cacheKey = "user:" . $uid;
         Cache::put($cacheKey, $user, 3600*24);
-
         return new UserResource($user);
     }
 
     // Tìm tất cả người dùng
-    public function findAllUser($payload, $adminId)
+    public function findAllUser($payload)
     {
         $limit = $payload['limit'];
-        $page = $payload['page'];
-        $filter['admin_id'] = $adminId;
-        return $this->userRepository->findAll($limit, null, $page, $filter);
+        $page = $payload['page']; 
+        return $this->userRepository->findAll($limit, null, $page);
     }
 
     // Xóa người dùng
