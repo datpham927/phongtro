@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\post;
+use App\Models\Post;
 use App\Models\Post_address;
 use App\Models\Post_area;
 use App\Models\Post_attribute;
@@ -13,15 +13,15 @@ use App\Util;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\DomCrawler\Crawler;
 
-class CrawlerControllers extends Controller
+class CrawlerController  extends Controller
 {
    public  $categoryLinks = [
-        // [
-        //     'url' => 'https://phongtro123.com/cho-thue-phong-tro',
-        //     'name' => 'Cho Thuê Phòng Trọ',
-        //     'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
-        // ], 
+        [
+            'url' => 'https://phongtro123.com/cho-thue-phong-tro',
+            'name' => 'Cho Thuê Phòng Trọ',
+            'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
+        ], 
         //   [
         //     'url' => 'https://phongtro123.com/nha-cho-thue',
         //     'name' => 'Cho Thuê Nhà Nguyên Căn',
@@ -41,12 +41,12 @@ class CrawlerControllers extends Controller
         //     'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
         //     'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
         // ],
-        [
-            'url' => 'https://phongtro123.com/cho-thue-can-ho',
-            'name' => 'Cho Thuê Căn Hộ',
-            'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
-        ], 
+        // [
+        //     'url' => 'https://phongtro123.com/cho-thue-can-ho',
+        //     'name' => 'Cho Thuê Căn Hộ',
+        //     'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
+        //     'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
+        // ], 
     ];
     
     public $users=[
@@ -57,6 +57,7 @@ class CrawlerControllers extends Controller
     ];
    
     public function crawler(){
+        set_time_limit(2000);
       try {
         DB::beginTransaction();
         foreach ($this->categoryLinks as $categoryLink) {
@@ -91,8 +92,12 @@ class CrawlerControllers extends Controller
         // Khởi tạo đối tượng Crawler với HTML
         $crawler = new Crawler($html);
         // Lọc các phần tử có lớp 'post-item tin-vip'
-        $posts = $crawler->filter('.post-item');
+
+        $posts = $crawler->filter('.post__listing > li');
+
         // Mảng lưu trữ các liên kết bài viết
+
+
         $postLinks = [];
         // Kiểm tra xem có phần tử nào được lọc không
         if ($posts->count() > 0) {
@@ -102,13 +107,13 @@ class CrawlerControllers extends Controller
                 $newCrawler = new Crawler($post);
                 // Lấy liên kết và hình ảnh từ phần tử
                  // Kiểm tra các phần tử với bộ chọn
-                $linkNode = $newCrawler->filter(".post-title > a");
+                $linkNode = $newCrawler->filter(".post__thumb__vipnoibat > a");
                 if ($linkNode->count() > 0) {
                     $link = $linkNode->attr('href');
                 } else {
                     $link = null; // Hoặc một giá trị mặc định khác
                 }
-                $postThumbNode = $newCrawler->filter(".post-thumb > a > img");
+                $postThumbNode = $newCrawler->filter(".post__thumb__vipnoibat > a > img");
                 if ($postThumbNode->count() > 0) {
                     $postThumb = $postThumbNode->attr('data-src');
                 } else {
@@ -137,29 +142,34 @@ class CrawlerControllers extends Controller
         $html=file_get_contents($postLink);   
         $crawler=new Crawler( $html);
             // ------------------ ADDRESS ------------------
-            $addressDetail=$crawler->filter(".post-address")->text();
-            $addressArray=explode(', ', $addressDetail);
-        if( count($addressArray)>3){
+         // Extract the address detail from the first matched address element
+         $addressDetail = $crawler->filter("address.lh-sm")->first()->getNode(0)->childNodes->item(1)->nodeValue;
+        // Remove trailing spaces and hyphens from the address detail
+        $addressDetail = rtrim($addressDetail, ' -');
+        // Split the address string into an array by commas
+        $addressArray = explode(',', $addressDetail);
+            // Output the array for debugging
+
+        if( count($addressArray)>2){
             $address["id"]=Util::uuid(); 
             $address["city_name"]=$addressArray[3];
             $address["district_name"]= $addressArray[2];
-            $address["ward_name"]= $addressArray[1]; 
+            $address["ward_name"]= $addressArray[1]||""; 
             $address["city_slug"]= Util::slug($addressArray[3]);
             $address["district_slug"]=Util::slug($addressArray[2]);
-            $address["ward_slug"]=Util::slug($addressArray[1]); 
-            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-            $address["map"]= '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.5956177445114!2d108.24024507365495!3d16.034552740368213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142175ea43a1001%3A0x1b74ea0a2ed3227b!2zS8O9IHTDumMgeMOhIFNpbmggdmnDqm4gVFAgxJDDoCBO4bq1bmcgLSBQaMOtYSDEkMO0bmc!5e0!3m2!1svi!2s!4v1726499130448!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'; 
+            $address["ward_slug"]=Util::slug($addressArray[1])||""; 
+          
         }else{
             $address["id"]=Util::uuid(); 
             $address["city_name"]= explode(', ', $addressDetail)[2];
-            $address["district_name"]= explode(', ', $addressDetail)[1];
+            // $address["district_name"]= explode(', ', $addressDetail)[1];
             $address["ward_name"]= explode(', ', $addressDetail)[0]; 
             $address["city_slug"]= Util::slug(explode(', ', $addressDetail)[2]);
             $address["district_slug"]=Util::slug(explode(', ', $addressDetail)[1]);
             $address["ward_slug"]=Util::slug(explode(', ', $addressDetail)[0]); 
-            $address["address_detail"]=explode(': ', $addressDetail)[1]; 
-            $address["map"]= $crawler->filter("#__maps_content")->html(); 
         }
+
+ 
        $foundAddress = Post_address::where([
           "city_name"=> $address["city_name"], 
           "district_name"=>  $address["district_name" ],
@@ -172,26 +182,28 @@ class CrawlerControllers extends Controller
            $addressId = $foundAddress->id; // Truy cập thuộc tính id của đối tượng $foundAddress
        }
          // ------------------ POST ------------------
+
+         $postData["address_detail"]=$addressDetail; 
+         $postData["map"]= '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.5956177445114!2d108.24024507365495!3d16.034552740368213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142175ea43a1001%3A0x1b74ea0a2ed3227b!2zS8O9IHTDumMgeMOhIFNpbmggdmnDqm4gVFAgxJDDoCBO4bq1bmcgLSBQaMOtYSDEkMO0bmc!5e0!3m2!1svi!2s!4v1726499130448!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'; 
          $postData["id"]=Util::uuid();
          $postData["address_id"]=$addressId ;
          $postData["user_id"]= $this->users[rand(0, 3)];
          $postData["category_id"]=$categoryId;
-         $postData["title"]=$crawler->filter(".page-h1 a")->text();
+         $postData["title"]=$crawler->filter("header > h1")->text();
          $postData["thumb"]=$postThumb;
-         $postData["description"]=$crawler->filter(".section-content")->html();
-         $postData["slug"]=Util::slug($crawler->filter(".page-h1 a")->text());
+         $postData["description"]= $crawler->filter("div.border-bottom.pb-3.mb-4")->eq(0)->html();
+         $postData["slug"]=Util::slug($postData["title"]);
          $postData["expire_at"]=Util::getRandomDateFromNow();
          $postData["is_approved"]=true;
-         //  dd( $postData);
          $post= Post::create($postData);
          // -------------  image  ------------- 
          $dataImages = [];
-         $images = $crawler->filter(".swiper-slide img");
-         // dd("cout",count($images));
-         if ($images->count()) {
+         $images = $crawler->filter("#carousel_Photos > .carousel-inner > .carousel-item > img");
+         
+         if ($images->count()>0) {
              $images->each(function (Crawler $node) use (&$dataImages) {
-                 $dataImages[] = [
-                     'href' =>$node->attr('src'),
+                $dataImages[] = [
+                     'href' =>$node->attr('data-src'),
                  ];
              });
          } 
@@ -202,34 +214,20 @@ class CrawlerControllers extends Controller
                 "post_id"=> $post["id"],
             ]);
          }
-         //  dd($dataImages);
-         // ------------------ PRICE ------------------
+        //  // ------------------ PRICE ------------------
          $price["id"]=Util::uuid();
          $orderRandom=Util::convertToMillion(Util::randomDecimal());
-         $price["order"]= $orderRandom["order"];
+         $price["number"]= $orderRandom["number"];
          $price["value"]= $orderRandom["value"] ;
           $price["post_id"]= $post["id"];
         //  dd( $price);
          Post_price::create($price);
-        // ------------------ AREA ------------------
+        // // ------------------ AREA ------------------
          $area["id"]=Util::uuid();
-         $area["order"]=Util::extractNumber($crawler->filter(".item.acreage span")->text());
-         $area["value"]=$crawler->filter(".item.acreage span")->text();
+         $area["number"]=Util::randomDecimal( 10, 200,1);
+         $area["value"]=$area["number"]. " m2";
          $area["post_id"]= $post["id"];
-        //  dd( $area);
          Post_area::create($area);
-
-         // ------------------ ATTRIBUTE ------------------
-         $attribute["id"]=Util::uuid();
-         
-         $type= $crawler->filter("tr")->eq(3)->filter("td")->eq(1)->text() ;
-         $target= $crawler->filter("tr")->eq(4)->filter("td")->eq(1)->text()  ; 
-         $attribute["type_post"]= $type;
-         $attribute["target"]=$target; 
-         $attribute["post_id"]= $post["id"];
-        //  dd( $attribute);
-        Post_attribute::create($attribute);
-         
     }
     public function createAddress($address){
         $address["id"]=Util::uuid();

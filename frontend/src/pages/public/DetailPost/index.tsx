@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 import { getDetailPost } from '../../../services/apiPost';
 import { IDetailPost } from '../../../interfaces/Post';
@@ -13,18 +13,22 @@ const DetailPost: React.FC = () => {
     const [dataPost, setDataPost] = useState<IDetailPost | null>(null);
     const dispatch= useAppDispatch()
     const { postId } = useParams<{ postId: string }>();
-    
+    const navigate=useNavigate();
     useEffect(() => {
         dispatch(setLoading(true))
         const fetchApi =  (async () => {
             if (!postId) return;
             const res = await getDetailPost(postId);
-            if (res.status && res.data) {
+            if (res.status) {
                 setDataPost(res.data);
+            }else{
+                navigate('/')
             }
-            dispatch(setLoading(false))
         }  );
         fetchApi();
+        dispatch(setLoading(false))
+
+
     }, [postId]);
 
     if (!dataPost) return ;

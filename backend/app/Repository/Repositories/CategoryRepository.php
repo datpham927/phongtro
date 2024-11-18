@@ -13,40 +13,45 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function __construct(Category $category)
     {
         $this->category = $category;
-    }
+    }    
     public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null, $select = null)
-{
-    $skip = ($page - 1) * $limit;
-    $sortby = $sort === "ctime" ? 'desc' : 'asc'; // Sorting by creation time in descending order if 'ctime' is specified, otherwise ascending.
-    // Start the query
-    $query = $this->category->select('categories.*', DB::raw('count(p.id) as post_quantity'))
-    ->leftJoin('posts as p', 'p.category_id', '=', 'categories.id')
-    ->groupBy('categories.id');
-    // Apply filtersing if any filters are provided
-    if ($filters) {  $query->where($filters);  }
-     $totalCategories=(clone  $query)->count(); 
-    // Apply sorting
-    $query->orderBy('created_at', $sortby);
-    // Apply pagination (skip and limit)
-    if ($limit > 0) {  $query->skip($skip)->take($limit); }
-    // Apply select columns if specified
-    if ($select) { $query->select($select);}
-    // Execute the query and return the results
-    $totalPage= $limit > 0 ? ceil($totalCategories/$limit) : 1; 
-    return [
-        'totalPage' => intval($totalPage),
-        'currentPage' => intval($page),
-        'totalCategories' => intval($totalCategories),
-        'categories' => $query->get() ?: null, // Assuming PostResource is used for formatting
-    ]; 
-}
+    {
+        $skip = ($page - 1) * $limit;
+        $sortby = $sort === "ctime" ? 'desc' : 'asc';
+        $query = $this->category->select(
+            'categories.id',
+            'categories.title',
+            'categories.name',
+            'categories.sub_title',
+            'categories.created_at',
+            'categories.slug',
+            DB::raw('(SELECT COUNT(*) FROM posts WHERE posts.category_id = categories.id) as post_quantity')
+        )
+        ->orderBy('categories.created_at', $sortby)
+        ->distinct();
+        if ($filters) {  
+            $query->where($filters);  
+        }
+        $totalCategories = (clone $query)->count();
+        if ($limit > 0) {  
+            $query->skip($skip)->take($limit); 
+        }
+        $totalPage = $limit > 0 ? ceil($totalCategories / $limit) : 1; 
+        return [
+            'totalPage' => intval($totalPage),
+            'currentPage' => intval($page),
+            'totalCategories' => intval($totalCategories),
+            'categories' => $query->get() ?: null,
+        ];  
+    }
+    
 
     
     public function create( $data)
     {
         return $this->category->create($data);
     }
-    public function findByIdAndUpdate($id,  $data, $options = [])
+    public function findByIdAndUpdate($id,  $data)
     {
         $category=$this->findById($id);
         if(!$category)throw new Exception("Category does not exist!",404);

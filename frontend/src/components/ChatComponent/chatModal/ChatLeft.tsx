@@ -1,44 +1,42 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import {  useAppSelector } from '../../../redux/hooks';
 import ReactLoading from 'react-loading';
-// import ItemConversation from '../../item/ItemConversation';
-import NotExit from '../../common/NotExit';
 import ItemConversation from '../../ItemConversation';
+import NotExit from '../../common/NotExit';
 import { IConversation } from '../../../interfaces/conversation';
+import { normalizeText } from '../../../utils/format/normalizeText';
 
-interface ChatLeft {
+interface ChatLeftProps {
     setConversation: React.Dispatch<React.SetStateAction<any>>;
     setIsOpenBoxChat: React.Dispatch<React.SetStateAction<boolean>>;
-    conversation: IConversation|any;
+    conversation: IConversation | any;
     isOpenBoxChat: boolean;
     isLoading: boolean;
 }
-const ChatLeft: React.FC<ChatLeft> = ({
+
+const ChatLeft: React.FC<ChatLeftProps> = ({
     setConversation,
     conversation,
     setIsOpenBoxChat,
     isOpenBoxChat,
     isLoading,
 }) => {
-    const [value, setValue] = useState<string>('');
-    const [conversationsNew, setConversationsNew] = useState<IConversation[]>([]);
-    const dispatch = useAppDispatch();
+    const [searchValue, setSearchValue] = useState<string>('');
+    const [filteredConversations, setFilteredConversations] = useState<IConversation[]>([]);
     const currentUser = useAppSelector((state) => state.user);
     const { conversations } = useAppSelector((state) => state.action);
-  
-  
+
     useEffect(() => {
-        setConversationsNew(conversations);
+        setFilteredConversations(conversations);
     }, [conversations]);
 
-    // // tìm kiếm
-    // useEffect(() => {
-    //     const filterConversations = conversations.filter((c) => {
-    //         return formatUserName(c.members?.find((m) => m.user.id !== currentUser.id)?.user).includes(value);
-    //     });
-    //     setConversationsNew(filterConversations);
-    // }, [value]);
+    useEffect(() => {
+        const filtered = conversations.filter((conversation: IConversation) => {
+            const otherUser = conversation.userOne.id === currentUser.id ? conversation.userTwo : conversation.userOne;
+            return normalizeText(otherUser.name).includes(normalizeText(searchValue));
+        });
+        setFilteredConversations(filtered);
+    }, [searchValue]);
 
     return (
         <div
@@ -47,20 +45,27 @@ const ChatLeft: React.FC<ChatLeft> = ({
             } tablet:w-full w-[300px] h-full border-solid border-r-[1px] border-r-gray-200`}
         >
             <div className="p-2">
-                   <input id="search" placeholder="Tìm kiếm" 
-                   className="flex  w-full border-solid border-[1px] border-slate-300 py-1 px-2 rounded-sm outline-none" 
-                   type="text" value=""/>
+                <input
+                    id="search"
+                    placeholder="Tìm kiếm"
+                    className="flex w-full border-solid border-[1px] border-slate-300 py-1 px-2 rounded-sm outline-none"
+                    type="text"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                />
             </div>
+
             {!isLoading ? (
-                conversationsNew?.length > 0 ? (
+                filteredConversations.length > 0 ? (
                     <div className="w-full h-full">
-                        {conversationsNew?.map((c) => (
+                        {filteredConversations.map((c) => (
                             <ItemConversation
-                                isActive={c.id===conversation?.id}
+                                key={c.id}
+                                isActive={c.id === conversation?.id}
                                 conversation={c}
                                 userId={currentUser.id}
                                 onClick={() => {
-                                    setConversation(c); 
+                                    setConversation(c);
                                     setIsOpenBoxChat(true);
                                 }}
                             />
@@ -71,8 +76,8 @@ const ChatLeft: React.FC<ChatLeft> = ({
                 )
             ) : (
                 <div className="w-full flex justify-center h-full items-center">
-                <ReactLoading type="cylon" color="rgb(0, 136, 72)" />
-            </div>
+                    <ReactLoading type="cylon" color="rgb(0, 136, 72)" />
+                </div>
             )}
         </div>
     );

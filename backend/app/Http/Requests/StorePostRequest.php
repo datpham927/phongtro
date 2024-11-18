@@ -21,21 +21,20 @@ class StorePostRequest extends FormRequest
             'images' => 'required|array|min:1',
             'images.*' => 'url',
             'area' => 'required|array',
-            'area.order' => 'required|integer|min:1',
+            'area.number' => 'required|integer|min:1',
             'area.value' => 'required|string',
             'price' => 'required|array',
-            'price.order' => 'required|numeric|min:0',
+            'price.number' => 'required|numeric|min:0',
             'price.value' => 'required|string ',
-            'attribute' => 'required|array',
-            'attribute.target' => 'required|string',
-            'attribute.type_post' => 'required|string',
             'expire_at' => 'required|string',
             'address' => 'required|array',
             'address.city_name' => 'required|string',
             'address.district_name' => 'required|string',
             'address.ward_name' => 'required|string',
-            'address.address_detail' => 'required|string',
-            'address.map' => 'nullable|string',
+            'address_detail' => 'required|string',
+            'map' => 'nullable|string',
+            "target" => 'required|string',
+            "post_type_id" => 'required|string'
         ];
     }
 }

@@ -4,12 +4,10 @@ import validate from "../../../utils/validate";
 import { apiUpdatePost, getDetailPost } from "../../../services/apiPost";
 import { IDetailPost, IPostPayload } from "../../../interfaces/Post";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { convertToSlug } from "../../../utils/format/convertToSlug";
-import { getOneYearLater } from "../../../utils/getOneYearLater";
+import { convertToSlug } from "../../../utils/format/convertToSlug"; 
 import { convertMillionToDecimal } from "../../../utils/format/convertMillionToDecimal";
-import { useNavigate, useParams } from "react-router-dom";
-import { setLoading } from "../../../redux/action/actionSlice";
-import { PATH } from "../../../utils/constant";
+import {  useParams } from "react-router-dom";
+import { setLoading } from "../../../redux/action/actionSlice"; 
 
 function UpdatePost() {
   const [payload, setPayload] = useState<IPostPayload>({
@@ -29,13 +27,12 @@ function UpdatePost() {
   const [invalidFields, setInvalidFields] = useState<any>([]);
   const { categories } = useAppSelector((state) => state.category);
   const { pid: postId } = useParams<{ pid: string }>();
-  const dispatch= useAppDispatch()
-  const navigate= useNavigate()
+  const dispatch= useAppDispatch() 
 
   // Tối ưu useEffect để chỉ gọi khi postId thay đổi
   useEffect(() => {
-    dispatch(setLoading(true)) 
     const fetchApi = async () => {
+       dispatch(setLoading(true)) 
       if (!postId) return;
       const res = await getDetailPost(postId);
       if (res?.status) {
@@ -46,7 +43,7 @@ function UpdatePost() {
           province: address.city_name,
           district: address.district_name,
           ward: address.ward_name, 
-          areaNumber: area.order,
+          areaNumber: area.number,
           priceNumber: price.order,
           categoryCode: category.id,
           map: address.map,
@@ -54,8 +51,11 @@ function UpdatePost() {
           images: images.map((e: any) => e.url),
           ...data,
         });
+        dispatch(setLoading(false))
+      }else{
+        alert("Cập nhật không thành công")
+           dispatch(setLoading(false))
       }
-      dispatch(setLoading(false))
     };
     fetchApi();
   }, [postId]);

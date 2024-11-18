@@ -1,5 +1,5 @@
 export const autoId = (value:any) => {
-  let code =
+  const code =
     value
       .toLowerCase()
       .normalize("NFD")

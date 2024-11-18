@@ -26,6 +26,7 @@ class PostDetailResource extends JsonResource
             'images' => ImageResource::collection($this->whenLoaded('images')), 
             'slug'         => $this->slug,
             'description'         => $this->description,
+            'target'      =>$attribute?->target,
             "created_at"=> $this->created_at,
             "expire_at"=> $this->created_at,
             'category'        => [
@@ -45,18 +46,14 @@ class PostDetailResource extends JsonResource
                 'map'  =>$address?->map,
             ],
             'area'=>[
-              "order"=>  $area?->order,
+              "number"=>  $area?->number,
               "value"=>  $area?->value
             ],
             'price' =>[
-                "order"=>  $price?->order,
+                "number"=>  $price?->number,
                 "value"=>  $price?->value
               ],
-            'attribute' => [ 
-                'target'      =>$attribute?->target,
-                'value'      =>$attribute?->type_post, 
-                'created_at'      =>$attribute?->created_at,
-            ],
+             
             'user'=>[
                 'id' => $this->user?->id,
                 'name'=>$user->name,

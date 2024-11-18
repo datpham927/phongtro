@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react"
-import { BallTriangle } from "react-loader-spinner"  
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks"
+import {  useAppSelector } from "../../../redux/hooks"
 import InputForm from "../../../components/InputComponent/InputForm"
 import { ButtonComponent } from "../../../components"
 
 const EditAccount = () => {
-  const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user)
   const [invalidFields, setInvalidFields] = useState<any>([])
-  const [isLoading, setIsLoading] = useState(false)
   const [dataEditUser, setDataEditUser] = useState<any>()
  
 

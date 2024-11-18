@@ -25,9 +25,7 @@ class UserControllers extends Controller
       public function getAllUser(Request $request){
         try {
               $payload=$request->all();
-              $adminId= $payload['user_id'];
-              unset($payload['user_id']);
-              $response = $this->userService->findAllUser($payload, $adminId);
+              $response = $this->userService->findAllUser($payload);
               return ResponseHelper::success($response, "Successfully", 200);
           }  catch (\Throwable $th) {
               return ResponseHelper::error("Error", $th);

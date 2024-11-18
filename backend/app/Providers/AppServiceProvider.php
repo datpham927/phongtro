@@ -24,6 +24,7 @@ use App\Service\Services\CategoryService;
 use App\Service\Services\ConversationService;
 use App\Service\Services\MessageService;
 use App\Service\Services\UserService;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -48,6 +49,5 @@ class AppServiceProvider extends ServiceProvider
     }
     public function boot(): void
     {
-        //
     }
 }

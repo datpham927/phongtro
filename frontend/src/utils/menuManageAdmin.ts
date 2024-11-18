@@ -1,4 +1,4 @@
-import { editIcon, exitIcon, manageIcon } from "../assets";
+import { editIcon, manageIcon } from "../assets";
 import { PATH } from "./constant";
 
 export const menuManageAdmin = [

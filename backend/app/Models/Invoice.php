@@ -5,11 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RefreshToken extends Model
+class Invoice extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'refresh_token',
-    ];
+    protected $guarded = [];
     use HasFactory;
 }

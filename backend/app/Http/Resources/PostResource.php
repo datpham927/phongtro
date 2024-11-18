@@ -29,11 +29,11 @@ class PostResource extends JsonResource
                 'ward_slug' => $this->address?->ward_slug,
             ],
             'area' => [
-                'order' => $this->area?->order,
+                'number' => $this->area?->number,
                 'value' => $this->area?->value,
             ],
             'price' => [
-                'order' => $this->price?->order,
+                'number' => $this->price?->number,
                 'value' => $this->price?->value,
             ],
             'user' => [

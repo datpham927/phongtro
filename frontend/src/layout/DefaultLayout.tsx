@@ -4,7 +4,6 @@ import { Auth } from '../feature';
 import NavigateComponent from '../components/NavigateComponent';
 import { Outlet } from 'react-router-dom';
 import LoadingComponent from '../components/LoadingComponent';
-import { useAppSelector } from '../redux/hooks';
 import { ChatComponent } from '../components';
  
 const DefaultLayout = () => { 

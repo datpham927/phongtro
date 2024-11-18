@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Service\Interfaces\CategoryServiceInterface;
 use Illuminate\Http\Request;
+use Predis\Response\Status;
 
 class CategoryControllers extends Controller
 {
@@ -19,6 +20,7 @@ class CategoryControllers extends Controller
     }
     public function getAll(Request $request )
     { 
+        
         try {
             $response= $this->categoryService->findAll($request);
             return ResponseHelper::success($response,"Successfully",200);
@@ -43,7 +45,7 @@ class CategoryControllers extends Controller
             $response= $this->categoryService->create( $request);
             return ResponseHelper::success($response,"Create successfully",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Create error",$th);
+            return ResponseHelper::error("Error",$th);
         }
     }
  

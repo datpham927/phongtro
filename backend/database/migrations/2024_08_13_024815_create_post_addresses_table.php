@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('city_slug');
             $table->string('district_slug');
             $table->string('ward_slug');
-            $table->string('address_detail');
-            $table->text('map');
             $table->timestamps();
         });
     }

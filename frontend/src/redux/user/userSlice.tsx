@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { IUserDetail } from '../../interfaces/User';
 
 // Define the initial state using the UserDetail type

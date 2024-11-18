@@ -6,7 +6,7 @@ import validate from "../../../../utils/validate";
 import { useNavigate, useParams } from "react-router-dom";
 import { PATH } from "../../../../utils/constant";
 import { useEffect, useState } from "react";
-import { apiCreateCategory, apiGetCategory, apiUpdateCategory } from "../../../../services/apiCategory";
+import {  apiGetCategory, apiUpdateCategory } from "../../../../services/apiCategory";
 
 function CreateCategory() {
   const [payload, setPayload] = useState<any>({

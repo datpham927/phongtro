@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             [
                 'id'=>"1f2efcd2-d886-4643-a9e5-f1beb8df0c21",
                 'name' => 'Diễm Chiêu', 
+                "account_balance"=>200000000,
                 'phone' => '0328430561',
                 'zalo' => '0328430561',
                 'email' => 'diemchieu1@gmail.com',
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
             [
                 'id'=>"78733a14-7b26-4da0-83c5-77f4032ecfab",
                 'name' => 'Đạt Phạm',
+                "account_balance"=>200000000,
                 'phone' => '0328430561',
                 'zalo' => '0328430561',
                 'email' => 'datp1907@gmail.com', // Đảm bảo email là duy nhất
@@ -36,6 +38,7 @@ class UserSeeder extends Seeder
             [
                 'id'=>"cf7066ea-3425-43bd-acb0-5ce512a7998e",
                 'name' => 'Uyển Nhi',
+                "account_balance"=>200000000,
                 'phone' => '0328430561',
                 'zalo' => '0328430561',
                 'email' => 'datp927@gmail.com', // Đảm bảo email là duy nhất
@@ -45,6 +48,7 @@ class UserSeeder extends Seeder
             [
                 'id'=>"f2728809-6b77-47c6-8a59-c6497717995a",
                 'name' => 'Minh Hiệp',
+                "account_balance"=>200000000,
                 'phone' => '0328430561',
                 'zalo' => '0328430561',
                 'email' => 'dpshopvn@gmail.com', // Đảm bảo email là duy nhất
@@ -53,6 +57,7 @@ class UserSeeder extends Seeder
             ],[
                 'id'=>"88d13437-a0a8-4a46-8060-7cc4f9f9787d",
                 'name' => 'admin',
+                "account_balance"=>0,
                 'phone' => '0328430561',
                 'zalo' => '0328430561',
                 'email' => 'admin@gmail.com', // Đảm bảo email là duy nhất
