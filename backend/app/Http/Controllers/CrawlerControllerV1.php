@@ -235,7 +235,7 @@ class CrawlerControllerV1 extends Controller
          $attribute["target"]=$target; 
          $attribute["post_id"]= $post["id"];
         //  dd( $attribute);
-        Post_attribute::create($attribute);
+        // Post_attribute::create($attribute);
          
     }
     public function createAddress($address){
