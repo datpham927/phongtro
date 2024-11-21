@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Post_address;
 use App\Models\Post_area;
-use App\Models\Post_attribute;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Util;

@@ -19,6 +19,7 @@ class PostDetailResource extends JsonResource
         $price    = $this->price;
         $attribute    = $this->attribute;
         $user    = $this->user;
+        $postType=$this->postType;
         return [
             'id'            => $this->id,
             'title'    => $this->title,
@@ -27,8 +28,12 @@ class PostDetailResource extends JsonResource
             'slug'         => $this->slug,
             'description'         => $this->description,
             'target'      =>$attribute?->target,
+            'post_type'      =>[
+                'name'=>$postType->name,
+                'priority'=>$postType->priority,
+            ],
             "created_at"=> $this->created_at,
-            "expire_at"=> $this->created_at,
+            "expire_at"=> $this->expire_at,
             'category'        => [
                 "id"=>$this->category->id,
                 "name"=>$this->category->name,

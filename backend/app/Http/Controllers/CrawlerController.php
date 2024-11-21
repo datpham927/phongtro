@@ -7,7 +7,6 @@ use App\Models\Invoice;
 use App\Models\Post;
 use App\Models\Post_address;
 use App\Models\Post_area;
-use App\Models\Post_attribute;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Models\PostType;
@@ -71,7 +70,7 @@ class CrawlerController  extends Controller
                 'title' => $categoryLink["title"],
                 'sub_title' =>$categoryLink["sub_title"]
             ]);
-        $this->crawlerListPost($categoryLink['url'], "8834bf69-bd31-43e3-aaa7-54d57f2e0556");
+        $this->crawlerListPost($categoryLink['url'],$category['id'] );
         }
         //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "388b3a30-2e16-46db-b160-9f0a1a473f4f");
         //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "388b3a30-2e16-46db-b160-9f0a1a473f4f");
@@ -197,6 +196,22 @@ class CrawlerController  extends Controller
          $postTypeId=$this->getRandomElement();
          $postData["post_type_id"]= $postTypeId; 
          $postData["is_approved"]=true;
+
+
+          //    ----- thanh toán
+                // Kiểm tra và lấy loại bài đăng
+                $postType = PostType::find($postTypeId); 
+                // Kiểm tra số dư tài khoản người dùng có đủ để thanh toán
+                $user = User::find($postData["user_id"]); 
+                if (!$user ||  $user->account_balance < $postType->price) {
+                        return response()->json('Insufficient account balance');
+                }
+                // tạo hóa đơn và trừ tiền
+                if($postType->price>0){
+                    $this->processPostPayment($user, $postType);
+                }
+         $postData["expire_at"] =Util::addMonthsToCurrentDate($postType['expiration_time']);
+
          $post= Post::create($postData);
          // -------------  image  ------------- 
          $dataImages = [];
@@ -231,18 +246,7 @@ class CrawlerController  extends Controller
          $area["post_id"]= $post["id"];
          Post_area::create($area);
 
-          //    ----- thanh toán
-                // Kiểm tra và lấy loại bài đăng
-                $postType = PostType::find($postTypeId); 
-                // Kiểm tra số dư tài khoản người dùng có đủ để thanh toán
-                $user = User::find($postData["user_id"]); 
-                if (!$user ||  $user->account_balance < $postType->price) {
-                        return response()->json('Insufficient account balance');
-                }
-                // tạo hóa đơn và trừ tiền
-                if($postType->price>0){
-                    $this->processPostPayment($user, $postType);
-                }
+         
     }
     public function createAddress($address){
         $address["id"]=Util::uuid();

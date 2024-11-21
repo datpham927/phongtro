@@ -74,7 +74,7 @@ function UpdatePost() {
       category_id: categoryCode,
       attribute: {
         target,
-        type_post: categories?.find((e) => e.id === categoryCode)?.name 
+        post_type: categories?.find((e) => e.id === categoryCode)?.name 
       },
       address: {
         city_name: convertToSlug(province),

@@ -30,11 +30,12 @@ class Post extends Model
     {
         return $this->hasOne(Post_price::class, 'post_id', 'id');
     }
-
-    public function attribute()
+    public function postType()
     {
-        return $this->hasOne(Post_attribute::class, 'post_id', 'id');
+        return $this->belongsTo(PostType::class, 'post_type_id', 'id');
     }
+
+    
 
     public function images()
     {
