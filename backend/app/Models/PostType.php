@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class PostType extends Model
 {
+    protected $fillable = ['description','price', 'expiration_time'];
     use HasFactory;
 }

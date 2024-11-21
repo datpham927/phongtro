@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Invoice;
 use App\Models\Post;
 use App\Models\Post_address;
 use App\Models\Post_area;
-use App\Models\Post_attribute;
 use App\Models\Post_image;
 use App\Models\Post_price;
+use App\Models\PostType;
+use App\Models\User;
 use App\Util;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\DomCrawler\Crawler;
@@ -22,31 +24,31 @@ class CrawlerController  extends Controller
             'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
             'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
         ], 
-        //   [
-        //     'url' => 'https://phongtro123.com/nha-cho-thue',
-        //     'name' => 'Cho Thuê Nhà Nguyên Căn',
-        //     'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
-        // ],  
+          [
+            'url' => 'https://phongtro123.com/nha-cho-thue',
+            'name' => 'Cho Thuê Nhà Nguyên Căn',
+            'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
+        ],  
       
-        //  [
-        //     'url' => 'https://phongtro123.com/cho-thue-mat-bang',
-        //     'name' => 'Cho Thuê Mặt Bằng',
-        //     'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
-        // ],  
-        // [
-        //     'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
-        //     'name' => 'Tìm Người Ở Ghép',
-        //     'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
-        //     'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
-        // ],
-        // [
-        //     'url' => 'https://phongtro123.com/cho-thue-can-ho',
-        //     'name' => 'Cho Thuê Căn Hộ',
-        //     'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
-        // ], 
+         [
+            'url' => 'https://phongtro123.com/cho-thue-mat-bang',
+            'name' => 'Cho Thuê Mặt Bằng',
+            'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
+        ],  
+        [
+            'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
+            'name' => 'Tìm Người Ở Ghép',
+            'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
+            'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
+        ],
+        [
+            'url' => 'https://phongtro123.com/cho-thue-can-ho',
+            'name' => 'Cho Thuê Căn Hộ',
+            'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
+        ], 
     ];
     
     public $users=[
@@ -68,7 +70,7 @@ class CrawlerController  extends Controller
                 'title' => $categoryLink["title"],
                 'sub_title' =>$categoryLink["sub_title"]
             ]);
-        $this->crawlerListPost($categoryLink['url'], $category['id']);
+        $this->crawlerListPost($categoryLink['url'],$category['id'] );
         }
         //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-chung-cu-mini", "388b3a30-2e16-46db-b160-9f0a1a473f4f");
         //  $this->crawlerListPost("https://phongtro123.com/cho-thue-can-ho-dich-vu", "388b3a30-2e16-46db-b160-9f0a1a473f4f");
@@ -91,14 +93,10 @@ class CrawlerController  extends Controller
         $html = file_get_contents($categoryUrl);   
         // Khởi tạo đối tượng Crawler với HTML
         $crawler = new Crawler($html);
-        // Lọc các phần tử có lớp 'post-item tin-vip'
-
-        $posts = $crawler->filter('.post__listing > li');
-
+        // Lọc các phần tử có lớp 'post-item tin-vip' 
+        $posts = $crawler->filter('.post__listing > li'); 
         // Mảng lưu trữ các liên kết bài viết
-
-
-        $postLinks = [];
+        $postLinks = []; 
         // Kiểm tra xem có phần tử nào được lọc không
         if ($posts->count() > 0) {
             // Lặp qua từng phần tử trong $posts
@@ -107,13 +105,13 @@ class CrawlerController  extends Controller
                 $newCrawler = new Crawler($post);
                 // Lấy liên kết và hình ảnh từ phần tử
                  // Kiểm tra các phần tử với bộ chọn
-                $linkNode = $newCrawler->filter(".post__thumb__vipnoibat > a");
+                $linkNode = $newCrawler->filter("figure > a");
                 if ($linkNode->count() > 0) {
                     $link = $linkNode->attr('href');
                 } else {
                     $link = null; // Hoặc một giá trị mặc định khác
                 }
-                $postThumbNode = $newCrawler->filter(".post__thumb__vipnoibat > a > img");
+                $postThumbNode = $newCrawler->filter("figure > a > img");
                 if ($postThumbNode->count() > 0) {
                     $postThumb = $postThumbNode->attr('data-src');
                 } else {
@@ -130,6 +128,7 @@ class CrawlerController  extends Controller
         } else {
             echo "Không tìm thấy bài viết nào trong danh mục.";
         }
+
         // Xử lý chi tiết các liên kết bài viết
         foreach ($postLinks as $postLink) {
             $this->crawlerDetail($postLink['link'], $postLink['post_thumb'], $categoryId);
@@ -149,8 +148,7 @@ class CrawlerController  extends Controller
         // Split the address string into an array by commas
         $addressArray = explode(',', $addressDetail);
             // Output the array for debugging
-
-        if( count($addressArray)>2){
+        if( count($addressArray)>3){
             $address["id"]=Util::uuid(); 
             $address["city_name"]=$addressArray[3];
             $address["district_name"]= $addressArray[2];
@@ -162,7 +160,7 @@ class CrawlerController  extends Controller
         }else{
             $address["id"]=Util::uuid(); 
             $address["city_name"]= explode(', ', $addressDetail)[2];
-            // $address["district_name"]= explode(', ', $addressDetail)[1];
+            $address["district_name"]= explode(', ', $addressDetail)[1];
             $address["ward_name"]= explode(', ', $addressDetail)[0]; 
             $address["city_slug"]= Util::slug(explode(', ', $addressDetail)[2]);
             $address["district_slug"]=Util::slug(explode(', ', $addressDetail)[1]);
@@ -195,6 +193,25 @@ class CrawlerController  extends Controller
          $postData["slug"]=Util::slug($postData["title"]);
          $postData["expire_at"]=Util::getRandomDateFromNow();
          $postData["is_approved"]=true;
+         $postTypeId=$this->getRandomElement();
+         $postData["post_type_id"]= $postTypeId; 
+         $postData["is_approved"]=true;
+
+
+          //    ----- thanh toán
+                // Kiểm tra và lấy loại bài đăng
+                $postType = PostType::find($postTypeId); 
+                // Kiểm tra số dư tài khoản người dùng có đủ để thanh toán
+                $user = User::find($postData["user_id"]); 
+                if (!$user ||  $user->account_balance < $postType->price) {
+                        return response()->json('Insufficient account balance');
+                }
+                // tạo hóa đơn và trừ tiền
+                if($postType->price>0){
+                    $this->processPostPayment($user, $postType);
+                }
+         $postData["expire_at"] =Util::addMonthsToCurrentDate($postType['expiration_time']);
+
          $post= Post::create($postData);
          // -------------  image  ------------- 
          $dataImages = [];
@@ -228,6 +245,8 @@ class CrawlerController  extends Controller
          $area["value"]=$area["number"]. " m2";
          $area["post_id"]= $post["id"];
          Post_area::create($area);
+
+         
     }
     public function createAddress($address){
         $address["id"]=Util::uuid();
@@ -236,4 +255,31 @@ class CrawlerController  extends Controller
         $address["ward_slug"]= Util::slug($address[ "ward_name"] );
        return Post_address::create($address);
     }
+
+    
+    function getRandomGender() {
+        $genders = ['Nam', 'Nữ'];
+        return $genders[array_rand($genders)];
+    }
+    function getRandomElement() {
+        $values = ['93748deuy37rrgg6f4t46', 'jdshffefeygfye64343', 'vhdufhdue87548', 'sdfer8549598fjf485', 'fhdfhueheffueuughyr8'];
+        return $values[array_rand($values)];
+    }
+    protected function processPostPayment($user, $postType)
+    {
+        $invoiceData = [
+            'id' => Util::uuid(),
+            'transaction_type' => 'withdraw',
+            'user_id' => $user->id,
+            'amount' => $postType->price,
+            'description' => "Phí đăng bài " . $postType->name,
+        ];
+
+        $invoice = Invoice::create($invoiceData);
+        if ($invoice) {
+            $user->account_balance -= $postType->price;
+            $user->save(); // Lưu lại thay đổi số dư
+        }
+    }
+    
 }

@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-
 use Carbon\Carbon;
 use DateTime; 
 use Illuminate\Support\Str;
@@ -84,5 +83,16 @@ public static function randomDecimal($min = 1, $max = 40, $decimals = 1) {
 
    
 
+    public static  function addMonthsToCurrentDate(int $months): string {
+        // Lấy thời gian hiện tại
+        $currentDate = Carbon::now();
+    
+        // Cộng thêm số tháng
+        $newDate = $currentDate->addMonths($months);
+    
+        // Trả về chuỗi định dạng
+        return $newDate->toDateTimeString(); // Trả về định dạng 'Y-m-d H:i:s'
+    }
+    
    
 }
