@@ -27,7 +27,7 @@ class MessageService  implements MessageServiceInterface
     $messages = $conversation->messages()->orderBy('created_at')->get();
     // Cập nhật tin nhắn chưa đọc của người gửi khác thành đã đọc
     $conversation->messages()
-        ->where('sender_id', '!=', $user_id)
+        ->where('user_id', '!=', $user_id)
         ->where('is_read', false)
         ->update(['is_read' => true]);
     // Trả về tin nhắn đã sắp xếp, không cần gọi lại get() một lần nữa
@@ -38,18 +38,16 @@ class MessageService  implements MessageServiceInterface
     // Nếu xác thực thất bại, ném ra ngoại lệ
     if ($validator->fails()) { throw new ValidationException($validator); }
           $text= $request["message"];
-          $sender_id= $request["user_id"];
+          $user_id= $request["user_id"];
           $receiver_id= $request["receiver_id"];
           $message = Message::create([
             "id"=>Util::uuid(),
-            "sender_id" => $sender_id,
+            "user_id" => $user_id,
             "receiver_id" => $receiver_id, 
             "conversation_id" => $conversation_id,
             "message" => $text,
             ]);
-          // event(new MessageSent($message, $sender_id,$receiver_id));
           event(new MessageSent($text ,$receiver_id ));
-          
           return  $message;
     }
 }

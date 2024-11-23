@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Service\Interfaces\ConversationServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ConversationControllers extends Controller
 {
@@ -16,10 +17,13 @@ class ConversationControllers extends Controller
     }
     public function create(Request $request)
     {
-        try {
+        DB::beginTransaction();
+        try { 
             $response= $this->conversationService->create($request);
+            DB::commit();
             return ResponseHelper::success($response,"Successfully",200);
         } catch (\Throwable $th) {
+            DB::rollback();
             return ResponseHelper::error("Error",$th);
         }
     }
@@ -27,7 +31,7 @@ class ConversationControllers extends Controller
     public function getAll(Request $request)
     {
         try { 
-            $response= $this->conversationService->finAll( $request['user_id']);
+            $response= $this->conversationService->findAll( $request['user_id']);
             return ResponseHelper::success($response,"Successfully",200);
         } catch (\Throwable $th) {
             return ResponseHelper::error("Error",$th);
