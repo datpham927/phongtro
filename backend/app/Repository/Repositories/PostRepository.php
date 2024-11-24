@@ -16,68 +16,70 @@ class PostRepository implements PostRepositoryInterface
     public function __construct(Post $post) {
         $this->post = $post;
     }
-     public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null){
-    // Khởi tạo query builder
-            $query = $this->post->newQuery(); 
-            // Áp dụng bộ lọc theo category_id nếu có
-            if (!empty($filters['category_slug'])) {
-                $query->whereHas('category', function($query) use ($filters) {
-                    $query->where('slug', $filters['category_slug']);
-                });
-                unset($filters['category_slug']);
-            }
-            // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
-            if (!empty($filters['city_slug']) || !empty($filters['district_slug']) || !empty($filters['ward_slug'])) {
-                $query->whereHas('address', function($query) use ($filters) {
-                    // Kiểm tra city_slug và áp dụng điều kiện
-                    if (!empty($filters['city_slug'])) {
-                        $query->where('city_slug', $filters['city_slug']);
-                    }
-                    // Kiểm tra district_slug và áp dụng điều kiện
-                    if (!empty($filters['district_slug'])) {
-                        $query->where('district_slug', $filters['district_slug']);
-                    }
-                    // Kiểm tra ward_slug và áp dụng điều kiện
-                    if (!empty($filters['ward_slug'])) {
-                        $query->where('ward_slug', $filters['ward_slug']);
-                    }
-                });
-                unset($filters['city_slug'],$filters['ward_slug'],$filters['district_slug']);
-            } 
-            // Áp dụng bộ lọc theo khoảng giá nếu có
-            if (!empty($filters['price_from']) || !empty($filters['price_to'])) {
-                $query->whereHas('price', function($query) use ($filters) {
-                    $query->whereBetween('number', [$filters['price_from'], $filters['price_to']]);
-                });
-                unset($filters['price_from'],$filters['price_to']);
-            } 
-            // Áp dụng bộ lọc theo khoảng diện tích nếu có
-            if (!empty($filters['area_from'])  ||  !empty($filters['area_to'])) { 
-                $query->whereHas('area', function($query) use ($filters) {
-                    $query->whereBetween('number', [$filters['area_from'], $filters['area_to']]);
-                });
-                unset($filters['area_from'],$filters['area_to']);
-
-            }
-            $query->where($filters);
-            // tất cả bài post
-            $totalProducts= $query->get()->count();
-            $totalPage=ceil($totalProducts/$limit);
-            // Áp dụng sắp xếp
-            $sortby = $sort === 'ctime' ? 'desc' : 'asc';
-            $query->orderBy('posts.created_at', $sortby);
-            // Áp dụng phân trang
-            $skip = ($page - 1) * $limit;
-            if ($limit > 0) { $query->skip($skip)->take($limit); }
-            // Thực thi truy vấn và trả về kết quả dưới dạng resource
-            // return PostResource::collection($query->get());
-            return [
-                'totalPage' => $totalPage,
-                'currentPage' => intval($page),
-                'totalPosts' =>$totalProducts,
-                'posts' => PostResource::collection($query->get()), // Assuming $post is a paginated result
-            ];   
+    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null)
+{
+    // Khởi tạo query builder với join bảng post_type
+    $query = $this->post->newQuery();
+    // Áp dụng bộ lọc theo category_slug nếu có
+    if (!empty($filters['category_slug'])) {
+        $query->whereHas('category', function($query) use ($filters) {
+            $query->where('slug', $filters['category_slug']);
+        });
+        unset($filters['category_slug']);
     }
+    // Áp dụng bộ lọc theo city_slug, district_slug, ward_slug nếu có
+    if (!empty($filters['city_slug']) || !empty($filters['district_slug']) || !empty($filters['ward_slug'])) {
+        $query->whereHas('address', function($query) use ($filters) {
+            // Kiểm tra city_slug và áp dụng điều kiện
+            if (!empty($filters['city_slug'])) {
+                $query->where('city_slug', $filters['city_slug']);
+            }
+            // Kiểm tra district_slug và áp dụng điều kiện
+            if (!empty($filters['district_slug'])) {
+                $query->where('district_slug', $filters['district_slug']);
+            }
+            // Kiểm tra ward_slug và áp dụng điều kiện
+            if (!empty($filters['ward_slug'])) {
+                $query->where('ward_slug', $filters['ward_slug']);
+            }
+        });
+        unset($filters['city_slug'],$filters['ward_slug'],$filters['district_slug']);
+    } 
+    // Áp dụng bộ lọc theo khoảng giá nếu có
+    if (!empty($filters['price_from']) || !empty($filters['price_to'])) {
+        $query->whereHas('price', function($query) use ($filters) {
+            $query->whereBetween('number', [$filters['price_from'], $filters['price_to']]);
+        });
+        unset($filters['price_from'],$filters['price_to']);
+    } 
+    // Áp dụng bộ lọc theo khoảng diện tích nếu có
+    if (!empty($filters['area_from'])  ||  !empty($filters['area_to'])) { 
+        $query->whereHas('area', function($query) use ($filters) {
+            $query->whereBetween('number', [$filters['area_from'], $filters['area_to']]);
+        });
+        unset($filters['area_from'],$filters['area_to']);
+
+    }
+    $query->where($filters);
+    // Tính tổng sản phẩm trước khi phân trang
+    $totalProducts = $query->clone()->count(); // Sử dụng clone tránh lặp lại truy vấn
+    $totalPage = ceil($totalProducts / $limit);
+    $query = $query->join('post_types', 'posts.post_type_id', '=', 'post_types.id')
+             ->select('posts.*', 'post_types.priority')
+             ->orderBy('post_types.priority', 'asc')
+             ->orderBy('posts.created_at', $sort === 'ctime' ? 'desc' : 'asc');
+    // Áp dụng phân trang
+    $skip = ($page - 1) * $limit;
+    $query->skip($skip)->take($limit);
+
+    // Trả về kết quả
+    return [
+        'totalPage' => $totalPage,
+        'currentPage' => intval($page),
+        'totalPosts' => $totalProducts,
+        'posts' => PostResource::collection($query->get()),
+    ];
+}
 
     public function findAllPostExpiredForShop($limit, $sort, $page, $shopId)
     {

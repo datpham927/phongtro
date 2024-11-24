@@ -12,6 +12,7 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $postType= $this->postType;
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -20,6 +21,7 @@ class PostResource extends JsonResource
             'description' => $this->description,
             "created_at" => $this->created_at,
             "expire_at" => $this->expire_at,
+            "priority"=>$postType->priority,
             'address' => [
                 'city_name' => $this->address?->city_name,
                 'district_name' => $this->address?->district_name,

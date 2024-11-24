@@ -33,7 +33,7 @@ class UserService implements UserServiceInterface
             Redis::expire($cacheKey, 3600 * 24);
         } else {
             // Giải mã JSON để lấy dữ liệu
-            $user = json_decode($cachedUser, true);
+            $user = json_decode($cachedUser);
         }
         return new UserResource($user);
     }
