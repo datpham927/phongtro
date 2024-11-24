@@ -76,7 +76,7 @@ const handleCLickCategory=(item: IFilterCategory)=>{
     <ProvinceComponent />
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
-          <ListPostComponent  data={listPosts} totalPost={totalPost} isHome={!params?.category_slug}/>
+          <ListPostComponent  data={listPosts} totalPost={totalPost} />
          { listPosts?.length>0&&
          <PaginationComponent currentPage={currentPage}
                              setCurrentPage={setCurrentPage} 
