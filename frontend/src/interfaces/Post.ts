@@ -35,7 +35,7 @@ export interface IPost {
 export interface IDetailPost extends IPost {
     attribute: {
       target: string;
-      type_post: string;
+      post_type: string;
     }; 
     category:{
       id:string,

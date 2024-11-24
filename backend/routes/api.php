@@ -6,6 +6,7 @@ use App\Http\Controllers\api\AddressControllers;
 use App\Http\Controllers\api\ConversationControllers;
 use App\Http\Controllers\api\MessageController;
 use App\Http\Controllers\api\PostControllers;
+use App\Http\Controllers\api\PostTypeController;
 use App\Http\Controllers\api\UserControllers;
 use App\Http\Controllers\CrawlerController;
 use App\Http\Middleware\IsAdmin;
@@ -82,6 +83,15 @@ Route::prefix('v1/address')->group(function () {
     Route::get('/{city_slug}/get-district', [AddressControllers::class, 'getDistricts']);
     Route::get('/{district_slug}/get-ward', [AddressControllers::class, 'getWards']);
 });
+
+Route::prefix('v1/post-type')->group(function () {
+    Route::get('/all', [PostTypeController::class, 'getAll']);
+    // Chỉ admin mới có quyền thêm, cập nhật, xóa danh mục
+    Route::middleware([Login::class, IsAdmin::class])->group(function () {
+        Route::put('/{ptid}/update', [PostTypeController::class, 'update']);
+    });
+});
+
 Route::middleware(Login::class)->prefix('v1/conversation')->group(function () {
     Route::post('/add', [ConversationControllers::class, 'create']);
     Route::get('/all', [ConversationControllers::class, 'getAll']);

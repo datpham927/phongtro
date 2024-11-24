@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name'); // For the name field
             $table->text('description'); // For the description field
             $table->integer('priority'); // For the priority field, assuming it's an integer
+            $table->integer('expiration_time') ;
             $table->decimal('price'); // For the price field (assuming 8 digits with 2 decimal places)
             $table->timestamps(); // Created at & Updated at timestamps
         });

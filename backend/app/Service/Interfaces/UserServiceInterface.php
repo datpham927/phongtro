@@ -8,6 +8,6 @@ interface UserServiceInterface
     public function updateProfile($request);
     public function updateUser($request,$uid);
     public function addUser($request);
-    public function findAllUser($payload, $adminId);
+    public function findAllUser($payload);
     public function findDeleteUser($uid);
 }

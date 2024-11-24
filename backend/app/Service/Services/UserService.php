@@ -7,6 +7,7 @@ use App\Service\Interfaces\UserServiceInterface;
 use App\Util;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redis;
 
 class UserService implements UserServiceInterface
 {
@@ -21,9 +22,19 @@ class UserService implements UserServiceInterface
     public function findUser($user_id)
     { 
         $cacheKey = "user:" . $user_id;
-        $user = Cache::remember($cacheKey, 3600*24, function () use ($user_id) {
-               return $this->userRepository->findById($user_id);
-          });
+        // Kiểm tra dữ liệu trong Redis
+        $cachedUser = Redis::get($cacheKey);
+        if (!$cachedUser) {
+            // Lấy dữ liệu từ repository nếu không có trong Redis
+            $user = $this->userRepository->findById($user_id);
+            // Lưu dữ liệu vào Redis (dưới dạng JSON)
+            Redis::set($cacheKey, json_encode($user));
+            // Thiết lập thời gian hết hạn (1 ngày)
+            Redis::expire($cacheKey, 3600 * 24);
+        } else {
+            // Giải mã JSON để lấy dữ liệu
+            $user = json_decode($cachedUser, true);
+        }
         return new UserResource($user);
     }
 
@@ -37,7 +48,7 @@ class UserService implements UserServiceInterface
         $user = $this->userRepository->findByIdAndUpdate($user_id, $payload);
         // Cập nhật cache sau khi người dùng được cập nhật
         $cacheKey = "user:" . $user_id;
-        Cache::put($cacheKey, $user, 3600*24);
+        Redis::setex($cacheKey, 3600 * 24, json_encode($user));
         return new UserResource($user);
     }
 
@@ -52,7 +63,7 @@ class UserService implements UserServiceInterface
         $user = $this->userRepository->create($payload);
         // Lưu vào cache
         $cacheKey = "user:" . $user->id;
-        Cache::put($cacheKey, $user, 3600*24);
+        Redis::setex($cacheKey, 3600 * 24, json_encode($user));
         return new UserResource($user);
     }
 
@@ -65,26 +76,24 @@ class UserService implements UserServiceInterface
         $user = $this->userRepository->findByIdAndUpdate($uid, $payload);
         // Cập nhật cache sau khi người dùng được cập nhật
         $cacheKey = "user:" . $uid;
-        Cache::put($cacheKey, $user, 3600*24);
-
+            // Lưu dữ liệu vào Redis
+        Redis::setex($cacheKey, 3600 * 24, json_encode($user));
         return new UserResource($user);
     }
 
     // Tìm tất cả người dùng
-    public function findAllUser($payload, $adminId)
+    public function findAllUser($payload)
     {
         $limit = $payload['limit'];
-        $page = $payload['page'];
-        $filter['admin_id'] = $adminId;
-        return $this->userRepository->findAll($limit, null, $page, $filter);
+        $page = $payload['page']; 
+        return $this->userRepository->findAll($limit, null, $page);
     }
 
     // Xóa người dùng
     public function findDeleteUser($uid)
     {
         $this->userRepository->findByIdAndDelete($uid);
-        // Xóa cache của người dùng
         $cacheKey = "user:" . $uid;
-        Cache::forget($cacheKey);
+        Redis::del($cacheKey);
     }
 }

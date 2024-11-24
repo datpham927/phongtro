@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Post_address;
 use App\Models\Post_area;
-use App\Models\Post_attribute;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Util;
@@ -231,11 +230,11 @@ class CrawlerControllerV1 extends Controller
          
          $type= $crawler->filter("tr")->eq(3)->filter("td")->eq(1)->text() ;
          $target= $crawler->filter("tr")->eq(4)->filter("td")->eq(1)->text()  ; 
-         $attribute["type_post"]= $type;
+         $attribute["post_type"]= $type;
          $attribute["target"]=$target; 
          $attribute["post_id"]= $post["id"];
         //  dd( $attribute);
-        Post_attribute::create($attribute);
+        // Post_attribute::create($attribute);
          
     }
     public function createAddress($address){
