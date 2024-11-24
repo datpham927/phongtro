@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('address_detail')->nullable();
             $table->text('map')->nullable();
-            $table->string('target')->nullable();
+            $table->string('target')->nullable()->default('Tất cả');
             $table->uuid('address_id')->nullable(); // Change this from text to uuid
             $table->uuid('category_id');
             $table->uuid('post_type_id');
