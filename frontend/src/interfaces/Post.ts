@@ -11,11 +11,11 @@ export interface IPost {
       is_approved?:boolean;
       images:[]
       area:{
-        order:string,
+        number:string,
         value:string
       }
       price:{
-        order:string,
+        number:string,
         value:string
       }
       address: {
