@@ -42,7 +42,7 @@ const ChatComponent: React.FC = () => {
     }, []);
 
     return (
-        <div className="fixed bottom-5 right-10 z-[1000] ">
+        <div className="fixed bottom-5 right-10 z-[999] ">
             <div
                 className="relative p-3 bg-sky-600 rounded-full text-white cursor-pointer"
                 onClick={() => {

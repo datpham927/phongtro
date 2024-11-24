@@ -10,6 +10,7 @@ const initialState: IUserDetail|any= {
     zalo: "",
     facebook: "",
     avatar: "",
+    account_balance:"",
     type: "",
 };
 
@@ -19,13 +20,14 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setDetailUser: (state, action) => {
-            const { id, name, phone, email, zalo, facebook, avatar, type } = action.payload;
+            const { id, name, phone, email, zalo, facebook,account_balance, avatar, type } = action.payload;
             state.id = id;
             state.name = name;
             state.phone = phone;
             state.email = email;
             state.zalo = zalo;
             state.facebook = facebook;
+            state.account_balance = account_balance;
             state.avatar = avatar;
             state.type = type;
         },
