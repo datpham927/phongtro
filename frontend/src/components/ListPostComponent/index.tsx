@@ -53,7 +53,7 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost,isHom
 
       <div className="mt-3">
         {data?.map((post) => (
-          <ItemPostComponent key={post.id} props={post} isHome={isHome}/>
+          <ItemPostComponent key={post.id} props={post} />
         ))}
       </div>
     </div>

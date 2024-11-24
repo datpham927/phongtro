@@ -102,3 +102,13 @@ export const textContact = {
     },
   ],
 };
+
+
+
+export const POST_TYPE_COLOR=[
+  "#E41B23",
+  "#DE178D",
+  "#FF6600",
+  "#3763E0",
+  "#055699"
+]

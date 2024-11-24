@@ -46,9 +46,7 @@ class AuthService implements AuthServiceInterface
         // tạo token
         $tokens= $this->createTokenPairs($user);
         $accessToken=$tokens["access_token"];  
-        $refreshToken=$tokens["refresh_token"];
-         
-         
+        $refreshToken=$tokens["refresh_token"]; 
         // Trả về thông tin người dùng và token
         return $this->buildAuthResponse($user,$accessToken,$refreshToken);
     }

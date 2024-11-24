@@ -55,13 +55,16 @@ const FilterPage: React.FC = () => {
 
   useEffect(() => {
     const fetchLocations = async () => {
+      dispatch(setLoading(true)) 
       let res;
       if (params.ward_slug) {
         res = await getAddress(params.ward_slug);
-        setTitleWelcome({
-          title: `${category?.name} ${res.data.ward_name}, ${category?.title}`,
-          description: `${category?.sub_title}`,
-        });
+        if(category?.name&&res.data.ward_name&&category?.title){
+          setTitleWelcome({
+            title: `${category?.name} ${res.data.ward_name}, ${category?.title}`,
+            description: `${category?.sub_title}`,
+          });
+        }
         setLocations([]);
         return;
       } 
@@ -76,11 +79,14 @@ const FilterPage: React.FC = () => {
       }
       if (res?.status) {
         setLocations(res.data.locations);
-        setTitleWelcome({
-          title: `${category?.name} ${res.data?.district_name || res.data?.city_name}, ${category?.title}`,
-          description: `${category?.sub_title}`,
-        });
+        if(category?.name&&category?.title){
+          setTitleWelcome({
+            title: `${category?.name} ${res.data?.district_name || res.data?.city_name}, ${category?.title}`,
+            description: `${category?.sub_title}`,
+          });
+        }
       }
+      dispatch(setLoading(false))
     };
 
     fetchLocations();

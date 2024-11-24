@@ -11,6 +11,7 @@ use App\Http\Controllers\api\UserControllers;
 use App\Http\Controllers\CrawlerController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\Login;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 // Route cho crawler
@@ -101,4 +102,11 @@ Route::middleware(Login::class)->prefix('v1/message')->group(function () {
     Route::get('/{conversation_id}/all', [MessageController::class, 'getAllMessage']);
 });
 
- 
+Route::get('/test-redis', function () {
+    try {
+        Redis::set('test', 'Hello from Redis Cloud');
+        return Redis::get('test');
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});

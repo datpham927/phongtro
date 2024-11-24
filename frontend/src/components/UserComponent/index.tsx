@@ -1,8 +1,10 @@
 import { memo } from "react";
 import { useAppSelector } from "../../redux/hooks";
+import { IUserDetail } from "../../interfaces/User";
+import { convertToMillion } from "../../utils/convertMillion";
 
 function UserComponent() {
-  const  user   = useAppSelector((state) => state.user);
+  const  user:IUserDetail   = useAppSelector((state) => state.user);
   return (
     <div className="flex items-center">
       <img
@@ -23,6 +25,10 @@ function UserComponent() {
           <strong>
             {user?.id?.match(/\d+(\.\d+)?/g)?.join("") .slice(0, 5)}
           </strong>
+        </span>
+        <span className="text-[12px] ">
+          Số dư tài khoản:
+          <strong> {convertToMillion(user?.account_balance)} </strong>
         </span>
       </div>
     </div>
