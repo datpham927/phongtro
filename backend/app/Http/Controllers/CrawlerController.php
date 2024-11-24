@@ -37,18 +37,18 @@ class CrawlerController  extends Controller
             'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
             'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
         ],  
-        [
-            'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
-            'name' => 'Tìm Người Ở Ghép',
-            'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
-            'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
-        ],
-        [
-            'url' => 'https://phongtro123.com/cho-thue-can-ho',
-            'name' => 'Cho Thuê Căn Hộ',
-            'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
-        ], 
+        // [
+        //     'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
+        //     'name' => 'Tìm Người Ở Ghép',
+        //     'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
+        //     'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
+        // ],
+        // [
+        //     'url' => 'https://phongtro123.com/cho-thue-can-ho',
+        //     'name' => 'Cho Thuê Căn Hộ',
+        //     'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
+        //     'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
+        // ], 
     ];
     
     public $users=[
@@ -59,7 +59,7 @@ class CrawlerController  extends Controller
     ];
    
     public function crawler(){
-        set_time_limit(2000);
+        set_time_limit(20000);
       try {
         DB::beginTransaction();
         foreach ($this->categoryLinks as $categoryLink) {

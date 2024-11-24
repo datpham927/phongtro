@@ -24,6 +24,8 @@ class PostDetailResource extends JsonResource
             'id'            => $this->id,
             'title'    => $this->title,
             'thumb'     => $this->thumb,
+            'address_detail'  =>$this->address_detail,
+            'map'  =>$this->map,
             'images' => ImageResource::collection($this->whenLoaded('images')), 
             'slug'         => $this->slug,
             'description'         => $this->description,
@@ -47,8 +49,6 @@ class PostDetailResource extends JsonResource
                 'city_slug'         =>$address?->city_slug,
                 'district_slug'       =>$address?->district_slug,
                 'ward_slug'  =>$address?->ward_slug,
-                'address_detail'  =>$address?->address_detail,
-                'map'  =>$address?->map,
             ],
             'area'=>[
               "number"=>  $area?->number,
@@ -58,14 +58,13 @@ class PostDetailResource extends JsonResource
                 "number"=>  $price?->number,
                 "value"=>  $price?->value
               ],
-             
             'user'=>[
-                'id' => $this->user?->id,
+                'id' =>  $user?->id,
                 'name'=>$user->name,
                 'phone'=>$user->phone,
                 'zalo'=>$user->zalo,
-            ]
-          
+            ],
+           
         ];
     }
 }
