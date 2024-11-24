@@ -8,7 +8,8 @@ import { timeAgo } from '../../../utils/format/timeAgo';
 import { BoxInfo, BreadcrumbComponent, ListNewPost, RelatedPostComponent, SlideDetailPost } from '../../../components';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setLoading } from '../../../redux/action/actionSlice';
-
+import StarIcon from '@mui/icons-material/Star';
+import { POST_TYPE_COLOR } from '../../../utils/constant';
 const DetailPost: React.FC = () => {
     const [dataPost, setDataPost] = useState<IDetailPost | null>(null);
     const dispatch= useAppDispatch()
@@ -34,8 +35,7 @@ const DetailPost: React.FC = () => {
     if (!dataPost) return ;
 
     const { title, images, address, price, area, description,
-           id, category, attribute, expire_at, created_at, user } = dataPost;
-
+           id, category, post_type, address_detail,map,target, expire_at, created_at, user } = dataPost;
     const renderRow = (label: string, value: React.ReactNode, isBg: boolean = false) => (
         <tr className={`h-[40px] ${isBg ? 'bg-primary-bg' : ''}`}>
             <td className="text-sm w-1/3 px-2">{label}</td>
@@ -62,6 +62,8 @@ const DetailPost: React.FC = () => {
             breadcrumb:title,
         },
     ];
+
+
     return (
        <>
         <BreadcrumbComponent breadcrumbs={breadcrumbs}/>
@@ -73,13 +75,20 @@ const DetailPost: React.FC = () => {
                 <div className="flex gap-3 items-center">
                     <h1 className="text-2xl font-medium text-red-500 uppercase">{title}</h1>
                 </div>
+                <div >
+                <span className='text-center uppercase px-3 py-1 text-[10px] text-white rounded-sm' style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
+             {  [1,2].includes(post_type.priority) &&<StarIcon sx={{ color: '#FFD700' , fontSize:'14px'}} /> }
+                {post_type.name}
+                </span>
+                </div>
+
                 <div className="text-sm flex items-center mt-1">
                     <img 
                         className="w-[16px] h-[16px] mr-[8px]" 
                         src="https://phongtro123.com/images/address-icon.svg" 
                         alt="Address icon" 
                     />
-                    <span>Địa chỉ: {address?.address_detail}</span>
+                    <span>Địa chỉ: {address_detail}</span>
                 </div>
                 <div className="flex gap-8 my-2 items-center">
                     <div className="flex items-center text-xl text-emerald-500 font-semibold">
@@ -131,9 +140,9 @@ const DetailPost: React.FC = () => {
                             </Link>, true
                         )}
                         {renderRow('Loại tin rao:', category?.name )}
-                        {renderRow('Đối tượng thuê:', attribute?.target, true)}
+                        {renderRow('Đối tượng thuê:', target, true)}
                         {renderRow('Ngày đăng:', formatDate(created_at) )}
-                        {renderRow('Ngày hết hạn:', expire_at, true)}
+                        {renderRow('Ngày hết hạn:', formatDate(expire_at), true)}
                     </tbody>
                 </table>
             </div>
@@ -149,8 +158,8 @@ const DetailPost: React.FC = () => {
             </div>
             <div className="my-5">
                 <h1 className="text-[20px] my-2 font-semibold">Bản đồ</h1>
-                <span className='text-sm'>Địa chỉ: {address.address_detail}</span>
-               <div className=' my-2'>  {parse(address.map)}</div>
+                <span className='text-sm'>Địa chỉ: { address_detail}</span>
+               <div className=' my-2'>  {parse(map)}  </div>
             </div>
         </div>
     

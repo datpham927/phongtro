@@ -5,7 +5,7 @@ namespace App\Service\Services;
 use App\Repository\Interfaces\CategoryRepositoryInterface;
 use App\Service\Interfaces\CategoryServiceInterface;
 use App\Util;
-use Illuminate\Support\Facades\Redis; // Thêm Redis Facade
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('conversations', function (Blueprint $table) {
             // Tạo cột id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
             $table->uuid("id")->primary();
+            $table->timestamps();
         });
     }
 

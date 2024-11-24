@@ -15,5 +15,13 @@ class Conversation extends Model
     {
         return $this->hasMany(Message::class, 'conversation_id');
     }
+    public function userConversations()
+    {
+        return $this->hasMany(UserConversation::class);
+    }
+    public function otherUser($currentUserId)
+    {
+        return User::where('id', '!=', $currentUserId)->first();
+    }
     
 }

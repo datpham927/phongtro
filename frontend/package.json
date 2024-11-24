@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@ionic/core": "^8.2.7",
     "@ionic/react": "^8.2.7",
     "@mui/icons-material": "^5.16.7",

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Service\Interfaces\PostServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostControllers extends Controller
 {
@@ -58,18 +59,24 @@ class PostControllers extends Controller
         }
     }
     public function create(StorePostRequest $request) {
+        DB::beginTransaction();
         try {
             $response = $this->postService->create($request);
+            DB::commit();
             return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
+            DB::rollback();
             return ResponseHelper::error("Error", $th);
         }
     }
     public function update(Request $request,$pid) {
+        DB::beginTransaction();
         try {
             $response = $this->postService->update($request,$pid);
+            DB::commit();
             return ResponseHelper::success($response, "Update successfully", 200);
         }  catch (\Throwable $th) {
+            DB::rollback();
             return ResponseHelper::error("Update error", $th);
         }
     }

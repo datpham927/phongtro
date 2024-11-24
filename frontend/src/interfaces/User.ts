@@ -6,6 +6,7 @@ export interface IUserDetail {
     zalo :string,
     facebook     :string,
     avatar       :string,
+    account_balance:Number,
      type: string; 
     post_quantity?:any
 

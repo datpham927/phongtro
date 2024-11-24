@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserConversation extends Model
 {
+    protected $keyType = 'string';
+    protected $guarded = [];
     use HasFactory;
 }

@@ -126,7 +126,6 @@ class PostService implements PostServiceInterface
         $this->updatePostDetails($validatedData, $updatedPost);
         // Xóa cache sau khi cập nhật
         Redis::del("posts:detail:{$id}");
-        
         return $updatedPost;
     }
 
@@ -220,9 +219,6 @@ class PostService implements PostServiceInterface
         }
         if (!empty($validatedData["price"])) {
             $post->price()->update($validatedData["price"]);
-        }
-        if (!empty($validatedData["attribute"])) {
-            $post->attribute()->update($validatedData["attribute"]);
         }
     }
 

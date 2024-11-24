@@ -2,6 +2,7 @@ import { IUserDetail } from "./User";
 
 export interface IPost {
       id: string;
+      priority:number,
       user: IUserDetail,
       title: string;
       thumb: string;
@@ -24,19 +25,20 @@ export interface IPost {
         ward_name: string;
         city_slug: string,
         district_slug:string,
-        ward_slug:string,
-        address_detail:string
-        map:string
+        ward_slug:string, 
       };
+      address_detail:string
+      map:string
       created_at:string,
       expire_at:string
     }
 
 export interface IDetailPost extends IPost {
-    attribute: {
-      target: string;
-      post_type: string;
-    }; 
+    target: string;
+      post_type: {
+            name:string,
+            priority:number
+       },
     category:{
       id:string,
       name:string,

@@ -12,21 +12,21 @@ class ConversationResource  extends JsonResource
      *
      * @return array<string, mixed>
      */
+    protected $currentUserId;
+     public function __construct($resource, $currentUserId)
+     {
+         parent::__construct($resource);
+         $this->currentUserId = $currentUserId;
+     }
     public function toArray(Request $request): array
     {
-        $userOne= $this->userOne;
-        $userTwo= $this->userTwo;
+        $user= $this->otherUser(   $this->currentUserId);
         return [
               "id"=>$this->id,
-              'userOne'=>[
-                'id'=>$userOne->id,
-                'avatar'=>$userOne->avatar,
-                'name'=>$userOne->name,
-              ],
-              'userTwo'=>[
-                'id'=>$userTwo->id,
-                'avatar'=>$userTwo->avatar,
-                'name'=>$userTwo->name,
+              'receiver'=>[
+                'id'=>$user->id,
+                'avatar'=>$user->avatar,
+                'name'=>$user->name,
               ],
               'totalUnreadMessages' => $this->total_unread_messages,
               "updated_at"=>$this->updated_at,
