@@ -97,7 +97,6 @@ class PostService implements PostServiceInterface
             'amount' => $postType->price,
             'description' => "Phí đăng bài " . $postType->name,
         ];
-
         $invoice = Invoice::create($invoiceData);
         if ($invoice) {
             $user->account_balance -= $postType->price;

@@ -9,12 +9,12 @@ import { apiAddMessage, apiGetMessages } from '../../../services/apiMessage';
 import { IConversation } from '../../../interfaces/conversation';
 import Pusher from 'pusher-js';
 interface Message {
-    sender_id: string;
+    user_id: string;
     message: string;
     id: string;
     created_at: string;
 }
-const ChatRight: React.FC<{ conversation: IConversation|any; isOpen: boolean }> = ({ conversation, isOpen }) => {
+const ChatRight: React.FC<{ conversation: IConversation; isOpen: boolean }> = ({ conversation, isOpen }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [isOpenBox, setIsOpenBox] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -53,8 +53,7 @@ const ChatRight: React.FC<{ conversation: IConversation|any; isOpen: boolean }> 
     const handleSend = async () => {
         if (value) {
             setLoading(true);
-            const otherUser = conversation.userOne.id === currentUser.id ? conversation.userTwo : conversation.userOne;
-            const res = await apiAddMessage(conversation.id,value,otherUser.id);
+            const res = await apiAddMessage(conversation.id,value,conversation.receiver.id);
             setLoading(false);
             if (res.status) {
                 setMessages((prev) => [...prev, res.data]);
@@ -85,7 +84,7 @@ const ChatRight: React.FC<{ conversation: IConversation|any; isOpen: boolean }> 
                                             messages?.map((message) => (
                                                 <div ref={scroll} >
                                                     <ItemMessage
-                                                        own={message.sender_id === currentUser.id}
+                                                        own={message.user_id === currentUser.id}
                                                         message={message}
                                                     />
                                                 </div>
