@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { ButtonComponent, PaginationComponent, SelectOption } from '../../../components';
+import {   PaginationComponent } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
 import { apiGetAllPaymentHistory } from '../../../services/apiInvoice';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import { ITransaction } from '../../../interfaces/Transaction';
 import ItemPaymentHistory from '../../../components/ItemInvoice/ItemPaymentHistory';
@@ -13,7 +12,6 @@ const PaymentHistory:React.FC = () => {
   const [totalPage, setTotalPage]=useState<number>(0)
   const [currentPage, setCurrentPage]=useState<number|any>(1)
   const dispatch= useAppDispatch()
-  const navigate=useNavigate()
 
   useEffect(() => {
     dispatch(setLoading(true)) 

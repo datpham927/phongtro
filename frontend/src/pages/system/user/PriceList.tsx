@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ButtonComponent, PaginationComponent, SelectOption } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import NotExit from '../../../components/common/NotExit';
 import { IPostType } from '../../../interfaces/PostType';

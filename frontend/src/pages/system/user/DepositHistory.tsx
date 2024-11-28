@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {  PaginationComponent  } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import { ITransaction } from '../../../interfaces/Transaction';
 import { apiGetAllDepositHistory } from '../../../services/apiInvoice';
