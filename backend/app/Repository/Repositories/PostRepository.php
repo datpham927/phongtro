@@ -108,10 +108,18 @@ class PostRepository implements PostRepositoryInterface
     }
     
 
-    public function findRelatedPostByAddress ($addressId){
-        $relatedPost=$this->post::where(["address_id"=>$addressId,    'is_approved'=>true])->limit(10)->get();
-        return   PostResource::collection($relatedPost);
+    public function findRelatedPostByAddress($addressId, $sort = 'ctime')
+    {
+        $relatedPost = Post::where(['address_id' => $addressId, 'is_approved' => true])
+            ->join('post_types', 'posts.post_type_id', '=', 'post_types.id')
+            ->select('posts.*', 'post_types.priority')
+            ->orderBy('post_types.priority', 'asc')
+            ->orderBy('posts.created_at', $sort === 'ctime' ? 'desc' : 'asc')
+            ->limit(10)
+            ->get();
+        return PostResource::collection($relatedPost);
     }
+    
     public function create( $data)
     {
         return $this->post->create($data);

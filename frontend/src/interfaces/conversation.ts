@@ -5,10 +5,9 @@ interface User {
   }
   
 export interface IConversation {
-    userOne: User;
-    userTwo: User;
     id: string;
+    receiver:User,
     totalUnreadMessages:number
     update_at:string
-    updated_at:string
+    updated_at:string    
   }

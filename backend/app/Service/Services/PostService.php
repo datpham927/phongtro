@@ -95,9 +95,10 @@ class PostService implements PostServiceInterface
             'transaction_type' => 'withdraw',
             'user_id' => $user->id,
             'amount' => $postType->price,
+            'start_balance' => $user->account_balance,
+            'end_balance' => $user->account_balance-$postType->price,
             'description' => "Phí đăng bài " . $postType->name,
         ];
-
         $invoice = Invoice::create($invoiceData);
         if ($invoice) {
             $user->account_balance -= $postType->price;

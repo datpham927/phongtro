@@ -23,7 +23,6 @@ const ChatLeft: React.FC<ChatLeftProps> = ({
 }) => {
     const [searchValue, setSearchValue] = useState<string>('');
     const [filteredConversations, setFilteredConversations] = useState<IConversation[]>([]);
-    const currentUser = useAppSelector((state) => state.user);
     const { conversations } = useAppSelector((state) => state.action);
 
     useEffect(() => {
@@ -32,8 +31,7 @@ const ChatLeft: React.FC<ChatLeftProps> = ({
 
     useEffect(() => {
         const filtered = conversations.filter((conversation: IConversation) => {
-            const otherUser = conversation.userOne.id === currentUser.id ? conversation.userTwo : conversation.userOne;
-            return normalizeText(otherUser.name).includes(normalizeText(searchValue));
+            return normalizeText(conversation.receiver.name).includes(normalizeText(searchValue));
         });
         setFilteredConversations(filtered);
     }, [searchValue]);
@@ -63,7 +61,6 @@ const ChatLeft: React.FC<ChatLeftProps> = ({
                                 key={c.id}
                                 isActive={c.id === conversation?.id}
                                 conversation={c}
-                                userId={currentUser.id}
                                 onClick={() => {
                                     setConversation(c);
                                     setIsOpenBoxChat(true);

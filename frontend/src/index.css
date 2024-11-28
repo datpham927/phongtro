@@ -91,3 +91,9 @@
   iframe{
     width: 100%!important;
   }
+
+  /* src/styles/global.css */
+
+.transaction{
+  @apply p-[10px] font-extralight text-xs text-secondary text-center uppercase;
+}

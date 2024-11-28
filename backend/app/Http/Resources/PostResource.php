@@ -45,6 +45,7 @@ class PostResource extends JsonResource
                 'avatar' => $this->user?->avatar,
             ],
             "images" => $this->images->count(),
+            "is_approved" => $this->is_approved,
         ];
     }
 }

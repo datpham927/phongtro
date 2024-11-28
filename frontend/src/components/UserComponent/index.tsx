@@ -2,6 +2,7 @@ import { memo } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { IUserDetail } from "../../interfaces/User";
 import { convertToMillion } from "../../utils/convertMillion";
+import { formatNumber } from "../../utils/format/formatNumber";
 
 function UserComponent() {
   const  user:IUserDetail   = useAppSelector((state) => state.user);
@@ -28,7 +29,7 @@ function UserComponent() {
         </span>
         <span className="text-[12px] ">
           Số dư tài khoản:
-          <strong> {convertToMillion(user?.account_balance)} </strong>
+          <strong> {formatNumber(user?.account_balance)} </strong>
         </span>
       </div>
     </div>

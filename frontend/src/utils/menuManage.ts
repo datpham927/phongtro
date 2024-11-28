@@ -1,6 +1,5 @@
-import { editIcon , manageIcon } from "../assets";
+import { historyIcon, editIcon  , manageIcon, cardIcon } from "../assets";
 import { PATH } from "./constant";
-
 export const menuManage = [
   {
     id: 1,
@@ -13,6 +12,14 @@ export const menuManage = [
     text: "Sửa thông tin cá nhân",
     path: `${PATH.SYSTEM}/${PATH.EDIT_ACCOUNT}`,
     icon:editIcon
+  }, {
+    id: 4,
+    text: "Lịch sử nạp tiền",
+    path:PATH.DEPOSIT_HISTORY,icon:cardIcon
   },
- 
+  {
+    id: 4,
+    text: "Lịch sử thanh toán",
+    path:PATH.PAYMENT_HISTORY,icon:historyIcon
+  }
 ];

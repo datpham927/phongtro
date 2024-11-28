@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { noUser } from '../../assets';
 import { IConversation } from '../../interfaces/conversation';
@@ -6,18 +6,11 @@ import { IConversation } from '../../interfaces/conversation';
 interface ItemConversationProps {
     conversation: IConversation;
     isActive: boolean;
-    userId: string;
     onClick?: () => void;
 }
  
-const ItemConversation: React.FC<ItemConversationProps> = ({ conversation, isActive, userId, onClick }) => {
-    const [user, setUser] = useState<any>();
-    useEffect(() => {
-        const userOne=conversation.userOne
-        const userTwo=conversation.userTwo
-        const user = userOne?.id===userId?userTwo:userOne
-        user && setUser(user);
-    }, []);
+const ItemConversation: React.FC<ItemConversationProps> = ({ conversation, isActive, onClick }) => {
+    
     return (
         <div
             className={`flex w-full gap-3 items-center ${
@@ -26,10 +19,10 @@ const ItemConversation: React.FC<ItemConversationProps> = ({ conversation, isAct
             onClick={onClick}
         >
             <div className="w-[35px] h-[35px] shrink-0 rounded-full overflow-hidden">
-                <img className="w-full h-full object-cover" src={user?.user?.avatar_url || noUser} />
+                <img className="w-full h-full object-cover" src={conversation?.receiver?.avatar || noUser} />
             </div>
             <div className="flex flex-col w-full">
-                <span className="font-medium w-auto ">{user?.name}</span>
+                <span className="font-medium w-auto ">{conversation?.receiver?.name}</span>
             </div>
             <div className='laptop:hidden text-secondary'>
                 <KeyboardArrowRightIcon />

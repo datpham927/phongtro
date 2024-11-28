@@ -28,7 +28,6 @@ function UpdatePost() {
   const { categories } = useAppSelector((state) => state.category);
   const { pid: postId } = useParams<{ pid: string }>();
   const dispatch= useAppDispatch() 
-
   // Tối ưu useEffect để chỉ gọi khi postId thay đổi
   useEffect(() => {
     const fetchApi = async () => {
@@ -37,17 +36,17 @@ function UpdatePost() {
       const res = await getDetailPost(postId);
       if (res?.status) {
         const post: IDetailPost = res.data;
-        const { address, area, attribute, category, price, images, user,...data } = post;
+        const { address, area, address_detail,map, category,target, price, images, user,...data } = post;
         setPayload({
-          address_detail:address.address_detail,
+          address_detail: address_detail,
           province: address.city_name,
           district: address.district_name,
           ward: address.ward_name, 
           areaNumber: area.number,
-          priceNumber: price.order,
+          priceNumber: price.number,
           categoryCode: category.id,
-          map: address.map,
-          target: attribute.target,
+          map:  map,
+          target:  target,
           images: images.map((e: any) => e.url),
           ...data,
         });

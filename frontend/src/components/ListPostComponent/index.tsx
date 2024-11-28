@@ -9,10 +9,9 @@ import EmptyComponent from "../EmptyComponent";
 interface ListComponentProps {
   data: IPost[];
   totalPost: number;
-  isHome?:boolean
 }
 
-const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost,isHome }) => {
+const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost  }) => {
   const location = useLocation();
   const queries = queryString.parse(location.search);
   const navigate = useNavigate();
