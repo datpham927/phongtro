@@ -16,7 +16,7 @@ class PostTypeSeeder extends Seeder
         // [93748deuy37rrgg6f4t46,jdshffefeygfye64343,vhdufhdue87548,sdfer8549598fjf485,fhdfhueheffueuughyr8]
         DB::table('post_types')->insert([
             [
-                'id' => '93748deuy37rrgg6f4t46',
+                'id' => 'tinvipnoibat',
                 'name' => 'Tin VIP Nổi Bật',
                 'description' => 'TIÊU ĐỀ IN HOA MÀU ĐỎ, gắn biểu tượng 5 ngôi sao màu vàng và hiển thị to và nhiều hình hơn các tin khác. Nằm trên tất cả các tin khác, được hưởng nhiều ưu tiên và hiệu quả giao dịch cao nhất. Đồng thời xuất hiện đầu tiên ở mục tin nổi bật xuyên suốt khu vực chuyên mục đó
 Tin đăng VIP hiển thị ngay, không cần chờ.',
@@ -27,7 +27,7 @@ Tin đăng VIP hiển thị ngay, không cần chờ.',
                 'updated_at' => now(),
             ],
             [
-                'id' => 'jdshffefeygfye64343',
+                'id' => 'tinvip1',
                 'name' => 'Tin VIP 1',
                 'description' => 'TIÊU ĐỀ IN HOA MÀU HỒNG, gắn biểu tượng 4 ngôi sao màu vàng ở tiêu đề tin đăng. Hiển thị sau tin VIP nổi bật, Tin VIP 1 và trên các tin khác.
                 Tin đăng VIP hiển thị ngay, không cần chờ.',
@@ -38,7 +38,7 @@ Tin đăng VIP hiển thị ngay, không cần chờ.',
                 'updated_at' => now(),
             ],
             [
-                'id' => 'vhdufhdue87548',
+                'id' => 'tinvip2',
                 'name' => 'Tin VIP 2',
                 'description' => 'TIÊU ĐỀ IN HOA MÀU CAM, gắn biểu tượng 3 ngôi sao màu vàng ở tiêu đề tin đăng. Hiển thị sau tin VIP nổi bật, Tin VIP 1, Tin VIP 2 và trên các tin khác.
                 Tin đăng VIP hiển thị ngay, không cần chờ.',
