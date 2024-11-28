@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { IUserDetail } from "../../interfaces/User";
-import { convertToMillion } from "../../utils/convertMillion";
 import { formatNumber } from "../../utils/format/formatNumber";
 
 function UserComponent() {
