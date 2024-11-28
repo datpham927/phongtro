@@ -97,3 +97,7 @@
 .transaction{
   @apply p-[10px] font-extralight text-xs text-secondary text-center uppercase;
 }
+.post-type-item{
+  @apply flex items-center justify-center p-2 text-sm text-slate-600 text-center 
+
+}

@@ -14,9 +14,9 @@ class PostTypeRepository implements PostTypeRepositoryInterface
     {
         $this->postType = $postType;
     }    
-    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null, $select = null)
+    public function findAll()
     {
-        return  $this->postType->get();  
+        return $this->postType->orderBy('priority', 'asc')->get();
     }
     public function findByIdAndUpdate($id,  $data)
     {
@@ -25,11 +25,9 @@ class PostTypeRepository implements PostTypeRepositoryInterface
         $postType->update($data);
         return $postType;
     }
-    public function findById($id, $options = null)
+    public function findById($id)
     {
         return $this->postType->find($id);
-    }  
-    public function create( $data) { }
-    public function findByIdAndDelete($id) {  } 
+    }   
     
 }

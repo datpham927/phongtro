@@ -4,6 +4,8 @@ export { default as UpdatePost } from  './user/UpdatePost';
 export { default as ManagePost } from  './user/ManagePost';
 export { default as DepositHistory } from  './user/DepositHistory';
 export { default as PaymentHistory } from  './user/PaymentHistory';
+export { default as PriceList } from  './user/PriceList';
+
 export { default as ManageUser } from  './admin/user/ManageUser'; 
 export { default as CreateUser } from  './admin/user/CreateUser'; 
 export { default as UpdateUser } from  './admin/user/UpdateUser'; 

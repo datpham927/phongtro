@@ -88,18 +88,19 @@ Route::prefix('v1/address')->group(function () {
 
 Route::prefix('v1/post-type')->group(function () {
     Route::get('/all', [PostTypeController::class, 'getAll']);
-    // Chỉ admin mới có quyền thêm, cập nhật, xóa danh mục
     Route::middleware([Login::class, IsAdmin::class])->group(function () {
         Route::put('/{ptid}/update', [PostTypeController::class, 'update']);
     });
 });
 Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
-    Route::get('/all', [InvoiceController::class, 'getAll']); 
+    Route::get('/all-payment-history', [InvoiceController::class, 'getAllPaymentHistory']); 
+    Route::get('/all-deposit-history', [InvoiceController::class, 'getAllDepositHistory']); 
 });
-Route::middleware(Login::class)->prefix('v1/conversation')->group(function () {
-    Route::post('/add', [ConversationControllers::class, 'create']);
-    Route::get('/all', [ConversationControllers::class, 'getAll']);
+Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
+    Route::get('/all-payment-history', [InvoiceController::class, 'getAllPaymentHistory']); 
+    Route::get('/all-deposit-history', [InvoiceController::class, 'getAllDepositHistory']); 
 });
+ 
 Route::middleware(Login::class)->prefix('v1/message')->group(function () {
     Route::post('/{conversation_id}/add', [MessageController::class, 'sendMessage']);
     Route::get('/{conversation_id}/all', [MessageController::class, 'getAllMessage']);

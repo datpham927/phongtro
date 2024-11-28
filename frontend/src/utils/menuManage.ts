@@ -1,4 +1,4 @@
-import { historyIcon, editIcon  , manageIcon, cardIcon } from "../assets";
+import { historyIcon, editIcon  , manageIcon, cardIcon, priceIcon } from "../assets";
 import { PATH } from "./constant";
 export const menuManage = [
   {
@@ -21,5 +21,10 @@ export const menuManage = [
     id: 4,
     text: "Lịch sử thanh toán",
     path:PATH.PAYMENT_HISTORY,icon:historyIcon
+  },  {
+    id: 5,
+    text: "Bản giá dịch vụ",
+    path: PATH.PRICE_LIST,
+    icon:priceIcon
   }
 ];
