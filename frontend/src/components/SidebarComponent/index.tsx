@@ -54,7 +54,7 @@ function SidebarComponent() {
       </div>
       
 
-     <div className="flex flex-col text-center mt-1 py-1 bg-[#FFFAE8] rounded-md border-[1px] border-solid border-[#FFC107]">
+     <div className="flex flex-col text-center mt-2 py-1 bg-[#FFFAE8] rounded-md border-[1px] border-solid border-[#FFC107]">
      <span className="text-[12px] ">
           Số dư tài khoản:
           <strong> {formatNumber(user?.account_balance)} </strong>
@@ -72,12 +72,12 @@ function SidebarComponent() {
       </div>
       <ul className="flex flex-col mt-5">
         {(user.type=='admin'?menuManageAdmin:menuManage).map((e) => (
-          <li className=" flex text-center gap-2 text-sm  hover:bg-[#f1f1f1] py-3">
+          <li className=" flex text-center gap-2 text-[13px]  hover:bg-[#f1f1f1] py-2">
              {e.icon}
             <NavLink
               key={e.id}
               to={e.path}
-              className={({ isActive }) => (isActive ? "text-red-400" : "")}
+              className={({ isActive }) => (isActive ? "text-red-400 font-semibold" : "")}
             >
               {e.text}
             </NavLink>
