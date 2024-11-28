@@ -18,6 +18,8 @@ class CreateInvoicesTable extends Migration
             $table->enum('transaction_type', ['deposit', 'withdraw']) ;
             $table->uuid('user_id') ;
             $table->decimal('amount', 15, 2) ;
+            $table->decimal('start_balance', 15, 2) ;
+            $table->decimal('end_balance', 15, 2) ;
             $table->text('description')->nullable() ;
             // Khóa ngoại
             $table->foreign('user_id')->references('id')->on('users');

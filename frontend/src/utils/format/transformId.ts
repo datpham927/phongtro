@@ -1,4 +1,4 @@
-export function transformId(id: string | undefined): string {
+export function transformId(id: string | any): string {
     if (!id) {
       return '';
     }
