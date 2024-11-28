@@ -267,8 +267,10 @@ class CrawlerController  extends Controller
     }
     protected function processPostPayment($user, $postType)
     {
+
+        $id= Util::uuid();
         $invoiceData = [
-            'id' => Util::uuid(),
+            'id' => $id,
             'transaction_type' => 'withdraw',
             'user_id' => $user->id,
             'amount' => $postType->price,
