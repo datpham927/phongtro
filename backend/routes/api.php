@@ -4,6 +4,7 @@ use App\Http\Controllers\api\AuthControllers;
 use App\Http\Controllers\api\CategoryControllers;
 use App\Http\Controllers\api\AddressControllers;
 use App\Http\Controllers\api\ConversationControllers;
+use App\Http\Controllers\api\InvoiceController;
 use App\Http\Controllers\api\MessageController;
 use App\Http\Controllers\api\PostControllers;
 use App\Http\Controllers\api\PostTypeController;
@@ -92,7 +93,9 @@ Route::prefix('v1/post-type')->group(function () {
         Route::put('/{ptid}/update', [PostTypeController::class, 'update']);
     });
 });
-
+Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
+    Route::get('/all', [InvoiceController::class, 'getAll']); 
+});
 Route::middleware(Login::class)->prefix('v1/conversation')->group(function () {
     Route::post('/add', [ConversationControllers::class, 'create']);
     Route::get('/all', [ConversationControllers::class, 'getAll']);

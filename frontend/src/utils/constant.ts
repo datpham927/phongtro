@@ -20,6 +20,9 @@ export const PATH = {
   MANAGE_CATEGORY: "quan-ly-danh-muc",
   UPDATE_CATEGORY: "chinh-sua-danh-muc/:cid",
   CREATE_CATEGORY: "them--danh-muc",
+  DEPOSIT_HISTORY:'lich-su-nap-tien',
+  PAYMENT_HISTORY:'lich-su-thanh-toan'
+
 };
 
 export const titleHomePage = {
