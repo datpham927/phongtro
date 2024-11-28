@@ -22,21 +22,16 @@ class PostTypeService implements PostTypeServiceInterface
         // Kiểm tra xem có cache Redis hay không
         $cacheKey = "post-types";
         $cachedData = Redis::get($cacheKey);
-
         if ($cachedData) {
             // Nếu có dữ liệu cache, trả về dữ liệu đó (giải mã JSON)
             return json_decode($cachedData, true);
         }
-
         // Nếu không có cache, truy vấn từ repository
         $postTypes = $this->postTypeRepository->findAll();
-
         // Lưu dữ liệu vào Redis với thời gian hết hạn 1 ngày (3600 * 24 giây)
         Redis::setex($cacheKey, 3600 * 24, json_encode($postTypes));
-
         return $postTypes;
     }
-
     public function update($request, $ptid)
     {
         $requestData = $request->all();

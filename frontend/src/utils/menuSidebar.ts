@@ -18,5 +18,5 @@ export const menuSidebar = [
     text: "Thông tin cá nhân",
     path: `${PATH.SYSTEM}/${PATH.EDIT_ACCOUNT}`,
     icon:"https://phongtro123.com/images/dashboard-user.svg"
-  } 
+  }  
 ];

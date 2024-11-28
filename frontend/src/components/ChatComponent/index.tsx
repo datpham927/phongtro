@@ -37,7 +37,7 @@ const ChatComponent: React.FC = () => {
             const res = await apiGetConversations();
             res.success && dispatch(setConversations(res.data));
         };
-       fetchApi();
+        isLogged&& fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
