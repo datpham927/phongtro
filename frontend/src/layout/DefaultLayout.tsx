@@ -7,7 +7,6 @@ import LoadingComponent from '../components/LoadingComponent';
 import { ChatComponent } from '../components';
  
 const DefaultLayout = () => { 
-
   return (
       <div className='w-full h-full  overflow-scroll'>
           <HeaderComponent />

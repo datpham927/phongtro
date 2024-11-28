@@ -6,12 +6,20 @@ import { axiosJWT } from "../utils/httpRequest";
 
 const apiGetAllPaymentHistory = async (query:any) => {
     try {
-      const response = await axiosJWT.get("invoice/all",{params:query});
+      const response = await axiosJWT.get("invoice/all-payment-history",{params:query});
       return response.data;
     } catch (error) {
       return error;
     }
   };
 
-  
-export {apiGetAllPaymentHistory};
+  const apiGetAllDepositHistory = async (query:any) => {
+    try {
+      const response = await axiosJWT.get("invoice/all-deposit-history",{params:query});
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+export {apiGetAllPaymentHistory,apiGetAllDepositHistory};

@@ -5,5 +5,7 @@ namespace App\Service\Interfaces;
 interface InvoiceServiceInterface
 {
 
-    public function findAll($request);  
+    public function findAllPaymentHistory($request);  
+    public function findAllDepositHistory($request);  
+
 }

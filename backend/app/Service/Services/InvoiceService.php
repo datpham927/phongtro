@@ -13,15 +13,22 @@ class InvoiceService implements InvoiceServiceInterface
     {
         $this->invoiceRepository = $invoiceRepository;
     }
-    public function findAll($request)
+    public function findAllPaymentHistory($request)
     {
         $limit = $request['limit'];
         $page = $request['page'];
         $sort = $request['sort']; 
         $filter['user_id'] = $request['user_id'];
-        $invoices = $this->invoiceRepository->findAll($limit, $sort, $page ,$filter);
-        return $invoices;
-    
+        $invoices = $this->invoiceRepository->findAllPaymentHistory($limit, $sort, $page ,$filter);
+        return $invoices; 
     }
- 
+    public function findAllDepositHistory($request)
+    {
+        $limit = $request['limit'];
+        $page = $request['page'];
+        $sort = $request['sort']; 
+        $filter['user_id'] = $request['user_id'];
+        $invoices = $this->invoiceRepository->findAllDepositHistory($limit, $sort, $page ,$filter);
+        return $invoices; 
+    }
 }

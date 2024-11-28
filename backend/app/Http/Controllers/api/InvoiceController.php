@@ -14,11 +14,21 @@ class InvoiceController extends Controller
     {
         $this->invoiceService = $invoiceService;  
     }
-    public function getAll(Request $request )
+    public function getAllPaymentHistory(Request $request )
     { 
         
         try {
-            $response= $this->invoiceService->findAll($request);
+            $response= $this->invoiceService->findAllPaymentHistory($request);
+            return ResponseHelper::success($response,"Successfully",200);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error("Error",$th);
+        }
+    } 
+    public function getAllDepositHistory(Request $request )
+    { 
+        
+        try {
+            $response= $this->invoiceService->findAllDepositHistory($request);
             return ResponseHelper::success($response,"Successfully",200);
         } catch (\Throwable $th) {
             return ResponseHelper::error("Error",$th);

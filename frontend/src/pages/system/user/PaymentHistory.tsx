@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import { ITransaction } from '../../../interfaces/Transaction';
 import ItemPaymentHistory from '../../../components/ItemInvoice/ItemPaymentHistory';
+import NotExit from '../../../components/common/NotExit';
 
 const PaymentHistory:React.FC = () => {
   const [lists, setList] = useState<ITransaction[]>([]);  
@@ -43,9 +44,9 @@ const PaymentHistory:React.FC = () => {
         <li className="transaction">Mô tả</li> 
         </ul>
         <div className=" border-[1px] border-t-[2px] border-solid border-slate-200">
-          {lists?.map((e) => {
+         {lists?.length>0 ? lists?.map((e) => {
             return  <ItemPaymentHistory transaction={e} />
-          })}
+          }):<NotExit label='Không có hóa đơn nào!'/>}
         </div> 
         {totalPage>1&&
          <PaginationComponent currentPage={currentPage}
