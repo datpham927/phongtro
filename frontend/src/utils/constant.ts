@@ -11,7 +11,11 @@ export const PATH = {
   MANAGE_POST: "quan-ly-bai-dang",
   EDIT_ACCOUNT:"thong-tin-tai-khoan",
   DETAIL:"/chi-tiet/",
-  // ------------------
+  // ------- Người cho thuê----------- 
+  DEPOSIT_HISTORY:'lich-su-nap-tien',
+  PAYMENT_HISTORY:'lich-su-thanh-toan',
+  PRICE_LIST:'bang-gia-dich-vu',
+  // -------- Admin ---------- 
   MANAGE_USER: "quan-ly-nguoi-dung",
   UPDATE_USER: "chinh-sua-thong-tin-nguoi-dung/:uid",
   CREATE_USER: "them-nguoi-dung",
@@ -20,9 +24,8 @@ export const PATH = {
   MANAGE_CATEGORY: "quan-ly-danh-muc",
   UPDATE_CATEGORY: "chinh-sua-danh-muc/:cid",
   CREATE_CATEGORY: "them--danh-muc",
-  DEPOSIT_HISTORY:'lich-su-nap-tien',
-  PAYMENT_HISTORY:'lich-su-thanh-toan',
-  PRICE_LIST:'bang-gia-dich-vu'
+  MANAGE_PRICE_LIST:'quan-ly-bang-gia-dich-vu',
+
 };
 
 export const titleHomePage = {

@@ -13,4 +13,5 @@ export { default as ManageApprovedPost } from  './admin/post/ManageApprovedPost'
 export { default as CreateCategory } from  './admin/category/CreateCategory';
 export { default as ManageCategory } from  './admin/category/ManageCategory';
 export { default as UpdateCategory } from  './admin/category/UpdateCategory';
+export { default as ManagePriceList } from  './admin/price/ManagePriceList';
 
