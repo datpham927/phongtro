@@ -7,13 +7,14 @@ import PrivateRoute from '../middleware/PrivateRoute';
 import { CreateCategory, CreatePost, CreateUser, DepositHistory, EditAccount, ManageApprovedPost, 
   ManageCategory, ManagePost,  ManageUser,  PaymentHistory,  PriceList,  UpdateCategory,  UpdatePost, UpdateUser } from '../pages/system';
 import LayoutSystem from '../layout/LayoutSystem';
+import IsUser from '../middleware/IsUser';
 
 
 const RouterPage = () => { 
   const { isLogged } = useAppSelector((state) => state.auth);
   return (
     <Routes>
-      <Route path={PATH.HOME} element={<DefaultLayout />}>
+      <Route path={PATH.HOME} element={  <IsUser><DefaultLayout /></IsUser> }>
           <Route path='*' element={<Navigate to={PATH.HOME} />} />
           <Route path={PATH.HOME} element={<HomePage />} />
           <Route path={PATH.HOME__PAGE} element={<HomePage />} />

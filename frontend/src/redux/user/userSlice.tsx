@@ -1,37 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IUserDetail } from '../../interfaces/User';
 
-// Define the initial state using the UserDetail type
-const initialState: IUserDetail|any= {
-    id: "",
-    name: "",
-    phone: "",
-    email: "",
-    zalo: "",
-    facebook: "",
-    avatar: "",
-    account_balance:"",
-    type: "",
-};
+// Lấy dữ liệu từ localStorage
+const storedUser = localStorage.getItem('userDetail');
+const initialState: IUserDetail | any = storedUser ? JSON.parse(storedUser)   
+  : {
+      id: "",
+      name: "",
+      phone: "",
+      email: "",
+      zalo: "",
+      facebook: "",
+      avatar: "",
+      account_balance: "",
+      type: "",
+    };
 
 // Define the slice
 const userSlice = createSlice({
-    name: 'user',
-    initialState,
-    reducers: {
-        setDetailUser: (state, action) => {
-            const { id, name, phone, email, zalo, facebook,account_balance, avatar, type } = action.payload;
-            state.id = id;
-            state.name = name;
-            state.phone = phone;
-            state.email = email;
-            state.zalo = zalo;
-            state.facebook = facebook;
-            state.account_balance = account_balance;
-            state.avatar = avatar;
-            state.type = type;
-        },
+  name: 'user',
+  initialState,
+  reducers: {
+    setDetailUser: (state, action) => {
+      const { id, name, phone, email, zalo, facebook, account_balance, avatar, type } = action.payload;
+      state.id = id;
+      state.name = name;
+      state.phone = phone;
+      state.email = email;
+      state.zalo = zalo;
+      state.facebook = facebook;
+      state.account_balance = account_balance;
+      state.avatar = avatar;
+      state.type = type;
+      // Lưu dữ liệu vào localStorage
+      localStorage.setItem('userDetail', JSON.stringify(state));
     },
+  },
 });
 
 // Export the actions and the reducer

@@ -63,7 +63,6 @@ const DetailPost: React.FC = () => {
         },
     ];
 
-
     return (
        <>
         <BreadcrumbComponent breadcrumbs={breadcrumbs}/>
@@ -76,7 +75,7 @@ const DetailPost: React.FC = () => {
                     <h1 className="text-2xl font-medium text-red-500 uppercase">{title}</h1>
                 </div>
                 <div >
-                <span className='text-center uppercase px-3 py-1 text-[10px] text-white rounded-sm' style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
+                <span className='flex items-center text-center uppercase px-3 py-1 text-[10px] text-white rounded-sm' style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
              {  [1,2].includes(post_type.priority) &&<StarIcon sx={{ color: '#FFD700' , fontSize:'14px'}} /> }
                 {post_type.name}
                 </span>

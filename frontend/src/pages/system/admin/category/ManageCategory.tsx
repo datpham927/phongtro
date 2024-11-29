@@ -46,7 +46,7 @@ const handleDeletePost=async(category:ICategory)=>{
       <div className="flex justify-between items-center  border-solid border-b-[1px] border-gray-300 mb-6">
         <h1 className="flex text-2xl py-3 ">Quản lý danh mục</h1>
         <div className="flex gap-6 text-center">
-          <ButtonComponent text="Thêm danh mục" className="bg-[#dc3545] text-white text-sm !py-0"  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_CATEGORY}`)}/>
+          <ButtonComponent text="Thêm danh mục" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_CATEGORY}`)}/>
         </div>
       </div>
       <div className="w-full ">

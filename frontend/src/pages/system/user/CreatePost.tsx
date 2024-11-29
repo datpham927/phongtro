@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent } from "../../../components";
+import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent, PostPackageComponent } from "../../../components";
 import validate from "../../../utils/validate";
 import { apiCreatePost } from "../../../services/apiPost";
 import {  IPostPayload } from "../../../interfaces/Post";
@@ -10,7 +10,7 @@ import { convertMillionToDecimal } from "../../../utils/format/convertMillionToD
 import { PATH } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../../redux/action/actionSlice";
- 
+import { IPostType } from "../../../interfaces/PostType";
 
 function CreatePost() {
   const [payload, setPayload] = useState<IPostPayload>({
@@ -27,33 +27,32 @@ function CreatePost() {
     title: "",
     address_detail:''
   });
-  const [invalidFields, setInvalidFields] = useState<any>([]);
+  const [invalidFields, setInvalidFields] = useState<any>([]); 
+  const [postType, setPostType] = useState<IPostType>(); 
   const { categories } = useAppSelector((state) => state.category);
+  const  user   = useAppSelector((state) => state.user);
+
   const dispatch= useAppDispatch()
   const navigate=useNavigate()
 
   const handleSummit = useCallback(async () => {
-    dispatch(setLoading(true))
+
     const check = validate(payload, setInvalidFields);
     if (!check) return;
-    const { areaNumber, priceNumber, images, address_detail,categoryCode, district, province, ward, map, target, ...data } = payload;
+    dispatch(setLoading(true))
+    const { areaNumber, priceNumber, images,categoryCode, district, province, ward,...data } = payload;
     const postData = {
       thumb: images[0],
       images,
       expire_at:getOneYearLater(),
-      price: { order: priceNumber, value: `${convertMillionToDecimal(Number(priceNumber))} đồng/tháng` },
-      area: { order: areaNumber, value: `${areaNumber} m2` },
+      price: { number: priceNumber, value: `${convertMillionToDecimal(Number(priceNumber))} triệu/tháng` },
+      area: { number: areaNumber, value: `${areaNumber} m2` },
       category_id: categoryCode,
-      attribute: {
-        target,
-        post_type: categories?.find(e => e.id === categoryCode)?.name, 
-      },
+      post_type_id:postType?.id,
       address: {
         city_name: convertToSlug(province),
         district_name: convertToSlug(district),
         ward_name: convertToSlug(ward),
-        address_detail,
-        map,
       },
       ...data,
     };
@@ -65,13 +64,14 @@ function CreatePost() {
 
   return (       
     <div className="h-full px-7 flex flex-col">
-      <div className="  w-full border-solid border-b-[1px] border-gray-300">
+      <div className="  w-full bnumber-solid bnumber-b-[1px] bnumber-gray-300">
         <h1 className=" text-4xl py-3  ">
              Đăng tin mới
         </h1>
       </div>
       <div className="flex">
         <div className="flex flex-col gap-3 w-[60%] pb-20">
+          <PostPackageComponent  setPostType={setPostType} postType={postType}/>
           <AddressComponent
             payload={payload}
             setPayload={setPayload}
@@ -85,11 +85,12 @@ function CreatePost() {
             setInvalidFields={setInvalidFields}
             /> 
 
-       <ButtonComponent
-        text={"Tạo mới"}
-        className={"bg-blue-custom text-white"}
-        onClick={handleSummit}
-      />
+{postType&&   <ButtonComponent
+        text={`${postType?.price > 0 ? `Thanh toán ${new Intl.NumberFormat('vi-VN').format(postType?.price)}₫` : "Miễn phí"}`}
+        className={ `${postType?.price>user?.account_balance ?"opacity-80":"hover:bg-[#D61117]"} bg-[#E51F40] text-white text-sm`}
+        onClick={()=> postType&&handleSummit()}
+
+      />}
         </div >
          <div className="flex flex-col gap-3 w-[40%] pb-20">
            <NoticeListComponent/>

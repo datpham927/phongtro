@@ -30,6 +30,7 @@ export { default as SelectOption } from  '../components/SelectOption';
 export { default as OverviewComponent } from  '../components/OverviewComponent';
 export { default as NoticeListComponent } from  '../components/NoticeListComponent';
 export { default as ChatComponent } from  '../components/ChatComponent';
+export { default as PostPackageComponent } from  '../components/PostPackageComponent';
 
 
 

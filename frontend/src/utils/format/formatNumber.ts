@@ -7,7 +7,7 @@ export const   formatNumber= (number:any)=> {
       return (number / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
     } else {
       // Trả về số nguyên nếu nhỏ hơn 1000
-      return number.toString();
+      return number ;
     }
   }
   

@@ -67,7 +67,7 @@ const handleApprovalPost=async(pid:string)=>{
               // { id: 3, name: "Tin đang ẩn" },
             ]}
           />
-          <ButtonComponent text="Đăng tin mới" className="bg-[#dc3545] text-white text-sm !py-0"  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}/>
+          <ButtonComponent text="Đăng tin mới" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}/>
         </div> */}
       </div>
       <div className="w-full ">

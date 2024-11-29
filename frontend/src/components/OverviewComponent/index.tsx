@@ -56,7 +56,7 @@ function OverviewComponent({
 
   return (
     <div className="flex flex-col gap-8 ">
-      <h1 className="text-2xl mt-6 font-semibold">Thông tin mô tả</h1>
+      <h1 className="text-xl mt-6 font-semibold">Thông tin mô tả</h1>
       <SelectOption
         isLabel
         label={"Loại chuyên mục"}
@@ -142,7 +142,7 @@ function OverviewComponent({
         ]}
       />
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-medium">Hình ảnh</h1>
+        <h1 className="text-xl font-medium">Hình ảnh</h1>
         <span className="text-sm">
           Cập nhật hình ảnh rõ ràng sẽ cho thuê nhanh hơn
         </span>
