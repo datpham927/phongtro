@@ -29,7 +29,6 @@ function CreatePost() {
   });
   const [invalidFields, setInvalidFields] = useState<any>([]); 
   const [postType, setPostType] = useState<IPostType>(); 
-  const { categories } = useAppSelector((state) => state.category);
   const  user   = useAppSelector((state) => state.user);
 
   const dispatch= useAppDispatch()
