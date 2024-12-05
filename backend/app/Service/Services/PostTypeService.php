@@ -47,7 +47,6 @@ class PostTypeService implements PostTypeServiceInterface
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
-
         // Cập nhật danh mục và lưu vào cache
         $postType = $this->postTypeRepository->findByIdAndUpdate($ptid, $requestData);
 
@@ -55,5 +54,9 @@ class PostTypeService implements PostTypeServiceInterface
         Redis::del("post-types");
 
         return $postType;
+    }
+
+    function findPostType($id){
+        return $this->postTypeRepository->findById($id);
     }
 }

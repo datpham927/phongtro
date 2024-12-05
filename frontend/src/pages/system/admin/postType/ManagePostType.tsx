@@ -3,19 +3,13 @@ import { useAppDispatch } from '../../../../redux/hooks';
 import { IPostType } from '../../../../interfaces/PostType';
 import { setLoading } from '../../../../redux/action/actionSlice';
 import { apiGetAllPostType } from '../../../../services/apiPosType';
-import { POST_TYPE_COLOR } from '../../../../utils/constant';
 import NotExit from '../../../../components/common/NotExit';
 import ItemManagePostType from '../../../../components/ItemComponents/ItemManagePostType';
  
 
-const ManagePriceList:React.FC = () => {
+const ManagePostType:React.FC = () => {
   const [lists, setList] = useState<IPostType[]>([]);  
-  const [price, setPrice] = useState<number>(0);  
-  const [expirationTime, setExpirationTime] = useState<number>(0);  
-  const [description, setDescription] = useState<number>(0);  
-
   const dispatch= useAppDispatch()
-
   useEffect(() => {
     const fetchApi = async () => {
         dispatch(setLoading(true)) 
@@ -43,7 +37,8 @@ const ManagePriceList:React.FC = () => {
         </ul>
         <div className=" border-[1px] border-t-[2px] border-solid border-slate-200">
          {lists?.length>0 ? lists?.map((e) => {
-            return <ItemManagePostType onClickEdit={()=>{}} postType={e} key={e.id}  />
+            return <ItemManagePostType  
+            postType={e} key={e.id}  />
           }):<NotExit label='Không có thông tin!'/>}
         </div> 
       </div>
@@ -51,4 +46,4 @@ const ManagePriceList:React.FC = () => {
   );
 }
 
-export default ManagePriceList
+export default ManagePostType

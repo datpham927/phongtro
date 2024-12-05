@@ -91,6 +91,10 @@ Route::prefix('v1/post-type')->group(function () {
     Route::middleware([Login::class, IsAdmin::class])->group(function () {
         Route::put('/{ptid}/update', [PostTypeController::class, 'update']);
     });
+    Route::middleware([Login::class, IsAdmin::class])->group(function () {
+        Route::get('/{ptid}', [PostTypeController::class, 'getPostType']);
+    });
+    
 });
 Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
     Route::get('/all-payment-history', [InvoiceController::class, 'getAllPaymentHistory']); 

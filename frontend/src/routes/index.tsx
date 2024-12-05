@@ -5,7 +5,7 @@ import { DetailPost, FilterPage, HomePage, ResetPassword } from '../pages/public
 import DefaultLayout from '../layout/DefaultLayout';
 import PrivateRoute from '../middleware/PrivateRoute';
 import { CreateCategory, CreatePost, CreateUser, DepositHistory, EditAccount, ManageApprovedPost, 
-  ManageCategory, ManagePost,  ManagePriceList,  ManageUser,  PaymentHistory,  PriceList,  UpdateCategory,  UpdatePost, UpdateUser } from '../pages/system';
+  ManageCategory, ManagePost,  ManagePostType,  ManageUser,  PaymentHistory,  PriceList,  UpdateCategory,  UpdatePost, UpdatePostType, UpdateUser } from '../pages/system';
 import LayoutSystem from '../layout/LayoutSystem';
 import IsUser from '../middleware/IsUser';
 
@@ -38,11 +38,13 @@ const RouterPage = () => {
               <Route path={PATH.MANAGE_CATEGORY} element={<ManageCategory />} /> 
               <Route path={PATH.CREATE_CATEGORY} element={<CreateCategory />} /> 
               <Route path={PATH.UPDATE_CATEGORY} element={<UpdateCategory />} /> 
-              <Route path={PATH.MANAGE_PRICE_LIST} element={<ManagePriceList />} /> 
               {/* ------- invoice */}
               <Route path={PATH.DEPOSIT_HISTORY} element={<DepositHistory />} /> 
               <Route path={PATH.PAYMENT_HISTORY} element={<PaymentHistory />} />
-              <Route path={PATH.PRICE_LIST} element={<PriceList />} /> 
+              {/* ------- post type  */}
+              <Route path={PATH.POST_TYPE_LIST} element={<PriceList />} /> 
+              <Route path={PATH.MANAGE_POST_TYPE_LIST} element={<ManagePostType />} /> 
+              <Route path={PATH.UPDATE_POST_TYPE} element={<UpdatePostType />} /> 
       </Route>
     </Routes>
   );

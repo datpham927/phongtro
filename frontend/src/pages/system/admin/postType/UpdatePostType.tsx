@@ -6,41 +6,43 @@ import validate from "../../../../utils/validate";
 import { useNavigate, useParams } from "react-router-dom";
 import { PATH } from "../../../../utils/constant";
 import { useEffect, useState } from "react";
-import {  apiGetCategory, apiUpdateCategory } from "../../../../services/apiCategory";
-
+import { apiGetPostType, apiUpdatePostType } from "../../../../services/apiPosType";
+import { IPostType } from "../../../../interfaces/PostType";
+import InputReadOnly from "../../../../components/InputComponent/InputReadOnly";
+import { Editor } from '@tinymce/tinymce-react';
 function UpdatePostType() {
-  const [payload, setPayload] = useState<any>({
+  const [payload, setPayload] = useState<IPostType>({
+    price:"",
     name:"",
-    sub_title:"",
-    title:"",
+    id:"",
+    expiration_time:0,
+    description:"",
   });
   const [invalidFields, setInvalidFields] = useState<any>([]);
   const dispatch = useAppDispatch();
   const navigate= useNavigate();
-  const { cid } = useParams<{ cid: string }>();
-
+  const { ptypeid } = useParams<{ ptypeid: string }>();
   useEffect(() => {
     const fetchUserDetail = async () => {
-      if (!cid) return;
+      if (!ptypeid) return;
       dispatch(setLoading(true));
-      const res = await apiGetCategory(cid);
+      const res = await apiGetPostType(ptypeid);
       if (res?.status) {
         setPayload(res.data);
       }
       dispatch(setLoading(false));
     };
     fetchUserDetail();
-  }, [cid]);
-
+  }, [ptypeid]);
   const handleSubmit = async() => {
     dispatch(setLoading(true)); 
     if (validate(payload, setInvalidFields)) {
-      const {id,confirm_password,...data }=payload
-      const res = await apiUpdateCategory(data,cid);
+      const {id,...data }=payload 
+      const res = await apiUpdatePostType(id , data);
       if (!res.status) {
          alert("Cập nhật không thành công");
       }else{
-        navigate(`${PATH.SYSTEM}/${PATH.MANAGE_CATEGORY}`)
+        navigate(`${PATH.SYSTEM}/${PATH.MANAGE_POST_TYPE_LIST}`)
       }
     }
     dispatch(setLoading(false)); 
@@ -48,52 +50,56 @@ function UpdatePostType() {
   return (
     <div className="flex flex-col h-full px-7 ">
       <div className="w-full border-solid border-b-[1px] border-gray-300">
-        <h1 className="text-4xl py-3">Cập nhật danh mục</h1>
+        <h1 className="text-4xl py-3">Cập nhật loại bài viết</h1>
       </div>
         <div className="flex w-full gap-4 flex-col  ">
           <div className="flex flex-col gap-4 my-5">
-          <InputForm
-            setInvalidFields={setInvalidFields}
-            invalidFields={invalidFields}
-            name="name"
+          <InputReadOnly
             direction="flex-row"
-            label="Tên danh mục"
+            label="Tên dịch vụ"
             value={payload?.name}
-            setValue={setPayload}
           /> 
           </div>
           <InputForm
             setInvalidFields={setInvalidFields}
             invalidFields={invalidFields}
-            name="title"
+            name="price"
             direction="flex-row"
-            label="Tiêu đề"
-            value={payload?.title}
+            label="Giá"
+            type="number"
+            value={payload?.price}
+            setValue={setPayload}
+          /> 
+            <InputForm
+            setInvalidFields={setInvalidFields}
+            invalidFields={invalidFields}
+            name="expiration_time"
+            direction="flex-row"
+            label="Thời hạn (tháng)"
+            type="number"
+            value={payload?.expiration_time}
             setValue={setPayload}
           /> 
           <div className="flex ">
            <label htmlFor="sub_title " className="w-1/2">Tiêu đề mô tả</label>
         <div className="w-full">
-        <textarea 
-              value={payload?.sub_title}
-              onChange={(e) => {
-                setPayload((prev:any) => ({ ...prev, sub_title: e?.target?.value }));
-                setInvalidFields(
-                  invalidFields?.filter((e:any) => e.name !== "sub_title")
-                );
-              }}
-              id="sub_title"
-              rows={10}
-              className="border-solid w-full border-[1px] border-slate-300  outline-blue-300 rounded-md p-2"
-              />
-              {invalidFields?.some((e:any) => e.name === "sub_title") ? (
-              <span className="text-red-500 text-sm">
-                {invalidFields?.find((e:any) => e.name === "sub_title")?.message}
-              </span>
-              ) : (
-              ""
-              )}
-        </div>
+        <Editor
+            apiKey='rzmmn507jrrjqhb3a93rj7iuzc7m2r1c00tqws0bur4ihi1k'
+            init={{
+              plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+              toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            }}
+            initialValue={payload.description}
+            onEditorChange={(content) => setPayload((prev) => ({ ...prev, description: content }))}
+          />
+          {invalidFields.some((e:any) => e.name === "description") && (
+            <span className="text-red-500 text-sm">
+              {invalidFields.find((item:any) => item.name === "description")?.message}
+            </span>
+          )}
+ 
+        </div> 
+       
       </div>
           <ButtonComponent
             text="Cập nhật"

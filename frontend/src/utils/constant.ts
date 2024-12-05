@@ -14,7 +14,9 @@ export const PATH = {
   // ------- Người cho thuê----------- 
   DEPOSIT_HISTORY:'lich-su-nap-tien',
   PAYMENT_HISTORY:'lich-su-thanh-toan',
-  PRICE_LIST:'bang-gia-dich-vu',
+  POST_TYPE_LIST:'bang-gia-dich-vu',
+  UPDATE_POST_TYPE:'cap-nhat-bang-gia-dich-vu/:ptypeid',
+
   // -------- Admin ---------- 
   MANAGE_USER: "quan-ly-nguoi-dung",
   UPDATE_USER: "chinh-sua-thong-tin-nguoi-dung/:uid",
@@ -24,8 +26,8 @@ export const PATH = {
   MANAGE_CATEGORY: "quan-ly-danh-muc",
   UPDATE_CATEGORY: "chinh-sua-danh-muc/:cid",
   CREATE_CATEGORY: "them--danh-muc",
-  MANAGE_PRICE_LIST:'quan-ly-bang-gia-dich-vu',
-  UPDATE_PRICE_LIST: "chinh-sua-gia-dich-vu/:id",
+  MANAGE_POST_TYPE_LIST:'quan-ly-bang-gia-dich-vu',
+  UPDATE_POST_TYPE_LIST: "chinh-sua-gia-dich-vu/:id",
 
 };
 

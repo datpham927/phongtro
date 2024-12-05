@@ -35,7 +35,6 @@ function CreatePost() {
   const navigate=useNavigate()
 
   const handleSummit = useCallback(async () => {
-
     const check = validate(payload, setInvalidFields);
     if (!check) return;
     const { areaNumber, priceNumber, images,categoryCode, district, province, ward,...data } = payload;
