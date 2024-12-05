@@ -24,7 +24,7 @@ export const menuManage = [
   },  {
     id: 5,
     text: "Bản giá dịch vụ",
-    path: PATH.PRICE_LIST,
+    path: PATH.POST_TYPE_LIST,
     icon:priceIcon
   }
 ];

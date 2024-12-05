@@ -1,11 +1,11 @@
 import { memo } from "react";
 
 interface InputFormProps {
-  label: string;
+  label?: string;
   setValue: React.Dispatch<React.SetStateAction<any>>;
   name: string;
   invalidFields: { name: string; message: string }[];
-  value?: string;
+  value?: string|number;
   setInvalidFields: React.Dispatch<React.SetStateAction<{ name: string; message: string }[]>>;
   direction?: string;
   type?:string

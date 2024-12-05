@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { IPost } from '../../interfaces/Post'
-import { timeAgo } from '../../utils/format/timeAgo'
-import { POST_TYPE_COLOR } from '../../utils/constant'
+import { IPost } from '../../../interfaces/Post'
+import { timeAgo } from '../../../utils/format/timeAgo'
+import { POST_TYPE_COLOR } from '../../../utils/constant'
 
 const ItemNewPost:React.FC<{post:IPost}> = ({post}) => {
   return (

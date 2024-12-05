@@ -1,4 +1,5 @@
 import { memo } from "react";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 interface ItemManageCategory {
   id: string;
@@ -34,7 +35,7 @@ function ItemManageCategory({
             onClickEdit();
           }}
         >
-          Chỉnh sửa 
+        <BorderColorIcon/>
         </button>
 
         <button

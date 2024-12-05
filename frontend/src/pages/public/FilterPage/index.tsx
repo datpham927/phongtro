@@ -28,9 +28,9 @@ const FilterPage: React.FC = () => {
 
 
   useEffect(() => {
-    dispatch(setLoading(true)) 
     const fetchPosts = async () => {
       const { gia_tu, gia_den, dien_tich_tu, dien_tich_den, orderby, ...rest } = queries;
+      dispatch(setLoading(true)) 
       const res = await apiGetPost({
         ...rest,
         ...params,
@@ -41,13 +41,12 @@ const FilterPage: React.FC = () => {
         area_to: dien_tich_den,
         sort: orderby,
       });
-
+      dispatch(setLoading(false))
       if (res.status) {
         setListPost(res.data.posts);
         setTotalPage(res.data.totalPage);
         setTotalPost(res.data.totalPosts);
       }
-      dispatch(setLoading(false))
     };
 
     fetchPosts();

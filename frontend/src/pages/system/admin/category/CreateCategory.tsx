@@ -20,17 +20,17 @@ function CreateCategory() {
 
 
   const handleSubmit = async() => {
-    dispatch(setLoading(true)); 
     if (validate(payload, setInvalidFields)) {
       const {id,confirm_password,...data }=payload
+       dispatch(setLoading(true)); 
       const res = await apiCreateCategory(data);
+      dispatch(setLoading(false)); 
       if (!res.status) {
          alert("Thêm không thành công");
       }else{
         navigate(`${PATH.SYSTEM}/${PATH.MANAGE_CATEGORY}`)
       }
     }
-    dispatch(setLoading(false)); 
   } ;
   return (
     <div className="flex flex-col h-full px-7 ">

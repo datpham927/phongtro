@@ -6,7 +6,7 @@ import { PATH } from "../../../../utils/constant";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { apiDeleteUser, apiGetAllUser } from "../../../../services/apiUser";
-import ItemManageUser from "../../../../components/ItemManageUser";
+import ItemManageUser from "../../../../components/ItemComponents/ItemManageUser";
 import { IUserDetail } from "../../../../interfaces/User";
 function ManageUser() {
   const [users, setUsers] = useState<IUserDetail[]>([]);  
@@ -16,13 +16,14 @@ function ManageUser() {
 
   const navigate=useNavigate()
   useEffect(() => {
-    dispatch(setLoading(true)) 
-    const fetchApi = async () => {
+  
+    const fetchApi = async () => {   
+           dispatch(setLoading(true)) 
           const res=await apiGetAllUser({ limit: 10, page: currentPage, sort: "ctime" });
-        if (!res?.status) return;
+          dispatch(setLoading(false))  
+          if (!res?.status) return;
         setUsers(res?.data?.users);
         setTotalPage(res?.data?.totalPage);
-        dispatch(setLoading(false))  
     };
     fetchApi();
   }, [currentPage ]);

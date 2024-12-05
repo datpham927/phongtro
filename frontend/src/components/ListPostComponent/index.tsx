@@ -1,6 +1,6 @@
 import { memo } from "react";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
-import ItemPostComponent from "../ItemPostComponent";
+import ItemPostComponent from "../ItemComponents/ItemPostComponent";
 import { IPost } from "../../interfaces/Post";
 import queryString from "query-string";
 import { useLocation, useNavigate } from "react-router-dom";

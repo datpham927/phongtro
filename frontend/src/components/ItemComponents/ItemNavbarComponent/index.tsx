@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { IFilterCategory, IFilterDouble } from "../../interfaces/filter";
+import { IFilterCategory, IFilterDouble } from "../../../interfaces/filter";
 
  
 interface ItemNavbarComponentProps {

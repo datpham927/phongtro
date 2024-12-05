@@ -58,18 +58,18 @@ function UpdateUser() {
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    dispatch(setLoading(true));
     if (validate(payload, setInvalidFields)) {
       const {id,...data}=payload
+      dispatch(setLoading(true));
       const response = await apiUpdateUser(data, uid);
+      dispatch(setLoading(false));
+
       if (!response.status) {
         alert("Cập nhật không thành công");
-        dispatch(setLoading(false));
         return;
       }
       alert("Cập nhật thành công");
     }
-    dispatch(setLoading(false));
   }, [payload, uid]);
 
   return (

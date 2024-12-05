@@ -31,9 +31,10 @@ function UpdatePost() {
   // Tối ưu useEffect để chỉ gọi khi postId thay đổi
   useEffect(() => {
     const fetchApi = async () => {
-       dispatch(setLoading(true)) 
       if (!postId) return;
+      dispatch(setLoading(true)) 
       const res = await getDetailPost(postId);
+      dispatch(setLoading(false))
       if (res?.status) {
         const post: IDetailPost = res.data;
         const { address, area,   category,  price, images, user,...data } = post;
@@ -47,10 +48,8 @@ function UpdatePost() {
           images: images.map((e: any) => e.url),
           ...data,
         });
-        dispatch(setLoading(false))
       }else{
         alert("Cập nhật không thành công")
-           dispatch(setLoading(false))
       }
     };
     fetchApi();

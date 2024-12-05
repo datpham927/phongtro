@@ -16,10 +16,11 @@ const DetailPost: React.FC = () => {
     const { postId } = useParams<{ postId: string }>();
     const navigate=useNavigate();
     useEffect(() => {
-        dispatch(setLoading(true))
         const fetchApi =  (async () => {
             if (!postId) return;
+             dispatch(setLoading(true))
             const res = await getDetailPost(postId);
+             dispatch(setLoading(false)) 
             if (res.status) {
                 setDataPost(res.data);
             }else{
@@ -27,13 +28,11 @@ const DetailPost: React.FC = () => {
             }
         }  );
         fetchApi();
-        dispatch(setLoading(false))
 
 
     }, [postId]);
 
     if (!dataPost) return ;
-
     const { title, images, address, price, area, description,
            id, category, post_type, address_detail,map,target, expire_at, created_at, user } = dataPost;
     const renderRow = (label: string, value: React.ReactNode, isBg: boolean = false) => (
@@ -42,7 +41,6 @@ const DetailPost: React.FC = () => {
             <td className="text-sm">{value}</td>
         </tr>
     );
-
     const breadcrumbs = [
         {
             path:`/${category.slug}`,

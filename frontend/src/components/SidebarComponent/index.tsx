@@ -17,11 +17,11 @@ function SidebarComponent() {
   const handleLogout = async () => {
     dispatch(setLoading(true))
     const res = await apiLogout();
+    dispatch(setLoading(false))
     if (!res.status) return;
     localStorage.clear();
     dispatch(setDetailUser({}));
     dispatch(setIsLoginSuccess(false));
-    dispatch(setLoading(false))
     window.location.reload();
     navigate("/")
 } 

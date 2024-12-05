@@ -38,8 +38,8 @@ class PostTypeService implements PostTypeServiceInterface
 
         // Validate dữ liệu đầu vào
         $validator = Validator::make($requestData, [
-            'description' => 'required|string|max:255',
-            'price' => 'required|numeric|max:999999', // Giá trị phải là số
+            'description' => 'required|string',
+            'price' => 'required|numeric', // Giá trị phải là số
             'expiration_time' => 'required|numeric|min:1', // Giá trị phải là số và lớn hơn hoặc bằng 1
         ]);
 
@@ -47,7 +47,6 @@ class PostTypeService implements PostTypeServiceInterface
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
-
         // Cập nhật danh mục và lưu vào cache
         $postType = $this->postTypeRepository->findByIdAndUpdate($ptid, $requestData);
 
@@ -55,5 +54,9 @@ class PostTypeService implements PostTypeServiceInterface
         Redis::del("post-types");
 
         return $postType;
+    }
+
+    function findPostType($id){
+        return $this->postTypeRepository->findById($id);
     }
 }

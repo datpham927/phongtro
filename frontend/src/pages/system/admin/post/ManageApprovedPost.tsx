@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { apiApprovedPost, apiDeletePost,  getAllUnapprovedPosts } from "../../../../services/apiPost";
 import { PaginationComponent  } from "../../../../components";
-import ItemManagePost from "../../../../components/ItemManagePost";
+import ItemManagePost from "../../../../components/ItemComponents/ItemManagePost";
 import { transformId } from "../../../../utils/format/transformId";
 import { formatDate } from "../../../../utils/format/formatDate";
 import { checkStatus } from "../../../../utils/checkStatus";
@@ -15,8 +15,8 @@ function ManageApprovedPost() {
   // const [postFilter, SetPostFilter]=useState<number|any>(1)
   const dispatch= useAppDispatch() 
   useEffect(() => {
-    dispatch(setLoading(true)) 
-    const fetchApi = async () => {
+  
+    const fetchApi = async () => {   dispatch(setLoading(true)) 
         let res;
         res = await getAllUnapprovedPosts({ limit: 10, page: currentPage }); 
         if (!res?.status) return;

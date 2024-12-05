@@ -28,8 +28,9 @@ const Register: React.FC = () => {
     setValueForm({ ...valueForm, [e.target.name]: e.target.value });
   };
   const handelSummit = async () => {
-          dispatch(setLoading(true))
+         
         if(!validate(valueForm,setInvalidFields) ) return;
+        dispatch(setLoading(true))
         const res= await apiRegister(valueForm)
         dispatch(setLoading(false))
         if(!res.status)  { alert('Email đã tồn tại'); return;}

@@ -24,6 +24,16 @@ class PostTypeController extends Controller
             return ResponseHelper::error("Error",$th);
         }
     } 
+
+    public function getPostType($ptid)
+    { 
+        try {
+            $response= $this->postTypeService->findPostType($ptid);
+            return ResponseHelper::success($response,"Successfully",200);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error("Error",$th);
+        }
+    } 
          public function update(Request $request, string $ptid)
     {
         try {

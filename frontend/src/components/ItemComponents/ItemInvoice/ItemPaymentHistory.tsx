@@ -1,7 +1,7 @@
 import React, { memo } from "react";
-import { ITransaction } from "../../interfaces/Transaction";
-import { formatNumber } from "../../utils/format/formatNumber";
-import { timeAgo } from "../../utils/format/timeAgo";
+import { ITransaction } from "../../../interfaces/Transaction";
+import { formatNumber } from "../../../utils/format/formatNumber";
+import { timeAgo } from "../../../utils/format/timeAgo";
 
 const ItemPaymentHistory: React.FC<{ transaction: ITransaction }> = ({ transaction }) => {
   return (

@@ -31,12 +31,12 @@ class CrawlerController  extends Controller
         //     'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
         // ],  
       
-         [
-            'url' => 'https://phongtro123.com/cho-thue-mat-bang',
-            'name' => 'Cho Thuê Mặt Bằng',
-            'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
-        ],  
+        //  [
+        //     'url' => 'https://phongtro123.com/cho-thue-mat-bang',
+        //     'name' => 'Cho Thuê Mặt Bằng',
+        //     'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+        //     'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
+        // ],  
         [
             'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
             'name' => 'Tìm Người Ở Ghép',

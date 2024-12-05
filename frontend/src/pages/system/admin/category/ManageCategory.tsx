@@ -6,7 +6,7 @@ import { PATH } from "../../../../utils/constant";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { apiDeleteCategory, apiGetAllCategory } from "../../../../services/apiCategory";
-import ItemManageCategory from "../../../../components/ItemManageCategory";
+import ItemManageCategory from "../../../../components/ItemComponents/ItemManageCategory";
 import { ICategory } from "../../../../interfaces/category";
 function ManageCategory() {
   const [categories, setCategories] = useState<ICategory[]>([]);  
@@ -16,8 +16,8 @@ function ManageCategory() {
 
   const navigate=useNavigate()
   useEffect(() => {
-    dispatch(setLoading(true)) 
-    const fetchApi = async () => {
+  
+    const fetchApi = async () => {   dispatch(setLoading(true)) 
           const res=await apiGetAllCategory({ limit: 10, page: currentPage, sort: "ctime" });
         if (!res?.status) return;
         setCategories(res?.data?.categories);

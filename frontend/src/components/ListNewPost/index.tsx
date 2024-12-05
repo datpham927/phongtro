@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { apiGetPost } from '../../services/apiPost'
 import { IPost } from '../../interfaces/Post'
-import ItemNewPost from '../ItemNewPost'
+import ItemNewPost from '../ItemComponents/ItemNewPost'
 
 const ListNewPost: React.FC<{detailPostId?:string}> = ({detailPostId}) => {
   const [listPost, setListPost] = useState<IPost[]>([])

@@ -3,11 +3,11 @@ import ReactLoading from 'react-loading';
 import SendIcon from '@mui/icons-material/Send';
 import { useAppSelector } from '../../../redux/hooks';
 import NotExit from '../../common/NotExit';
-import ButtonOutline from '../../ButtonOutline';
-import ItemMessage from '../../ItemMessage';
+import ItemMessage from '../../ItemComponents/ItemMessage';
 import { apiAddMessage, apiGetMessages } from '../../../services/apiMessage';
 import { IConversation } from '../../../interfaces/conversation';
 import Pusher from 'pusher-js';
+import ButtonOutline from '../../ButtonComponent/ButtonOutline';
 interface Message {
     user_id: string;
     message: string;

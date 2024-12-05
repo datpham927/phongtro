@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {  useAppSelector } from '../../../redux/hooks';
 import ReactLoading from 'react-loading';
-import ItemConversation from '../../ItemConversation';
+import ItemConversation from '../../ItemComponents/ItemConversation';
 import NotExit from '../../common/NotExit';
 import { IConversation } from '../../../interfaces/conversation';
 import { normalizeText } from '../../../utils/format/normalizeText';
