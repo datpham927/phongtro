@@ -5,11 +5,15 @@ import { setLoading } from '../../../../redux/action/actionSlice';
 import { apiGetAllPostType } from '../../../../services/apiPosType';
 import { POST_TYPE_COLOR } from '../../../../utils/constant';
 import NotExit from '../../../../components/common/NotExit';
-import { formatNumber } from '../../../../utils/format/formatNumber';
+import ItemManagePostType from '../../../../components/ItemComponents/ItemManagePostType';
  
 
 const ManagePriceList:React.FC = () => {
   const [lists, setList] = useState<IPostType[]>([]);  
+  const [price, setPrice] = useState<number>(0);  
+  const [expirationTime, setExpirationTime] = useState<number>(0);  
+  const [description, setDescription] = useState<number>(0);  
+
   const dispatch= useAppDispatch()
 
   useEffect(() => {
@@ -20,7 +24,6 @@ const ManagePriceList:React.FC = () => {
         setList(res?.data);
         dispatch(setLoading(false)) 
     };
-
     fetchApi();
   }, []);
   
@@ -31,20 +34,16 @@ const ManagePriceList:React.FC = () => {
         <h1 className="flex text-2xl py-3 ">Bản giá dịch vụ</h1>
       </div>
       <div className="w-full ">
-        <ul className="grid grid-cols-4 divide-x  border-solid border-[1px] border-slate-2200">
+        <ul className="grid grid-cols-5 divide-x  border-solid border-[1px] border-slate-2200">
         <li className="transaction">Dịch vụ</li>
         <li className="transaction">Giá</li>
         <li className="transaction">Thời hạn (tháng)</li>
         <li className="transaction">Mô tả</li> 
+        <li className="transaction">Thao tác</li> 
         </ul>
         <div className=" border-[1px] border-t-[2px] border-solid border-slate-200">
          {lists?.length>0 ? lists?.map((e) => {
-            return <ul  className="grid grid-cols-4 divide-x border-t border-slate-200">
-            <li style={{ color: POST_TYPE_COLOR[e.priority - 1]}} className="post-type-item">{e.name}</li>
-            <li style={{ color: POST_TYPE_COLOR[e.priority - 1]}} className="post-type-item">{formatNumber(e.price)}</li>
-            <li style={{ color: POST_TYPE_COLOR[e.priority - 1]}} className="post-type-item">{ e.expiration_time}</li>
-            <li style={{ color: POST_TYPE_COLOR[e.priority - 1]}} className="post-type-item">{e.description}</li>
-          </ul>
+            return <ItemManagePostType onClickEdit={()=>{}} postType={e} key={e.id}  />
           }):<NotExit label='Không có thông tin!'/>}
         </div> 
       </div>

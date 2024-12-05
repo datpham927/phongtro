@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 interface InputFormProps {
-  label: string;
+  label?: string;
   setValue: React.Dispatch<React.SetStateAction<any>>;
   name: string;
   invalidFields: { name: string; message: string }[];

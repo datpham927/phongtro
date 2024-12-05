@@ -29,7 +29,7 @@ export const menuManageAdmin = [
   {
     id: 5,
     text: "Quản lý giá bản tin",
-    path: `${PATH.SYSTEM}/${PATH.MANAGE_CATEGORY}`,
+    path: `${PATH.SYSTEM}/${PATH.MANAGE_PRICE_LIST}`,
     icon:manageIcon
   },
   {

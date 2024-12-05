@@ -12,6 +12,14 @@ const apiGetAllPostType= async () => {
       return error;
     }
   };
+  const apiUpdatePostType= async (ptid:string,data: any) => {
+    try {
+      const response = await axiosJWT.put(`post-type/${ptid}/update`,data);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  };
  
 
-export {apiGetAllPostType};
+export {apiGetAllPostType,apiUpdatePostType};

@@ -38,8 +38,8 @@ class PostTypeService implements PostTypeServiceInterface
 
         // Validate dữ liệu đầu vào
         $validator = Validator::make($requestData, [
-            'description' => 'required|string|max:255',
-            'price' => 'required|numeric|max:999999', // Giá trị phải là số
+            'description' => 'required|string',
+            'price' => 'required|numeric', // Giá trị phải là số
             'expiration_time' => 'required|numeric|min:1', // Giá trị phải là số và lớn hơn hoặc bằng 1
         ]);
 

@@ -105,7 +105,10 @@ Route::middleware(Login::class)->prefix('v1/message')->group(function () {
     Route::post('/{conversation_id}/add', [MessageController::class, 'sendMessage']);
     Route::get('/{conversation_id}/all', [MessageController::class, 'getAllMessage']);
 });
-
+Route::middleware(Login::class)->prefix('v1/conversation')->group(function () {
+    Route::post('/add', [ConversationControllers::class, 'create']);
+    Route::get('/all', [ConversationControllers::class, 'getAll']);
+});
 Route::get('/test-redis', function () {
     try {
         Redis::set('test', 'Hello from Redis Cloud');

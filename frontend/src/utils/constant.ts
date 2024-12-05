@@ -25,6 +25,7 @@ export const PATH = {
   UPDATE_CATEGORY: "chinh-sua-danh-muc/:cid",
   CREATE_CATEGORY: "them--danh-muc",
   MANAGE_PRICE_LIST:'quan-ly-bang-gia-dich-vu',
+  UPDATE_PRICE_LIST: "chinh-sua-gia-dich-vu/:id",
 
 };
 

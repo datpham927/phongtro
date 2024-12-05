@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-interface SearchItemComponentProps {
+interface ItemSearchComponentProps {
   title: string|any;
   icon: React.ReactNode; // Sử dụng `React.ReactNode` để nhận các giá trị icon khác nhau
   onClick: () => void|null;
@@ -8,13 +8,13 @@ interface SearchItemComponentProps {
  imgUrl:string
 }
 
-function SearchItemComponent({
+function ItemSearchComponent({
   title,
   icon,
   onClick,
   defaultText,
   imgUrl
-}: SearchItemComponentProps) {
+}: ItemSearchComponentProps) {
   return (
     <div
       onClick={onClick}
@@ -33,4 +33,4 @@ function SearchItemComponent({
   );
 }
 
-export default memo(SearchItemComponent);
+export default memo(ItemSearchComponent);

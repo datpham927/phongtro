@@ -21,17 +21,14 @@ const PostPackageComponent: React.FC<PostPackageComponentProps> = ({ setPostType
 
   useEffect(() => {
     const fetchPostTypes = async () => {
-      dispatch(setLoading(true));
-      try {
+        dispatch(setLoading(true));
         const res = await apiGetAllPostType();
+        dispatch(setLoading(false));
         if (res?.status) {
           setPostList(res.data);
         }
-      } catch (error) {
-        console.error('Failed to fetch post types:', error);
-      } finally {
-        dispatch(setLoading(false));
-      }
+     
+       
     };
 
     fetchPostTypes();

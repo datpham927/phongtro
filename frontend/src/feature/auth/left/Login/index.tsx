@@ -12,11 +12,11 @@ const Login: React.FC = () => {
     const dispatch = useAppDispatch();
     const handleSummit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        dispatch(setLoading(true))
         if (!email || !password) {
             setError('Tài khoản hoặc mật khẩu không chính xác!');
             return;
         }
+        dispatch(setLoading(true))
         const res = await apiLogin(email, password);
         dispatch(setLoading(false))
         if (res?.status) {

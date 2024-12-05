@@ -13,16 +13,15 @@ const PriceList:React.FC = () => {
 
   useEffect(() => {
     const fetchApi = async () => {
-        dispatch(setLoading(true)) 
         let res;
+        dispatch(setLoading(true)) 
         res = await apiGetAllPostType();
-        setList(res?.data);
         dispatch(setLoading(false)) 
+        setList(res?.data);
     };
 
     fetchApi();
   }, []);
-  
 
   return (
     <div className="w-full p-6">

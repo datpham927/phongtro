@@ -3,12 +3,12 @@ import InputForm from "../../../../components/InputComponent/InputForm";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
 import validate from "../../../../utils/validate";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PATH } from "../../../../utils/constant";
-import { useState } from "react";
-import { apiCreateCategory } from "../../../../services/apiCategory";
+import { useEffect, useState } from "react";
+import {  apiGetCategory, apiUpdateCategory } from "../../../../services/apiCategory";
 
-function CreateCategory() {
+function UpdatePostType() {
   const [payload, setPayload] = useState<any>({
     name:"",
     sub_title:"",
@@ -17,25 +17,38 @@ function CreateCategory() {
   const [invalidFields, setInvalidFields] = useState<any>([]);
   const dispatch = useAppDispatch();
   const navigate= useNavigate();
+  const { cid } = useParams<{ cid: string }>();
 
+  useEffect(() => {
+    const fetchUserDetail = async () => {
+      if (!cid) return;
+      dispatch(setLoading(true));
+      const res = await apiGetCategory(cid);
+      if (res?.status) {
+        setPayload(res.data);
+      }
+      dispatch(setLoading(false));
+    };
+    fetchUserDetail();
+  }, [cid]);
 
   const handleSubmit = async() => {
+    dispatch(setLoading(true)); 
     if (validate(payload, setInvalidFields)) {
       const {id,confirm_password,...data }=payload
-       dispatch(setLoading(true)); 
-      const res = await apiCreateCategory(data);
-      dispatch(setLoading(false)); 
+      const res = await apiUpdateCategory(data,cid);
       if (!res.status) {
-         alert("Thêm không thành công");
+         alert("Cập nhật không thành công");
       }else{
         navigate(`${PATH.SYSTEM}/${PATH.MANAGE_CATEGORY}`)
       }
     }
+    dispatch(setLoading(false)); 
   } ;
   return (
     <div className="flex flex-col h-full px-7 ">
       <div className="w-full border-solid border-b-[1px] border-gray-300">
-        <h1 className="text-4xl py-3">Thêm danh mục</h1>
+        <h1 className="text-4xl py-3">Cập nhật danh mục</h1>
       </div>
         <div className="flex w-full gap-4 flex-col  ">
           <div className="flex flex-col gap-4 my-5">
@@ -83,7 +96,7 @@ function CreateCategory() {
         </div>
       </div>
           <ButtonComponent
-            text="Thêm"
+            text="Cập nhật"
             className="bg-blue-custom cursor-pointer text-white hover:bg-blue-700 mb-20 w-1/2 mx-auto"
             onClick={handleSubmit}
           />
@@ -92,4 +105,4 @@ function CreateCategory() {
   );
 }
 
-export default CreateCategory;
+export default UpdatePostType;

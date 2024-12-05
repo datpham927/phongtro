@@ -4,7 +4,7 @@ import { setLoading } from '../../../redux/action/actionSlice';
 import { apiGetAllPaymentHistory } from '../../../services/apiInvoice';
 import { useAppDispatch } from '../../../redux/hooks';
 import { ITransaction } from '../../../interfaces/Transaction';
-import ItemPaymentHistory from '../../../components/ItemInvoice/ItemPaymentHistory';
+import ItemPaymentHistory from '../../../components/ItemComponents/ItemInvoice/ItemPaymentHistory';
 import NotExit from '../../../components/common/NotExit';
 
 const PaymentHistory:React.FC = () => {
@@ -14,13 +14,13 @@ const PaymentHistory:React.FC = () => {
   const dispatch= useAppDispatch()
 
   useEffect(() => {
-    dispatch(setLoading(true)) 
     const fetchApi = async () => {
         let res;
+        dispatch(setLoading(true)) 
         res = await apiGetAllPaymentHistory({ limit: 10, page: currentPage, sort: "ctime" });
+        dispatch(setLoading(false))  
         setList(res?.data?.invoices);
         setTotalPage(res?.data?.totalPage);
-        dispatch(setLoading(false))  
         console.log(res?.data)
     };
     fetchApi();

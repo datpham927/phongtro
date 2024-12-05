@@ -38,7 +38,6 @@ function CreatePost() {
 
     const check = validate(payload, setInvalidFields);
     if (!check) return;
-    dispatch(setLoading(true))
     const { areaNumber, priceNumber, images,categoryCode, district, province, ward,...data } = payload;
     const postData = {
       thumb: images[0],
@@ -55,6 +54,7 @@ function CreatePost() {
       },
       ...data,
     };
+    dispatch(setLoading(true))
     const response = await apiCreatePost(postData);
     dispatch(setLoading(false)) 
     if(response.status) {alert("Thêm thành công");navigate(`${PATH.SYSTEM}/${PATH.MANAGE_POST}`)}

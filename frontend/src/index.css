@@ -101,3 +101,13 @@
   @apply flex items-center justify-center p-2 text-sm text-slate-600 text-center 
 
 }
+
+/* Tạo lớp tùy chỉnh */
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-spinner {
+  -moz-appearance: textfield; /* Ẩn spinner trên Firefox */
+}
