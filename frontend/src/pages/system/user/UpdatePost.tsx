@@ -31,29 +31,25 @@ function UpdatePost() {
   // Tối ưu useEffect để chỉ gọi khi postId thay đổi
   useEffect(() => {
     const fetchApi = async () => {
-       dispatch(setLoading(true)) 
       if (!postId) return;
+      dispatch(setLoading(true)) 
       const res = await getDetailPost(postId);
+      dispatch(setLoading(false))
       if (res?.status) {
         const post: IDetailPost = res.data;
-        const { address, area, address_detail,map, category,target, price, images, user,...data } = post;
+        const { address, area,   category,  price, images, user,...data } = post;
         setPayload({
-          address_detail: address_detail,
           province: address.city_name,
           district: address.district_name,
           ward: address.ward_name, 
           areaNumber: area.number,
           priceNumber: price.number,
           categoryCode: category.id,
-          map:  map,
-          target:  target,
           images: images.map((e: any) => e.url),
           ...data,
         });
-        dispatch(setLoading(false))
       }else{
         alert("Cập nhật không thành công")
-           dispatch(setLoading(false))
       }
     };
     fetchApi();

@@ -17,11 +17,11 @@ function SidebarComponent() {
   const handleLogout = async () => {
     dispatch(setLoading(true))
     const res = await apiLogout();
+    dispatch(setLoading(false))
     if (!res.status) return;
     localStorage.clear();
     dispatch(setDetailUser({}));
     dispatch(setIsLoginSuccess(false));
-    dispatch(setLoading(false))
     window.location.reload();
     navigate("/")
 } 
@@ -54,20 +54,20 @@ function SidebarComponent() {
       </div>
       
 
-     <div className="flex flex-col text-center mt-2 py-1 bg-[#FFFAE8] rounded-md border-[1px] border-solid border-[#FFC107]">
+      {user?.type!="admin"&& <div className="flex flex-col text-center mt-2 py-1 bg-[#FFFAE8] rounded-md border-[1px] border-solid border-[#FFC107]">
      <span className="text-[12px] ">
           Số dư tài khoản:
           <strong> {formatNumber(user?.account_balance)} </strong>
         </span>
         <div className="flex gap-3 my-2 justify-center">
-       <ButtonComponent text="Nạp tiền" className="!text-[12px] bg-[#ffc107] !py-0 !px-2 "
+       <ButtonComponent text="Nạp tiền" className="!text-[12px] bg-[#ffc107]  !px-2 "
        onClick={()=>navigate("/nop-tien")}
        />
-       <ButtonComponent text="Đăng tin" className="!text-[12px] bg-red-600 !py-0 !px-2 text-white" 
+       <ButtonComponent text="Đăng tin" className="!text-[12px] bg-red-600  !px-2 text-white" 
           onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}
        />
        </div>
-     </div>
+     </div>}
        
       </div>
       <ul className="flex flex-col mt-5">

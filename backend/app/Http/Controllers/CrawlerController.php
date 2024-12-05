@@ -203,11 +203,11 @@ class CrawlerController  extends Controller
                 $postType = PostType::find($postTypeId); 
                 // Kiểm tra số dư tài khoản người dùng có đủ để thanh toán
                 $user = User::find($postData["user_id"]); 
-                if (!$user ||  $user->account_balance < $postType->price) {
+                if (!$user ||  $user->account_balance < $postType["price"]) {
                         return response()->json('Insufficient account balance');
                 }
                 // tạo hóa đơn và trừ tiền
-                if($postType->price>0){
+                if($postType["price"]>0){
                     $this->processPostPayment($user, $postType);
                 }
          $postData["expire_at"] =Util::addMonthsToCurrentDate($postType['expiration_time']);
@@ -262,24 +262,26 @@ class CrawlerController  extends Controller
         return $genders[array_rand($genders)];
     }
     function getRandomElement() {
-        $values = ['93748deuy37rrgg6f4t46', 'jdshffefeygfye64343', 'vhdufhdue87548', 'sdfer8549598fjf485', 'fhdfhueheffueuughyr8'];
+        $values = ['tinvipnoibat', 'tinvip1', 'tinvip2', 'sdfer8549598fjf485', 'fhdfhueheffueuughyr8'];
         return $values[array_rand($values)];
     }
     protected function processPostPayment($user, $postType)
     {
+
+        $id= Util::uuid();
         $invoiceData = [
-            'id' => Util::uuid(),
+            'id' => $id,
             'transaction_type' => 'withdraw',
             'user_id' => $user->id,
-            'amount' => $postType->price,
+            'amount' => $postType["price"],
             'start_balance' => $user->account_balance,
-            'end_balance' => $user->account_balance-$postType->price,
+            'end_balance' => $user->account_balance-$postType["price"],
             'description' => "Phí đăng bài " . $postType->name,
         ];
 
         $invoice = Invoice::create($invoiceData);
         if ($invoice) {
-            $user->account_balance -= $postType->price;
+            $user->account_balance -= $postType["price"];
             $user->save(); // Lưu lại thay đổi số dư
         }
     }

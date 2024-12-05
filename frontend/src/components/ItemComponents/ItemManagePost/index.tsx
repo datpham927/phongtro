@@ -1,5 +1,6 @@
 import { memo } from "react";
-
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 interface ItemManagePostProps {
   id: string;
   thumb: string;
@@ -40,23 +41,23 @@ function ItemManagePost({
       <li className="p-2 text-sm">{isApproved ? "Đã duyệt" : "Chưa duyệt"}</li>
       <li className="flex p-3 justify-between">
         <button
-          className="px-2 bg-blue-500 text-white rounded-md"
+          className="px-2  text-blue-400 text-xs rounded-md"
           onClick={(e) => {
             e.preventDefault();
             approval ? onClickApproval?.() : onClickEdit?.();
           }}
         >
-          {approval ? "Duyệt" : "Chỉnh sửa"}
+          {approval ? "Duyệt" : <BorderColorIcon/>}
         </button>
 
         <button
-          className="px-2 bg-blue-500 text-white rounded-md"
+          className="px-2  text-xs rounded-md"
           onClick={(e) => {
             e.preventDefault();
             onClickDelete();
           }}
         >
-          Xóa
+         <DeleteOutlinedIcon/>
         </button>
       </li>
     </ul>

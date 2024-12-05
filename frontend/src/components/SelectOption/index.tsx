@@ -42,7 +42,7 @@ function SelectOption({
   return (
     <div className={`flex flex-col w-1/2 ${invalidFields?.length>0?'gap-1':''} ${className}`}>
       {isLabel && (
-        <label htmlFor="select-address" className="text-sm font-semibold">
+        <label htmlFor="select-address" className="text-sm font-semibold mb-1">
           {label}
         </label>
       )}

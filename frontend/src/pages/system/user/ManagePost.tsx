@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import SelectOption from "../../../components/SelectOption"; 
 import { apiDeletePost, apiGetExpiredPostForShop, apiGetPostForShop } from "../../../services/apiPost"; 
 import { IPost } from "../../../interfaces/Post";
-import ItemManagePost from "../../../components/ItemManagePost";
+import ItemManagePost from "../../../components/ItemComponents/ItemManagePost";
 import { checkStatus } from "../../../utils/checkStatus";
 import { transformId } from "../../../utils/format/transformId";
 import { formatDate } from "../../../utils/format/formatDate";
@@ -20,18 +20,18 @@ function ManagePost() {
 
   const navigate=useNavigate()
   useEffect(() => {
-    dispatch(setLoading(true)) 
     const fetchApi = async () => {
         let res;
+        dispatch(setLoading(true)) 
         if (postFilter === 1) {
           res = await apiGetPostForShop({ limit: 10, page: currentPage, sort: "ctime" });
         } else  if (postFilter === 2) {
           res = await apiGetExpiredPostForShop({ limit: 10, page: currentPage });
         }
+        dispatch(setLoading(false))  
         if (!res?.status) return;
         setPosts(res?.data?.posts);
         setTotalPage(res?.data?.totalPage);
-        dispatch(setLoading(false))  
     };
     fetchApi();
   }, [currentPage, postFilter]);
@@ -64,7 +64,7 @@ const handleDeletePost=async(pid:string)=>{
               // { id: 3, name: "Tin đang ẩn" },
             ]}
           />
-          <ButtonComponent text="Đăng tin mới" className="bg-[#dc3545] text-white text-sm !py-0"  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}/>
+          <ButtonComponent text="Đăng tin mới" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}/>
         </div>
       </div>
       <div className="w-full ">

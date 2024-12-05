@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import {  PaginationComponent  } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import { ITransaction } from '../../../interfaces/Transaction';
 import { apiGetAllDepositHistory } from '../../../services/apiInvoice';
-import ItemDepositHistory from '../../../components/ItemInvoice/ItemDepositHistory';
+import ItemDepositHistory from '../../../components/ItemComponents/ItemInvoice/ItemDepositHistory';
 import NotExit from '../../../components/common/NotExit';
 
 const DepositHistory:React.FC = () => {
@@ -15,13 +14,14 @@ const DepositHistory:React.FC = () => {
   const dispatch= useAppDispatch()
 
   useEffect(() => {
-    dispatch(setLoading(true)) 
     const fetchApi = async () => {
         let res;
+       dispatch(setLoading(true)) 
         res = await apiGetAllDepositHistory({ limit: 10, page: currentPage, sort: "ctime" });
+        dispatch(setLoading(false))  
+       
         setList(res?.data?.invoices);
         setTotalPage(res?.data?.totalPage);
-        dispatch(setLoading(false))  
         console.log(res?.data)
     };
     fetchApi();

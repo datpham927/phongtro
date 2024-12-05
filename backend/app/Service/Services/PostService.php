@@ -73,12 +73,14 @@ class PostService implements PostServiceInterface
         // tạo hóa đơn và trừ tiền
         if ($postType->price > 0) {
             $this->processPostPayment($user, $postType);
-            $postData['is_approved'] = true;
         }
         // đăng bài
         $addressId = $this->getOrCreateAddressId($validatedData['address']);
         // Chuẩn bị dữ liệu bài đăng
         $postData = $this->preparePostData($validatedData, $addressId);
+        if ($postType->price > 0) {
+            $postData['is_approved'] = true;
+        }
         $postData["expire_at"] = Util::addMonthsToCurrentDate($postType['expiration_time']);
         // Tạo bài đăng
         $post = $this->postRepository->create($postData);
@@ -236,20 +238,16 @@ class PostService implements PostServiceInterface
 
     private function createPostArea($area, $postId)
     {
-        Post_area::create([
-            "id" => Util::uuid(),
-            "post_id" => $postId,
-            "area" => $area
-        ]);
+        $area["id"]= Util::uuid();
+        $area["post_id"]=  $postId;
+        Post_area::create( $area);
     }
 
     private function createPostPrice($price, $postId)
     {
-        Post_price::create([
-            "id" => Util::uuid(),
-            "post_id" => $postId,
-            "price" => $price
-        ]);
+        $price["id"]=Util::uuid();
+        $price["post_id"]=$postId;
+        Post_price::create( $price );
     }
 
     

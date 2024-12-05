@@ -6,7 +6,7 @@ import { PATH } from "../../../../utils/constant";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { apiDeleteUser, apiGetAllUser } from "../../../../services/apiUser";
-import ItemManageUser from "../../../../components/ItemManageUser";
+import ItemManageUser from "../../../../components/ItemComponents/ItemManageUser";
 import { IUserDetail } from "../../../../interfaces/User";
 function ManageUser() {
   const [users, setUsers] = useState<IUserDetail[]>([]);  
@@ -16,13 +16,14 @@ function ManageUser() {
 
   const navigate=useNavigate()
   useEffect(() => {
-    dispatch(setLoading(true)) 
-    const fetchApi = async () => {
+  
+    const fetchApi = async () => {   
+           dispatch(setLoading(true)) 
           const res=await apiGetAllUser({ limit: 10, page: currentPage, sort: "ctime" });
-        if (!res?.status) return;
+          dispatch(setLoading(false))  
+          if (!res?.status) return;
         setUsers(res?.data?.users);
         setTotalPage(res?.data?.totalPage);
-        dispatch(setLoading(false))  
     };
     fetchApi();
   }, [currentPage ]);
@@ -47,7 +48,7 @@ const handleDeletePost=async(uid:any)=>{
       <div className="flex justify-between items-center  border-solid border-b-[1px] border-gray-300 mb-6">
         <h1 className="flex text-2xl py-3 ">Quản lý người dùng</h1>
         <div className="flex gap-6 text-center">
-          <ButtonComponent text="Thêm người dùng" className="bg-[#dc3545] text-white text-sm !py-0"  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_USER}`)}/>
+          <ButtonComponent text="Thêm người dùng" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_USER}`)}/>
         </div>
       </div>
       <div className="w-full ">

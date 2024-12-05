@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
+    protected $keyType = 'string';
     protected $guarded = [];
     use HasFactory;
 }

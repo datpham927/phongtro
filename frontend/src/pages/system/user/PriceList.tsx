@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ButtonComponent, PaginationComponent, SelectOption } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import NotExit from '../../../components/common/NotExit';
 import { IPostType } from '../../../interfaces/PostType';
@@ -15,16 +13,15 @@ const PriceList:React.FC = () => {
 
   useEffect(() => {
     const fetchApi = async () => {
-        dispatch(setLoading(true)) 
         let res;
+        dispatch(setLoading(true)) 
         res = await apiGetAllPostType();
-        setList(res?.data);
         dispatch(setLoading(false)) 
+        setList(res?.data);
     };
 
     fetchApi();
   }, []);
-  
 
   return (
     <div className="w-full p-6">

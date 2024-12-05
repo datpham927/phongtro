@@ -16,10 +16,11 @@ const DetailPost: React.FC = () => {
     const { postId } = useParams<{ postId: string }>();
     const navigate=useNavigate();
     useEffect(() => {
-        dispatch(setLoading(true))
         const fetchApi =  (async () => {
             if (!postId) return;
+             dispatch(setLoading(true))
             const res = await getDetailPost(postId);
+             dispatch(setLoading(false)) 
             if (res.status) {
                 setDataPost(res.data);
             }else{
@@ -27,13 +28,11 @@ const DetailPost: React.FC = () => {
             }
         }  );
         fetchApi();
-        dispatch(setLoading(false))
 
 
     }, [postId]);
 
     if (!dataPost) return ;
-
     const { title, images, address, price, area, description,
            id, category, post_type, address_detail,map,target, expire_at, created_at, user } = dataPost;
     const renderRow = (label: string, value: React.ReactNode, isBg: boolean = false) => (
@@ -42,7 +41,6 @@ const DetailPost: React.FC = () => {
             <td className="text-sm">{value}</td>
         </tr>
     );
-
     const breadcrumbs = [
         {
             path:`/${category.slug}`,
@@ -63,7 +61,6 @@ const DetailPost: React.FC = () => {
         },
     ];
 
-
     return (
        <>
         <BreadcrumbComponent breadcrumbs={breadcrumbs}/>
@@ -76,7 +73,7 @@ const DetailPost: React.FC = () => {
                     <h1 className="text-2xl font-medium text-red-500 uppercase">{title}</h1>
                 </div>
                 <div >
-                <span className='text-center uppercase px-3 py-1 text-[10px] text-white rounded-sm' style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
+                <span className='flex items-center text-center uppercase px-3 py-1 text-[10px] text-white rounded-sm' style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
              {  [1,2].includes(post_type.priority) &&<StarIcon sx={{ color: '#FFD700' , fontSize:'14px'}} /> }
                 {post_type.name}
                 </span>

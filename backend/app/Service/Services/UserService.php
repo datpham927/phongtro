@@ -21,20 +21,7 @@ class UserService implements UserServiceInterface
     // Tìm người dùng và lưu vào cache
     public function findUser($user_id)
     { 
-        $cacheKey = "user:" . $user_id;
-        // Kiểm tra dữ liệu trong Redis
-        $cachedUser = Redis::get($cacheKey);
-        if (!$cachedUser) {
-            // Lấy dữ liệu từ repository nếu không có trong Redis
             $user = $this->userRepository->findById($user_id);
-            // Lưu dữ liệu vào Redis (dưới dạng JSON)
-            Redis::set($cacheKey, json_encode($user));
-            // Thiết lập thời gian hết hạn (1 ngày)
-            Redis::expire($cacheKey, 3600 * 24);
-        } else {
-            // Giải mã JSON để lấy dữ liệu
-            $user = json_decode($cachedUser);
-        }
         return new UserResource($user);
     }
 
@@ -46,9 +33,6 @@ class UserService implements UserServiceInterface
         unset($payload['user_id']);
         // Cập nhật cơ sở dữ liệu
         $user = $this->userRepository->findByIdAndUpdate($user_id, $payload);
-        // Cập nhật cache sau khi người dùng được cập nhật
-        $cacheKey = "user:" . $user_id;
-        Redis::setex($cacheKey, 3600 * 24, json_encode($user));
         return new UserResource($user);
     }
 
@@ -61,9 +45,6 @@ class UserService implements UserServiceInterface
         $payload['password'] = bcrypt($payload['password']);
         // Tạo người dùng mới
         $user = $this->userRepository->create($payload);
-        // Lưu vào cache
-        $cacheKey = "user:" . $user->id;
-        Redis::setex($cacheKey, 3600 * 24, json_encode($user));
         return new UserResource($user);
     }
 
@@ -74,10 +55,6 @@ class UserService implements UserServiceInterface
         unset($payload['user_id']);
         // Cập nhật cơ sở dữ liệu
         $user = $this->userRepository->findByIdAndUpdate($uid, $payload);
-        // Cập nhật cache sau khi người dùng được cập nhật
-        $cacheKey = "user:" . $uid;
-            // Lưu dữ liệu vào Redis
-        Redis::setex($cacheKey, 3600 * 24, json_encode($user));
         return new UserResource($user);
     }
 
@@ -93,7 +70,5 @@ class UserService implements UserServiceInterface
     public function findDeleteUser($uid)
     {
         $this->userRepository->findByIdAndDelete($uid);
-        $cacheKey = "user:" . $uid;
-        Redis::del($cacheKey);
     }
 }

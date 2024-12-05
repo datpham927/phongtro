@@ -1,18 +1,21 @@
 import { Link, Outlet } from "react-router-dom";
 import { NavigateComponent, SidebarComponent } from "../components";
 import LoadingComponent from "../components/LoadingComponent";
+import { useAppSelector } from "../redux/hooks";
 
 function LayoutSystem() { 
+  const { type } = useAppSelector((state ) => state.user);
+
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex w-full bg-blue-custom top-0 sticky ">
         <Link
           to="/"
-          className="flex justify-center items-center mr-5 ml-4 text-white font-semibold"
+          className="flex justify-center py-2 items-center mr-5 ml-4 text-white font-semibold"
         >
           phongtro123.com
         </Link>
-        <NavigateComponent />
+       { type!=="admin"&& <NavigateComponent />}
       </div>
       <div className="flex h-full">
         <div className="w-1/6 bg-primary-bg h-auto">

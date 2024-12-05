@@ -16,11 +16,12 @@ interface BoxInfoProps {
     const {isLogged} = useAppSelector((state) => state.auth);
    const dispatch=useAppDispatch();
     const handleCLickChat = async () => {
-        dispatch(setLoading(true));
+        
         if (!isLogged) {
             dispatch(setOpenFeatureAuth(true));
             return;
         } 
+        dispatch(setLoading(true));
         await apiAddConversation(userId);
         dispatch(setLoading(false));
         dispatch(setIsOpenChat(true));

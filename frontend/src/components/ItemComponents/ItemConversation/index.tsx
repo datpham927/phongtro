@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { noUser } from '../../assets';
-import { IConversation } from '../../interfaces/conversation';
+import { noUser } from '../../../assets';
+import { IConversation } from '../../../interfaces/conversation';
 
 interface ItemConversationProps {
     conversation: IConversation;

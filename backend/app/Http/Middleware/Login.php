@@ -39,9 +39,9 @@ class Login
         if (!$findUser) {
             return response()->json(['status' => 404, 'message' => 'User not found'], 404);
         }
-        if ($userId != $findUser->id) {
-            return response()->json(['status' => 403, 'message' => 'Invalid user'], 403);
-        }
+        // if ($userId != $findUser->id) {
+        //     return response()->json(['status' => 403, 'message' => 'Invalid user'], 403);
+        // }
         // Add user ID to request
         $request["user_id"]= $findUser->id;
         return $next($request);

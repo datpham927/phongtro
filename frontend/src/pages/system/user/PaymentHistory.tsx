@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { ButtonComponent, PaginationComponent, SelectOption } from '../../../components';
+import {   PaginationComponent } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
 import { apiGetAllPaymentHistory } from '../../../services/apiInvoice';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import { ITransaction } from '../../../interfaces/Transaction';
-import ItemPaymentHistory from '../../../components/ItemInvoice/ItemPaymentHistory';
+import ItemPaymentHistory from '../../../components/ItemComponents/ItemInvoice/ItemPaymentHistory';
 import NotExit from '../../../components/common/NotExit';
 
 const PaymentHistory:React.FC = () => {
@@ -13,16 +12,15 @@ const PaymentHistory:React.FC = () => {
   const [totalPage, setTotalPage]=useState<number>(0)
   const [currentPage, setCurrentPage]=useState<number|any>(1)
   const dispatch= useAppDispatch()
-  const navigate=useNavigate()
 
   useEffect(() => {
-    dispatch(setLoading(true)) 
     const fetchApi = async () => {
         let res;
+        dispatch(setLoading(true)) 
         res = await apiGetAllPaymentHistory({ limit: 10, page: currentPage, sort: "ctime" });
+        dispatch(setLoading(false))  
         setList(res?.data?.invoices);
         setTotalPage(res?.data?.totalPage);
-        dispatch(setLoading(false))  
         console.log(res?.data)
     };
     fetchApi();

@@ -6,11 +6,12 @@ interface InvalidField {
 }
 
 interface InputComponentProps {
-  placeholder: string;
+  placeholder?: string;
   type: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
   invalidFields?: InvalidField[];
+  className?:string
 }
 
 const InputComponent: React.FC<InputComponentProps> = ({
@@ -18,13 +19,13 @@ const InputComponent: React.FC<InputComponentProps> = ({
   type,
   onChange,
   name,
+  className,
   invalidFields = [],
 }) => {  
   return (
     <div className="w-full my-2">
       <input
-
-        className="outline-none w-full text-sm bg-primary-bg p-2 rounded-md "
+        className={`outline-none w-full text-sm bg-primary-bg p-2 rounded-md ${className}`}
         type={type}
         placeholder={placeholder}
         onChange={onChange}

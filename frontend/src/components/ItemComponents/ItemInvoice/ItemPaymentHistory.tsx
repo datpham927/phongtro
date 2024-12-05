@@ -1,13 +1,12 @@
 import React, { memo } from "react";
-import { ITransaction } from "../../interfaces/Transaction";
-import { formatDate } from "../../utils/format/formatDate";
-import { formatNumber } from "../../utils/format/formatNumber";
+import { ITransaction } from "../../../interfaces/Transaction";
+import { formatNumber } from "../../../utils/format/formatNumber";
+import { timeAgo } from "../../../utils/format/timeAgo";
 
-// Sửa lại kiểu của props
-const ItemDepositHistory: React.FC<{ transaction: ITransaction }> = ({ transaction }) => {
+const ItemPaymentHistory: React.FC<{ transaction: ITransaction }> = ({ transaction }) => {
   return (
     <ul className="grid grid-cols-6 divide-x border-t border-slate-200">
-      <li className="p-2 text-sm text-slate-600 text-center">{formatDate(transaction.created_at)}</li>
+      <li className="p-2 text-sm text-slate-600 text-center">{timeAgo(transaction.created_at)}</li>
       <li className="p-2 text-sm text-slate-600 text-center">{transaction.id}</li>
       <li className="p-2 text-sm text-slate-600 text-center">{formatNumber(transaction.amount)}</li>
       <li className="p-2 text-sm text-slate-600 text-center">{formatNumber(transaction.start_balance)}</li>
@@ -17,4 +16,4 @@ const ItemDepositHistory: React.FC<{ transaction: ITransaction }> = ({ transacti
   );
 };
 
-export default memo(ItemDepositHistory);
+export default memo(ItemPaymentHistory);

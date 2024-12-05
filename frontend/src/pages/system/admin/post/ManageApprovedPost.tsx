@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { apiApprovedPost, apiDeletePost,  getAllUnapprovedPosts } from "../../../../services/apiPost";
 import { PaginationComponent  } from "../../../../components";
-import ItemManagePost from "../../../../components/ItemManagePost";
+import ItemManagePost from "../../../../components/ItemComponents/ItemManagePost";
 import { transformId } from "../../../../utils/format/transformId";
 import { formatDate } from "../../../../utils/format/formatDate";
 import { checkStatus } from "../../../../utils/checkStatus";
@@ -15,8 +15,8 @@ function ManageApprovedPost() {
   // const [postFilter, SetPostFilter]=useState<number|any>(1)
   const dispatch= useAppDispatch() 
   useEffect(() => {
-    dispatch(setLoading(true)) 
-    const fetchApi = async () => {
+  
+    const fetchApi = async () => {   dispatch(setLoading(true)) 
         let res;
         res = await getAllUnapprovedPosts({ limit: 10, page: currentPage }); 
         if (!res?.status) return;
@@ -67,7 +67,7 @@ const handleApprovalPost=async(pid:string)=>{
               // { id: 3, name: "Tin đang ẩn" },
             ]}
           />
-          <ButtonComponent text="Đăng tin mới" className="bg-[#dc3545] text-white text-sm !py-0"  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}/>
+          <ButtonComponent text="Đăng tin mới" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}/>
         </div> */}
       </div>
       <div className="w-full ">

@@ -1,9 +1,9 @@
 import React, { memo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { IPost } from "../../interfaces/Post";
+import { IPost } from "../../../interfaces/Post";
 import parse from 'html-react-parser';
-import { timeAgo } from "../../utils/format/timeAgo";
-import { POST_TYPE_COLOR } from "../../utils/constant";
+import { timeAgo } from "../../../utils/format/timeAgo";
+import { POST_TYPE_COLOR } from "../../../utils/constant";
 const ItemPostComponent:React.FC<{ props: IPost  }> =  ({props })=> {
   const {address,area,description,id,price,images,priority,thumb,title,user,slug,created_at}=props
   const [hoverHeart, setHoverHeart] = useState(false);

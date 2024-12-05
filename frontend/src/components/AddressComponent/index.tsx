@@ -77,7 +77,7 @@ function AddressComponent({
     const provinceName = provinces?.find(e => e.code === provinceCode)?.name ?? "";
     const districtName = districts?.find(e => e.code === districtCode)?.name ?? "";
     const wardName = wards?.find(e => e.code === wardCode)?.name ?? "";
-    const fullAddress = `${wardCode ?wardName : ""}${districtCode ? ", " + districtName : ""}${provinceCode ?  ", " + provinceName : ""}`;
+    const fullAddress = `${wardCode ?wardName + ", ": "" }${districtCode ? districtName +", " : ""}${provinceCode ?    provinceName : ""}`;
     setPayload((prev: any) => ({
       ...prev,
       province: provinceName,
@@ -89,7 +89,7 @@ function AddressComponent({
   
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl my-5 font-semibold">Địa chỉ cho thuê</h1>
+      <h1 className="text-xl my-5 font-semibold">Địa chỉ cho thuê</h1>
       <div className="flex gap-4">
         <SelectOption
           isLabel 
