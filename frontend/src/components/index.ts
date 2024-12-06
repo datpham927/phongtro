@@ -31,8 +31,9 @@ export { default as OverviewComponent } from  '../components/OverviewComponent';
 export { default as NoticeListComponent } from  '../components/NoticeListComponent';
 export { default as ChatComponent } from  '../components/ChatComponent';
 export { default as PostPackageComponent } from  '../components/PostPackageComponent';
-
-
+export { default as SkeletonPosts } from './skeleton/SkeletonPosts';
+export { default as SkeletonCategory } from './skeleton/SkeletonCategory';
+export { default as SkeLetonDetailPage } from './skeleton/SkeLetonDetailPage';
 
 
 

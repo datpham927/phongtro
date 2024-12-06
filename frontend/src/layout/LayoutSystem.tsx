@@ -1,11 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
 import { NavigateComponent, SidebarComponent } from "../components";
-import LoadingComponent from "../components/LoadingComponent";
 import { useAppSelector } from "../redux/hooks";
+import LoadingComponent from "../components/LoadingComponent";
 
 function LayoutSystem() { 
   const { type } = useAppSelector((state ) => state.user);
-
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex w-full bg-blue-custom top-0 sticky ">
