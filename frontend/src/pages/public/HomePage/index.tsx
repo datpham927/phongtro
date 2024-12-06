@@ -7,7 +7,7 @@ import { apiGetPost } from '../../../services/apiPost';
 import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter'; 
 import { dataArea, dataPrice } from '../../../utils/data'; 
 import { convertToMillion } from '../../../utils/convertMillion';
-import { ItemNavbarComponent, ListNewPost, ListPostComponent, PaginationComponent, ProvinceComponent, SearchComponent } from '../../../components';
+import { ItemNavbarComponent, ListNewPost, ListPostComponent,  PaginationComponent, ProvinceComponent, SearchComponent, SkeletonPosts } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
  
 
@@ -18,6 +18,7 @@ const HomePage:React.FC = () => {
       const [currentPage, setCurrentPage]=useState<number|any>(1)
       const { categories } = useAppSelector((state) => state.category);
       const dispatch= useAppDispatch();
+      const { loading } = useAppSelector((state) => state.action);
 
       const navigate=useNavigate()
       const params = useParams();
@@ -76,11 +77,16 @@ const handleCLickCategory=(item: IFilterCategory)=>{
     <ProvinceComponent />
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
-          <ListPostComponent  data={listPosts} totalPost={totalPost} />
-         { listPosts?.length>0&&
-         <PaginationComponent currentPage={currentPage}
-                             setCurrentPage={setCurrentPage} 
-                            totalPage={totalPage} />}
+
+          {!loading?
+          <>
+              <ListPostComponent  data={listPosts} totalPost={totalPost} />
+            { listPosts?.length>0&&
+              <PaginationComponent currentPage={currentPage}
+                                setCurrentPage={setCurrentPage} 
+                                totalPage={totalPage} />}
+          </>
+          :<SkeletonPosts index={3}/>}
         </div>
         <div className="w-[30%]">
           <ItemNavbarComponent isDouble title="Xem theo giá" content={dataPrice} handleOnClick={handleCLickPrice} />
