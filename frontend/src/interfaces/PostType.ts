@@ -4,6 +4,6 @@ export type IPostType = {
     description: string;
     price: number|any;
     expiration_time: number;
-    priority?:number
+    priority?:number|any
   };
    

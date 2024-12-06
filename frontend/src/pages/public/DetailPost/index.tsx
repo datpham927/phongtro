@@ -5,14 +5,15 @@ import { getDetailPost } from '../../../services/apiPost';
 import { IDetailPost } from '../../../interfaces/Post';
 import { formatDate } from '../../../utils/format/formatDate';
 import { timeAgo } from '../../../utils/format/timeAgo';
-import { BoxInfo, BreadcrumbComponent, ListNewPost, RelatedPostComponent, SlideDetailPost } from '../../../components';
-import { useAppDispatch } from '../../../redux/hooks';
+import { BoxInfo, BreadcrumbComponent, ListNewPost, RelatedPostComponent, SkeLetonDetailPage, SlideDetailPost } from '../../../components';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { setLoading } from '../../../redux/action/actionSlice';
 import StarIcon from '@mui/icons-material/Star';
 import { POST_TYPE_COLOR } from '../../../utils/constant';
 const DetailPost: React.FC = () => {
     const [dataPost, setDataPost] = useState<IDetailPost | null>(null);
     const dispatch= useAppDispatch()
+    const { loading } = useAppSelector((state) => state.action);
     const { postId } = useParams<{ postId: string }>();
     const navigate=useNavigate();
     useEffect(() => {
@@ -63,6 +64,7 @@ const DetailPost: React.FC = () => {
 
     return (
        <>
+       {loading ? <>
         <BreadcrumbComponent breadcrumbs={breadcrumbs}/>
         <div className="flex gap-2 w-full">
     <div className="w-2/3 overflow-hidden h-full gap-4 rounded-md ">
@@ -73,10 +75,10 @@ const DetailPost: React.FC = () => {
                     <h1 className="text-2xl font-medium text-red-500 uppercase">{title}</h1>
                 </div>
                 <div >
-                <span className='flex items-center text-center uppercase px-3 py-1 text-[10px] text-white rounded-sm' style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
-             {  [1,2].includes(post_type.priority) &&<StarIcon sx={{ color: '#FFD700' , fontSize:'14px'}} /> }
-                {post_type.name}
-                </span>
+                        <span className='flex items-center w-fit text-center uppercase px-3 py-1 text-[10px] text-white rounded-sm' style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
+                        {  [1,2].includes(post_type.priority) &&<StarIcon sx={{ color: '#FFD700' , fontSize:'14px'}} /> }
+                        {post_type.name}
+                        </span>
                 </div>
 
                 <div className="text-sm flex items-center mt-1">
@@ -181,7 +183,9 @@ const DetailPost: React.FC = () => {
         />
         <ListNewPost detailPostId={postId}/>
     </div>
-</div>
+        </div>
+       </>:<SkeLetonDetailPage/>}
+       
 
        </>
 
