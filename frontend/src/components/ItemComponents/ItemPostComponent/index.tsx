@@ -10,7 +10,7 @@ const ItemPostComponent:React.FC<{ props: IPost  }> =  ({props })=> {
   const params=useParams() 
   return (
       // style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
-    <div className={`${priority==1?"bg-[#fff9f3] border-red-custom":""} flex border-solid border-t-[1px]  p-4 `}>
+    <div className={`${priority==1?" border-red-custom":""} flex border-solid border-t-[1px]  p-4 `}>
       <div className={`${priority==1?"w-[280px] h-[240px]":"w-[170px] h-[160px]"} block  relative  shrink-0 rounded-md overflow-hidden cursor-pointer`}>
         <Link  to={`/chi-tiet/${slug}/${id}`}>
           <img className="w-full h-full" src={thumb} alt="" />
