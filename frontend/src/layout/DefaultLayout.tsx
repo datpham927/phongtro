@@ -9,7 +9,7 @@ import ProgressBar from '../components/common/ProgressBar';
 const DefaultLayout = () => { 
 
   return (
-      <div className='w-full h-full  overflow-scroll bg-[#FDF5ED]'>
+      <div className='w-full h-full overflow-scroll bg-[#FDF5ED] '>
           <HeaderComponent />
           <NavigateComponent/>
           <div className="w-[1100px] mx-auto"> 

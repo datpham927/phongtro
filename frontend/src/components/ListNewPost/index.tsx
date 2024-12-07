@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { apiGetPost } from '../../services/apiPost'
 import { IPost } from '../../interfaces/Post'
 import ItemNewPost from '../ItemComponents/ItemNewPost'
+import { useAppSelector } from '../../redux/hooks'
 
 const ListNewPost: React.FC<{detailPostId?:string}> = ({detailPostId}) => {
   const [listPost, setListPost] = useState<IPost[]>([])
-  
+  const { loading } = useAppSelector((state) => state.action);
   useEffect(() => {
     const fetchApi = async () => {
       const res = await apiGetPost({ sort: "ctime", limit: 10 })
@@ -20,6 +21,7 @@ const ListNewPost: React.FC<{detailPostId?:string}> = ({detailPostId}) => {
     }
     fetchApi()
   }, [])
+  if(loading) return <></>;
 
   return (
     listPost.length>0&&  <div className='w-full bg-white rounded-md p-4 shadow-custom mb-5'>
