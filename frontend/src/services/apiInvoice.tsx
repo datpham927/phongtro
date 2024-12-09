@@ -13,7 +13,7 @@ const apiGetAllPaymentHistory = async (query:any) => {
     }
   };
 
-  const apiGetAllDepositHistory = async (query:any) => {
+const apiGetAllDepositHistory = async (query:any) => {
     try {
       const response = await axiosJWT.get("invoice/all-deposit-history",{params:query});
       return response.data;
@@ -22,4 +22,13 @@ const apiGetAllPaymentHistory = async (query:any) => {
     }
   };
 
-export {apiGetAllPaymentHistory,apiGetAllDepositHistory};
+  const apiGetStatistical = async (query:any) => {
+    try {
+      const response = await axiosJWT.get("invoice/all-deposit-history",{params:query});
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+export {apiGetAllPaymentHistory,apiGetAllDepositHistory,apiGetStatistical};

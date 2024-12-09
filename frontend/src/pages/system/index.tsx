@@ -15,4 +15,5 @@ export { default as ManageCategory } from  './admin/category/ManageCategory';
 export { default as UpdateCategory } from  './admin/category/UpdateCategory';
 export { default as ManagePostType } from  './admin/postType/ManagePostType';
 export { default as UpdatePostType } from  './admin/postType/UpdatePostType';
+export { default as ManageStatistical } from  './admin/statistical/ManageStatistical';
 
