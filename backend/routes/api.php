@@ -99,10 +99,7 @@ Route::prefix('v1/post-type')->group(function () {
 Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
     Route::get('/all-payment-history', [InvoiceController::class, 'getAllPaymentHistory']); 
     Route::get('/all-deposit-history', [InvoiceController::class, 'getAllDepositHistory']); 
-});
-Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
-    Route::get('/all-payment-history', [InvoiceController::class, 'getAllPaymentHistory']); 
-    Route::get('/all-deposit-history', [InvoiceController::class, 'getAllDepositHistory']); 
+    Route::middleware([IsAdmin::class])->get('/all-statistical', [InvoiceController::class, 'getStatistical']); 
 });
  
 Route::middleware(Login::class)->prefix('v1/message')->group(function () {

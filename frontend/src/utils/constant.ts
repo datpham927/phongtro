@@ -18,6 +18,7 @@ export const PATH = {
   UPDATE_POST_TYPE:'cap-nhat-bang-gia-dich-vu/:ptypeid',
 
   // -------- Admin ---------- 
+  MANAGE_STATISTICAL:"thong-ke-doanh-thu",
   MANAGE_USER: "quan-ly-nguoi-dung",
   UPDATE_USER: "chinh-sua-thong-tin-nguoi-dung/:uid",
   CREATE_USER: "them-nguoi-dung",

@@ -7,7 +7,7 @@ import { apiGetPost } from '../../../services/apiPost';
 import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter'; 
 import { dataArea, dataPrice } from '../../../utils/data'; 
 import { convertToMillion } from '../../../utils/convertMillion';
-import { ItemNavbarComponent, ListNewPost, ListPostComponent,  PaginationComponent, ProvinceComponent, SearchComponent, SkeletonPosts } from '../../../components';
+import { ItemNavbarComponent, ListNewPost, ListPostComponent,  PaginationComponent, ProvinceComponent, SearchComponent  } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
  
 

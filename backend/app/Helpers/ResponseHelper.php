@@ -8,9 +8,6 @@ use Throwable;
 
 class ResponseHelper
 {
-
-
-     
     public static function success($data, $message = 'Operation successful', $status = 200)
     {
         $response = [  'status' => true, 'message' => $message];
