@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../../../redux/hooks';
 import { IPostType } from '../../../../interfaces/PostType';
 import { setLoading } from '../../../../redux/action/actionSlice';
-import { apiGetAllPostType } from '../../../../services/apiPosType';
 import { apiGetStatistical } from '../../../../services/apiInvoice';
 // import NotExit from '../../../../components/common/NotExit';
  
@@ -20,7 +19,7 @@ const ManageStatistical:React.FC = () => {
     };
     fetchApi();
   }, []);
-  
+  console.log(lists);
 
   return (
     <div className="w-full p-6">
