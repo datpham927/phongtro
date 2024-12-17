@@ -32,15 +32,5 @@ class InvoiceController extends Controller
         } catch (\Throwable $th) {
             return ResponseHelper::error("Error",$th);
         }
-    } 
-
-    public function getStatistical(Request $request )
-    { 
-        try {
-            $response= $this->invoiceService->findStatistical($request);
-            return ResponseHelper::success($response,"Successfully",200);
-        } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
-        }
-    } 
+    }  
 }

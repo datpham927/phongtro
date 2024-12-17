@@ -24,3 +24,8 @@ php artisan migrate --force
 
 echo "Seeding the database..."
  php artisan db:seed
+
+ php artisan migrate:refresh
+ php artisan migrate 
+ php artisan db:seed
+ php artisan serve

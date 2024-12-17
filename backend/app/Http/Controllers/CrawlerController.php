@@ -10,33 +10,35 @@ use App\Models\Post_area;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Models\PostType;
+use App\Models\Statistical;
 use App\Models\User;
 use App\Util;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\DomCrawler\Crawler;
 
 class CrawlerController  extends Controller
 {
    public  $categoryLinks = [
-        // [
-        //     'url' => 'https://phongtro123.com/cho-thue-phong-tro',
-        //     'name' => 'Cho Thuê Phòng Trọ',
-        //     'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
-        // ], 
-        //   [
-        //     'url' => 'https://phongtro123.com/nha-cho-thue',
-        //     'name' => 'Cho Thuê Nhà Nguyên Căn',
-        //     'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
-        // ],  
+        [
+            'url' => 'https://phongtro123.com/cho-thue-phong-tro',
+            'name' => 'Cho Thuê Phòng Trọ',
+            'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
+        ], 
+          [
+            'url' => 'https://phongtro123.com/nha-cho-thue',
+            'name' => 'Cho Thuê Nhà Nguyên Căn',
+            'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
+        ],  
       
-        //  [
-        //     'url' => 'https://phongtro123.com/cho-thue-mat-bang',
-        //     'name' => 'Cho Thuê Mặt Bằng',
-        //     'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
-        // ],  
+         [
+            'url' => 'https://phongtro123.com/cho-thue-mat-bang',
+            'name' => 'Cho Thuê Mặt Bằng',
+            'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
+        ],  
         [
             'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
             'name' => 'Tìm Người Ở Ghép',
@@ -146,16 +148,16 @@ class CrawlerController  extends Controller
         // Remove trailing spaces and hyphens from the address detail
         $addressDetail = rtrim($addressDetail, ' -');
         // Split the address string into an array by commas
-        $addressArray = explode(',', $addressDetail);
+        $addressArray = explode(', ', $addressDetail);
             // Output the array for debugging
-        if( count($addressArray)>3){
+        if( count($addressArray)>3){ 
             $address["id"]=Util::uuid(); 
             $address["city_name"]=$addressArray[3];
             $address["district_name"]= $addressArray[2];
-            $address["ward_name"]= $addressArray[1]||""; 
+            $address["ward_name"]= $addressArray[1]; 
             $address["city_slug"]= Util::slug($addressArray[3]);
             $address["district_slug"]=Util::slug($addressArray[2]);
-            $address["ward_slug"]=Util::slug($addressArray[1])||""; 
+            $address["ward_slug"]=Util::slug($addressArray[1]); 
           
         }else{
             $address["id"]=Util::uuid(); 
@@ -283,6 +285,11 @@ class CrawlerController  extends Controller
         if ($invoice) {
             $user->account_balance -= $postType["price"];
             $user->save(); // Lưu lại thay đổi số dư
+            $today = Carbon::now()->toDateString();
+            $foundStatistical = Statistical::firstOrNew(['transaction_day' => $today]);
+            $foundStatistical->total_transactions += 1;
+            $foundStatistical->total_revenue += $postType->price;
+            $foundStatistical->save();
         }
     }
     

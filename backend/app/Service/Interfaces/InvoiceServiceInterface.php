@@ -7,5 +7,4 @@ interface InvoiceServiceInterface
 
     public function findAllPaymentHistory($request);  
     public function findAllDepositHistory($request);  
-    public function findStatistical($request);  
 }

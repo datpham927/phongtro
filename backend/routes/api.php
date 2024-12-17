@@ -8,10 +8,12 @@ use App\Http\Controllers\api\InvoiceController;
 use App\Http\Controllers\api\MessageController;
 use App\Http\Controllers\api\PostControllers;
 use App\Http\Controllers\api\PostTypeController;
+use App\Http\Controllers\api\StatisticalController;
 use App\Http\Controllers\api\UserControllers;
 use App\Http\Controllers\CrawlerController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\Login;
+use App\Models\Statistical;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
@@ -99,7 +101,6 @@ Route::prefix('v1/post-type')->group(function () {
 Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
     Route::get('/all-payment-history', [InvoiceController::class, 'getAllPaymentHistory']); 
     Route::get('/all-deposit-history', [InvoiceController::class, 'getAllDepositHistory']); 
-    Route::middleware([IsAdmin::class])->get('/all-statistical', [InvoiceController::class, 'getStatistical']); 
 });
  
 Route::middleware(Login::class)->prefix('v1/message')->group(function () {
@@ -110,6 +111,9 @@ Route::middleware(Login::class)->prefix('v1/conversation')->group(function () {
     Route::post('/add', [ConversationControllers::class, 'create']);
     Route::get('/all', [ConversationControllers::class, 'getAll']);
 });
+
+Route::middleware([Login::class,IsAdmin::class])->get('v1/statistical/all', [StatisticalController::class, 'getStatistical']); 
+
 Route::get('/test-redis', function () {
     try {
         Redis::set('test', 'Hello from Redis Cloud');
