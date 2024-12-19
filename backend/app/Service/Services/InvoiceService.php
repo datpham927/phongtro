@@ -10,7 +10,6 @@ use App\Service\Interfaces\InvoiceServiceInterface;
 
 class InvoiceService implements InvoiceServiceInterface
 {
-    
     protected $invoiceRepository;
     public function __construct(InvoiceRepositoryInterface $invoiceRepository)
     {
@@ -34,31 +33,5 @@ class InvoiceService implements InvoiceServiceInterface
         $invoices = $this->invoiceRepository->findAllDepositHistory($limit, $sort, $page ,$filter);
         return $invoices; 
     }
-    public function findStatistical($request) {
-        // Function helper xử lý ngày
-        $formatDate = MyHelper::handleFilterByDate($request->input('date'));
-        $fromDate = $formatDate["fromDate"];
-        $toDate = $formatDate["toDate"];
-        // Default page and limit values
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 5);
-        // Query the invoices within the date range
-        $invoiceQuery = Invoice::whereBetween('created_at', [$fromDate, $toDate])
-                               ->where('transaction_type', 'withdraw');
-        // Calculate total amount of the invoices
-        $totalAmount = $invoiceQuery->sum('amount');
-        // Get total number of invoices
-        $totalInvoices = $invoiceQuery->count();
-        $distinctCustomers = $invoiceQuery->distinct('user_id')->count();
-        // Apply pagination
-        $invoices = $invoiceQuery->skip(($page - 1) * $limit)
-                                 ->take($limit)
-                                 ->get();
-        return [
-            'total_amount' => $totalAmount,
-            'total_invoices' => $totalInvoices,
-            'total_customers' => $distinctCustomers,
-            'data' => InvoiceResource::collection($invoices),
-        ];
-    }
+    
 }

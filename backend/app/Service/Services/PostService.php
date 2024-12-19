@@ -7,10 +7,12 @@ use App\Models\Post_area;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Models\PostType;
+use App\Models\Statistical;
 use App\Models\User;
 use App\Repository\Interfaces\PostRepositoryInterface;
 use App\Service\Interfaces\PostServiceInterface;
 use App\Util;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Redis;
 
@@ -105,6 +107,12 @@ class PostService implements PostServiceInterface
         if ($invoice) {
             $user->account_balance -= $postType->price;
             $user->save(); // Lưu lại thay đổi số dư
+            // thêm vào thống kê
+            $today = Carbon::now()->toDateString();
+            $foundStatistical = Statistical::firstOrNew(['transaction_day' => $today]);
+            $foundStatistical->total_transactions += 1;
+            $foundStatistical->total_revenue += $postType->price;
+            $foundStatistical->save();
         }
     }
 

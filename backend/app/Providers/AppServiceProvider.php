@@ -22,6 +22,7 @@ use App\Service\Interfaces\InvoiceServiceInterface;
 use App\Service\Interfaces\MessageServiceInterface;
 use App\Service\Interfaces\PostServiceInterface;
 use App\Service\Interfaces\PostTypeServiceInterface;
+use App\Service\Interfaces\StatisticalServiceInterface;
 use App\Service\Interfaces\UserServiceInterface;
 use App\Service\Services\AddressService;
 use App\Service\Services\PostService;
@@ -31,6 +32,7 @@ use App\Service\Services\ConversationService;
 use App\Service\Services\InvoiceService;
 use App\Service\Services\MessageService;
 use App\Service\Services\PostTypeService;
+use App\Service\Services\StatisticalService;
 use App\Service\Services\UserService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -59,6 +61,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(MessageServiceInterface::class,MessageService::class);
         $this->app->bind(PostTypeServiceInterface::class,PostTypeService::class);
         $this->app->bind(InvoiceServiceInterface::class,InvoiceService::class);
+        $this->app->bind(   StatisticalServiceInterface::class,StatisticalService::class);
+    
     }
     public function boot(): void
     {

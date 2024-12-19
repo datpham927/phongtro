@@ -5,7 +5,7 @@ export const menuManageAdmin = [
   {
     id: 1,
     text: "Thống kê",
-    path: `${PATH.SYSTEM}/${PATH.APPROVE_POST}`,
+    path: `${PATH.SYSTEM}/${PATH.MANAGE_STATISTICAL}`,
     icon:manageIcon
   },
   {

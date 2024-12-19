@@ -24,7 +24,7 @@ const apiGetAllDepositHistory = async (query:any) => {
 
   const apiGetStatistical = async (query:any) => {
     try {
-      const response = await axiosJWT.get("invoice/all-deposit-history",{params:query});
+      const response = await axiosJWT.get("statistical/all",{params:query});
       return response.data;
     } catch (error) {
       return error;
