@@ -27,18 +27,15 @@ const DetailPost: React.FC = () => {
     useEffect(() => {
         const fetchPostDetails = async () => {
             if (!postId) return;
-
             dispatch(setLoading(true));
             const response = await getDetailPost(postId);
             dispatch(setLoading(false));
-
             if (response.status) {
                 setDataPost(response.data);
             } else {
                 navigate('/');
             }
         };
-
         fetchPostDetails();
     }, [postId, dispatch, navigate]);
 
