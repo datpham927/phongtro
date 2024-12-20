@@ -29,7 +29,7 @@ export const PATH = {
   CREATE_CATEGORY: "them--danh-muc",
   MANAGE_POST_TYPE_LIST:'quan-ly-bang-gia-dich-vu',
   UPDATE_POST_TYPE_LIST: "chinh-sua-gia-dich-vu/:id",
-
+  DEPOSIT:'nap-tien'
 };
 
 export const titleHomePage = {

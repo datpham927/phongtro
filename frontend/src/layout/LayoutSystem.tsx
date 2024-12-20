@@ -20,7 +20,7 @@ function LayoutSystem() {
         <div className="w-1/6 bg-primary-bg h-auto">
           <SidebarComponent />
         </div>
-        <div className="w-5/6 h-screen  py-10  bg-white overflow-scroll">
+        <div className="w-5/6 h-screen bg-white overflow-scroll">
           <Outlet />
         </div>
       </div>

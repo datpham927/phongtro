@@ -12,6 +12,8 @@ interface InputFormV2Props {
   name: string;
   invalidFields: InvalidField[];
   value: string | number;
+  min?:number;
+  max?:number
   setInvalidFields: Dispatch<SetStateAction<InvalidField[]>>;
 }
 
@@ -22,6 +24,8 @@ function InputFormV2({
   name,
   invalidFields,
   value,
+  min,
+  max,
   setInvalidFields,
 }: InputFormV2Props) {
   return (
@@ -34,6 +38,8 @@ function InputFormV2({
           id={name}
           className="py-1 px-2 flex-1 outline-blue-300 rounded-l-md border-solid border-[1px] border-slate-300"
           type="number"
+          min={min}
+          max={max}
           value={value}
           onChange={(e) => {
             setValue((prev) => ({

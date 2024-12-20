@@ -102,14 +102,17 @@ function OverviewComponent({
         label={"Giá cho thuê"}
         unit={"đồng/tháng"}
         setValue={setPayload}
+        min={100000}
         invalidFields={invalidFields}
         setInvalidFields={setInvalidFields}
         name={"priceNumber"}
+        
         value={payload?.priceNumber}
       />
       <InputFormV2
         label={"Diện tích"}
         unit={"m2"}
+        min={10}
         setValue={setPayload}
         invalidFields={invalidFields}
         setInvalidFields={setInvalidFields}

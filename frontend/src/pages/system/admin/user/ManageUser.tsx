@@ -51,7 +51,7 @@ const handleDeletePost=async(uid:any)=>{
           <ButtonComponent text="Thêm người dùng" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_USER}`)}/>
         </div>
       </div>
-      <div className="w-full ">
+      <div className="w-full h-full">
         <ul className=" grid grid-cols-7 divide-x  border-solid border-[1px] border-slate-2200">
           <li className="p-[10px] font-semibold text-sm">id</li>
           <li className="p-[10px] font-semibold text-sm">Ảnh đại diện</li>
@@ -61,7 +61,7 @@ const handleDeletePost=async(uid:any)=>{
           <li className="p-[10px] font-semibold text-sm">Số lượng bài viết</li>
           <li className="p-[10px] font-semibold text-sm">Tùy chọn</li>
         </ul>
-        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200">
+        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200 h-full">
           {users?.map((e) => {
              
             return (

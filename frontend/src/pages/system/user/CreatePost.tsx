@@ -83,7 +83,7 @@ function CreatePost() {
             setInvalidFields={setInvalidFields}
             /> 
 
-{postType&&   <ButtonComponent
+       {postType&& <ButtonComponent
         text={`${postType?.price > 0 ? `Thanh toán ${new Intl.NumberFormat('vi-VN').format(postType?.price)}₫` : "Miễn phí"}`}
         className={ `${postType?.price>user?.account_balance ?"opacity-80":"hover:bg-[#D61117]"} bg-[#E51F40] text-white text-sm`}
         onClick={()=> postType&&handleSummit()}

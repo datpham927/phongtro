@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setLoading } from '../../redux/action/actionSlice';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import { formatNumber } from '../../utils/format/formatNumber';
+import parse from 'html-react-parser';
 
 interface PostPackageComponentProps {
   setPostType: React.Dispatch<React.SetStateAction<IPostType | any>>;
@@ -69,10 +70,9 @@ const PostPackageComponent: React.FC<PostPackageComponentProps> = ({ setPostType
                     <p className="text-xs font-normal">Hạn: {postType?.expiration_time} tháng</p>
                   </div>
                   <span
-                    style={{ color: POST_TYPE_COLOR[postType?.priority - 1] }}
                     className="text-xs mt-1"
                   >
-                    {postType?.description}
+                    {parse(postType?.description)}
                   </span>
                 </div>
               ))}

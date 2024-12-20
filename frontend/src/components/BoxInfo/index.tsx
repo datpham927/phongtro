@@ -21,11 +21,9 @@ interface BoxInfoProps {
             dispatch(setOpenFeatureAuth(true));
             return;
         } 
-        dispatch(setLoading(true));
         await apiAddConversation(userId);
         dispatch(setLoading(false));
         dispatch(setIsOpenChat(true));
-        dispatch(setIsLoadChat());
     };
     
     return (
