@@ -1,7 +1,7 @@
 import React from 'react';
 import { apiAddConversation } from '../../services/apiConversation';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {  setIsLoadChat, setIsOpenChat, setLoading, setOpenFeatureAuth } from '../../redux/action/actionSlice';
+import {  setIsOpenChat, setLoading, setOpenFeatureAuth } from '../../redux/action/actionSlice';
 
 interface BoxInfoProps {
     userId?:string;

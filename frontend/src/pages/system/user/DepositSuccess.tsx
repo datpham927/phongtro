@@ -6,8 +6,6 @@ import { sortObject } from "../../../utils/sortObject";
 import { calculateVnpSecureHash } from "../../../utils/calculateVnpSecureHash";
 import { PATH } from "../../../utils/constant";
 import { apiDeposit } from "../../../services/apiUser";
-import { setAccountBalance } from "../../../redux/user/userSlice";
-import { useDispatch } from "react-redux";
 import { useAppDispatch } from "../../../redux/hooks";
 
 // Định nghĩa kiểu cho các tham số query
