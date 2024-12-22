@@ -21,10 +21,10 @@ class ConversationControllers extends Controller
         try { 
             $response= $this->conversationService->create($request);
             DB::commit();
-            return ResponseHelper::success($response,"Successfully",200);
+            return ResponseHelper::success($response,"Thành công",200);
         } catch (\Throwable $th) {
             DB::rollback();
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
     }
 
@@ -32,9 +32,9 @@ class ConversationControllers extends Controller
     {
         try { 
             $response= $this->conversationService->findAll( $request['user_id']);
-            return ResponseHelper::success($response,"Successfully",200);
+            return ResponseHelper::success($response,"Thành công",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
     }
 }

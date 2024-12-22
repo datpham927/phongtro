@@ -35,9 +35,13 @@ const userSlice = createSlice({
       // Lưu dữ liệu vào localStorage
       localStorage.setItem('userDetail', JSON.stringify(state));
     },
+
+    setAccountBalance: (state, action) => {
+      state.account_balance += action.payload;
+    }
   },
 });
 
 // Export the actions and the reducer
-export const { setDetailUser } = userSlice.actions;
+export const { setDetailUser ,setAccountBalance} = userSlice.actions;
 export default userSlice.reducer;

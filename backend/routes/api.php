@@ -36,6 +36,7 @@ Route::prefix('v1/auth')->group(function () {
 Route::middleware(Login::class)->prefix('v1/user')->group(function () {
     Route::get('/{uid}/detail', [UserControllers::class, 'getUser']);
     Route::put('/profile', [UserControllers::class, 'updateProfile']);
+    Route::put('/deposit', [UserControllers::class, 'deposit']);
     // Chỉ admin mới có quyền truy cập các route sau
     Route::middleware(IsAdmin::class)->group(function () {
         Route::post('/add', [UserControllers::class, 'addUser']);

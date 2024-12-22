@@ -9,7 +9,8 @@ interface actionInitial {
     loading: boolean; //0 register 1 login 2 forgot 
     isOpenChat: boolean;
     conversations:any ,
-    isLoadChat:boolean
+    isLoadChat:boolean,
+    checkDeposit :boolean
 }
 const initialState: actionInitial = {
     openFeatureAuth: false, 
@@ -18,6 +19,7 @@ const initialState: actionInitial = {
     isOpenChat:false,
     isLoadChat:false,
     conversations:[], 
+    checkDeposit: JSON.parse(localStorage.getItem('checkDeposit') || 'false'),
 };
 
 export const actionSlice = createSlice({
@@ -42,6 +44,11 @@ export const actionSlice = createSlice({
         setIsLoadChat: (state) => {
             state.isLoadChat = !state.isLoadChat;
         },
+        setCheckDeposit: (state, action: PayloadAction<boolean>) => {
+            console.log(' action.payload', action.payload)
+            state.checkDeposit = action.payload;
+            localStorage.setItem('checkDeposit', JSON.stringify(action.payload));
+        },
     },
 });
 export const {
@@ -51,6 +58,7 @@ export const {
     setIsOpenChat,
     setConversations, 
     setIsLoadChat,
+    setCheckDeposit
 } = actionSlice.actions;
 
 export default actionSlice.reducer;

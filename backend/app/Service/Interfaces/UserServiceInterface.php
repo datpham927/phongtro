@@ -10,4 +10,5 @@ interface UserServiceInterface
     public function addUser($request);
     public function findAllUser($payload);
     public function findDeleteUser($uid);
+    public function findUserAndDeposit($uid,$amount);
 }

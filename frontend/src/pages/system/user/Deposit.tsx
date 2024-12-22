@@ -1,17 +1,62 @@
 import React, { useState } from "react";
-
+import { PATH } from "../../../utils/constant";
+import { sortObject } from "../../../utils/sortObject";
+import { calculateVnpSecureHash } from "../../../utils/calculateVnpSecureHash";
+import { setCheckDeposit } from "../../../redux/action/actionSlice";
+import { useDispatch } from "react-redux";
 const Deposit: React.FC = () => {
-  const [amount, setAmount] = useState<string>("");
+  const [amount, setAmount] = useState<any>(0);
+  const dispatch=useDispatch()
 
   const handleVNPayPayment = () => {
-    if (!amount || Number(amount) <= 0) {
+    dispatch(setCheckDeposit(true))
+    const numericAmount = Number(amount)*100; // Chuyển đổi số tiền sang kiểu số
+    if (!amount || numericAmount <= 0) {
       alert("Vui lòng nhập số tiền hợp lệ trước khi thanh toán qua VNPay.");
       return;
     }
-    alert(`Thanh toán qua VNPay với số tiền: ${amount} VND`);
-    // Tích hợp VNPay API tại đây
+    // Lấy thông tin cấu hình từ biến môi trường
+    const vnp_TmnCode =import.meta.env.VITE_REACT_vnp_TmnCode;
+    const vnp_HashSecret = import.meta.env.VITE_REACT_vnp_HashSecret;
+    const vnp_Url = import.meta.env.VITE_REACT_vnp_Url;
+    const returnUrl = `http://localhost:5173${PATH.SYSTEM}/${PATH.DEPOSIT_CONFIRM}`;
+    if (!vnp_HashSecret || !vnp_Url || !vnp_TmnCode || !returnUrl) {
+      alert("Không thể thực hiện thanh toán, thiếu thông tin cấu hình.");
+      return;
+    }
+    // Lấy ngày giờ hiện tại
+    const createDate = new Date().toISOString().slice(0, 19).replace(/[-:T]/g, "");
+    const orderId = new Date().getHours().toString().padStart(2, '0') + 
+                    new Date().getMinutes().toString().padStart(2, '0') + 
+                    Math.floor(Math.random() * 10000); // Mã giao dịch duy nhất
+  
+    // Dữ liệu thanh toán
+    const paymentData:any = {
+      vnp_Amount: numericAmount, // Chuyển đổi sang đơn vị VNPay
+      vnp_Command: "pay",
+      vnp_CreateDate: createDate,
+      vnp_CurrCode: "VND",
+      vnp_IpAddr: "127.0.0.1", // Địa chỉ IP của người dùng
+      vnp_Locale: "vn", // Ngôn ngữ mặc định
+      vnp_OrderInfo: `p`,
+      vnp_OrderType: "250000",
+      vnp_ReturnUrl: returnUrl,
+      vnp_TxnRef: orderId, // Mã tham chiếu giao dịch
+      vnp_Version: "2.1.0",
+      vnp_TmnCode: vnp_TmnCode,
+    }; 
+    // Sắp xếp các tham số theo thứ tự alphabet
+    const sortedParams:any = sortObject(paymentData)
+      .map((key) => `${key}=${encodeURIComponent(paymentData[key])}`)
+      .join("&");
+    // Tạo HMAC SHA512
+    const vnp_SecureHash = calculateVnpSecureHash(sortedParams, vnp_HashSecret ) ;
+    // Tạo URL thanh toán
+    const paymentUrl = `${vnp_Url}?${sortedParams}&vnp_SecureHash=${vnp_SecureHash}`;
+    // Điều hướng người dùng đến VNPay
+    alert(`Thanh toán qua VNPay với số tiền: ${numericAmount} VND`);
+    window.location.href = paymentUrl;
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-white py-8 px-4">
       <div className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md">
@@ -73,3 +118,5 @@ const Deposit: React.FC = () => {
 };
 
 export default Deposit;
+
+ 

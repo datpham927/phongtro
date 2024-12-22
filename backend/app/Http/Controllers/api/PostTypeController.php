@@ -19,9 +19,9 @@ class PostTypeController extends Controller
         
         try {
             $response= $this->postTypeService->findAll($request);
-            return ResponseHelper::success($response,"Successfully",200);
+            return ResponseHelper::success($response,"Thành công",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
     } 
 
@@ -29,9 +29,9 @@ class PostTypeController extends Controller
     { 
         try {
             $response= $this->postTypeService->findPostType($ptid);
-            return ResponseHelper::success($response,"Successfully",200);
+            return ResponseHelper::success($response,"Thành công",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
     } 
          public function update(Request $request, string $ptid)

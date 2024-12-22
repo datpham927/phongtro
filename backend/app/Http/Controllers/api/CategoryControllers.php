@@ -23,18 +23,18 @@ class CategoryControllers extends Controller
         
         try {
             $response= $this->categoryService->findAll($request);
-            return ResponseHelper::success($response,"Successfully",200);
+            return ResponseHelper::success($response,"Thành công",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
     } 
     public function getCategory(Request $request ,$id)
     { 
         try {
             $response= $this->categoryService->findCategory($id);
-            return ResponseHelper::success($response,"Successfully",200);
+            return ResponseHelper::success($response,"Thành công",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
     } 
     
@@ -45,7 +45,7 @@ class CategoryControllers extends Controller
             $response= $this->categoryService->create( $request);
             return ResponseHelper::success($response,"Create successfully",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
     }
  

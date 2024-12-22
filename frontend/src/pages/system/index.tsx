@@ -6,6 +6,7 @@ export { default as DepositHistory } from  './user/DepositHistory';
 export { default as PaymentHistory } from  './user/PaymentHistory';
 export { default as PriceList } from  './user/PriceList';
 export { default as Deposit } from  './user/Deposit';
+export { default as DepositConfirm } from  './user/DepositConfirm';
 
 export { default as ManageUser } from  './admin/user/ManageUser'; 
 export { default as CreateUser } from  './admin/user/CreateUser'; 

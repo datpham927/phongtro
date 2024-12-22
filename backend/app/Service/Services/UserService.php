@@ -71,4 +71,9 @@ class UserService implements UserServiceInterface
     {
         $this->userRepository->findByIdAndDelete($uid);
     }
+    // nạp tiền  
+    public function findUserAndDeposit($uid,$amount)
+    {
+       return $this->userRepository->findByIdAndDeposit($uid,$amount);
+    }
 }
