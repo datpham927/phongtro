@@ -20,9 +20,9 @@ class PostControllers extends Controller
     public function getAll(Request $request) {
         try {
             $response = $this->postService->findAll($request);
-            return ResponseHelper::success($response, "Successfully", 200);
+            return ResponseHelper::success($response, "Thành công", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Error", $th);
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
         }
     }
     public function getAllUnapprovedPosts(Request $request) {
@@ -37,25 +37,25 @@ class PostControllers extends Controller
     public function getAllForShop(Request $request) {
         try {
             $response = $this->postService->findAllForShop($request);
-            return ResponseHelper::success($response, "Successfully", 200);
+            return ResponseHelper::success($response, "Thành công", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Error", $th);
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
         }
     }
     public function getAllPostExpiredForShop(Request $request) {
         try {
             $response = $this->postService->findAllPostExpiredForShop($request);
-            return ResponseHelper::success($response, "Successfully", 200);
+            return ResponseHelper::success($response, "Thành công", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Error", $th);
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
         }
     }
     public function getRelatedPost(Request $request,$address_id) {
         try {
             $response = $this->postService->findRelatedPost($address_id);
-            return ResponseHelper::success($response, "Successfully", 200);
+            return ResponseHelper::success($response, "Thành công", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Error", $th);
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
         }
     }
     public function create(StorePostRequest $request) {
@@ -66,7 +66,7 @@ class PostControllers extends Controller
             return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
             DB::rollback();
-            return ResponseHelper::error("Error", $th);
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
         }
     }
     public function update(Request $request,$pid) {
@@ -93,7 +93,7 @@ class PostControllers extends Controller
             $response = $this->postService->findDetailPost($pid);
             return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Error", $th);
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
         }
     }
     public function ApprovePost($pid) {
@@ -101,7 +101,7 @@ class PostControllers extends Controller
             $response = $this->postService->findApprovePost($pid);
             return ResponseHelper::success($response, "Create successfully", 200);
         }  catch (\Throwable $th) {
-            return ResponseHelper::error("Error", $th);
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
         }
     }
  

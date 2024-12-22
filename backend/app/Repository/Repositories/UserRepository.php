@@ -71,4 +71,11 @@ class UserRepository implements UserRepositoryInterface
             ->first();
         return $user;
     }
+    public function findByIdAndDeposit($uid, $amount) {
+        $user = $this->findById($uid); // Tìm người dùng theo ID
+        $user->account_balance += intval($amount); // Chuyển $amount thành số nguyên và cộng vào account_balance
+        $user->save(); // Lưu thay đổi vào cơ sở dữ liệu
+        return $user; // Trả về đối tượng người dùng đã được cập nhật
+    }
+    
 }

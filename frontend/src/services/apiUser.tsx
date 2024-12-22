@@ -58,3 +58,12 @@ export const apiGetDetailUser = async (uid:string) => {
     }
   };
   
+  export const apiDeposit= async (amount:number) => {
+    try {
+      const response = await axiosJWT.put(`/user/deposit`,{ amount });
+      return response.data;
+    } catch (error) {
+       console.log(error)
+   return error;
+    }
+  };

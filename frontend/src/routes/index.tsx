@@ -4,7 +4,7 @@ import { useAppSelector } from '../redux/hooks';
 import { DetailPost, FilterPage, HomePage, ResetPassword } from '../pages/public';
 import DefaultLayout from '../layout/DefaultLayout';
 import PrivateRoute from '../middleware/PrivateRoute';
-import { CreateCategory, CreatePost, CreateUser, Deposit, DepositHistory, EditAccount, ManageApprovedPost, 
+import { CreateCategory, CreatePost, CreateUser, Deposit, DepositConfirm, DepositHistory, EditAccount, ManageApprovedPost, 
   ManageCategory, ManagePost,  ManagePostType,  ManageStatistical,  ManageUser,  PaymentHistory,  PriceList,  UpdateCategory,  UpdatePost, UpdatePostType, UpdateUser } from '../pages/system';
 import LayoutSystem from '../layout/LayoutSystem';
 import IsUser from '../middleware/IsUser';
@@ -47,6 +47,7 @@ const RouterPage = () => {
               <Route path={PATH.UPDATE_POST_TYPE} element={<UpdatePostType />} /> 
               <Route path={PATH.MANAGE_STATISTICAL} element={<ManageStatistical  />} /> 
               {/* -------- deposit  */}
+              <Route path={PATH.DEPOSIT_CONFIRM} element={<DepositConfirm/>} />  
               <Route path={PATH.DEPOSIT} element={<Deposit/>} />  
       </Route>
     </Routes>
