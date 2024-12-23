@@ -4,26 +4,28 @@ import { sortObject } from "../../../utils/sortObject";
 import { calculateVnpSecureHash } from "../../../utils/calculateVnpSecureHash";
 import { setCheckDeposit } from "../../../redux/action/actionSlice";
 import { useDispatch } from "react-redux";
+import { ENV } from "../../../utils/config/ENV";
 const Deposit: React.FC = () => {
   const [amount, setAmount] = useState<any>(0);
   const dispatch=useDispatch()
 
   const handleVNPayPayment = () => {
     dispatch(setCheckDeposit(true))
-    const numericAmount = Number(amount)*100; // Chuyển đổi số tiền sang kiểu số
+    const numericAmount = Number(amount);
     if (!amount || numericAmount <= 0) {
       alert("Vui lòng nhập số tiền hợp lệ trước khi thanh toán qua VNPay.");
       return;
     }
     // Lấy thông tin cấu hình từ biến môi trường
-    const vnp_TmnCode =import.meta.env.VITE_REACT_vnp_TmnCode;
-    const vnp_HashSecret = import.meta.env.VITE_REACT_vnp_HashSecret;
-    const vnp_Url = import.meta.env.VITE_REACT_vnp_Url;
+    const vnp_TmnCode =ENV.vnp_TmnCode;
+    const vnp_HashSecret = ENV.vnp_HashSecret;
+    const vnp_Url = ENV.vnp_Url;
     const returnUrl = `http://localhost:5173${PATH.SYSTEM}/${PATH.DEPOSIT_CONFIRM}`;
     if (!vnp_HashSecret || !vnp_Url || !vnp_TmnCode || !returnUrl) {
       alert("Không thể thực hiện thanh toán, thiếu thông tin cấu hình.");
       return;
     }
+    
     // Lấy ngày giờ hiện tại
     const createDate = new Date().toISOString().slice(0, 19).replace(/[-:T]/g, "");
     const orderId = new Date().getHours().toString().padStart(2, '0') + 
@@ -54,7 +56,7 @@ const Deposit: React.FC = () => {
     // Tạo URL thanh toán
     const paymentUrl = `${vnp_Url}?${sortedParams}&vnp_SecureHash=${vnp_SecureHash}`;
     // Điều hướng người dùng đến VNPay
-    alert(`Thanh toán qua VNPay với số tiền: ${numericAmount} VND`);
+    alert(`Thanh toán qua VNPay với số tiền: ${numericAmount} VND`); 
     window.location.href = paymentUrl;
   };
   return (

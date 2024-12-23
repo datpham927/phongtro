@@ -10,6 +10,7 @@ import { apiGetDetailUser,  apiUpdateUser } from "../../../../services/apiUser";
 import validate from "../../../../utils/validate";
 import { apiUploadImage } from "../../../../services/apiUploadPicture";
 import { FormControl, FormControlLabel,  Radio, RadioGroup } from "@mui/material";
+import { ENV } from "../../../../utils/config/ENV";
 
 function UpdateUser() {
   const [payload, setPayload] = useState<IUserDetail>({
@@ -47,7 +48,7 @@ function UpdateUser() {
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", import.meta.env.VITE_REACT_UPLOAD_PRESET);
+      formData.append("upload_preset", ENV.UPLOAD_PRESET);
       
       const response = await apiUploadImage(formData);
       if (response) {

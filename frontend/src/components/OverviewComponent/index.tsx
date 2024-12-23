@@ -8,6 +8,7 @@ import {   useAppSelector } from "../../redux/hooks";
 import SelectOption from "../SelectOption";
 import { apiUploadImage } from "../../services/apiUploadPicture";
 import { Editor } from '@tinymce/tinymce-react';
+import { ENV } from "../../utils/config/ENV";
 
 interface OverviewComponentProps {
   payload: any;
@@ -36,7 +37,7 @@ function OverviewComponent({
     const formData = new FormData();
     for (const i of Array.from(files)) {
       formData.append("file", i);
-      formData.append('upload_preset', import.meta.env.VITE_REACT_UPLOAD_PRESET);
+      formData.append('upload_preset', ENV.UPLOAD_PRESET);
       const response = await apiUploadImage(formData);
       if (response) {
         imagesArray = [...imagesArray, response.secure_url];

@@ -8,6 +8,7 @@ import { apiAddMessage, apiGetMessages } from '../../../services/apiMessage';
 import { IConversation } from '../../../interfaces/conversation';
 import Pusher from 'pusher-js';
 import ButtonOutline from '../../ButtonComponent/ButtonOutline';
+import { ENV } from '../../../utils/config/ENV';
 interface Message {
     user_id: string;
     message: string;
@@ -27,8 +28,8 @@ const ChatRight: React.FC<{ conversation: IConversation |any; isOpen: boolean }>
     }, [isOpen]);   
     
     useEffect(() => {
-        const pusher = new Pusher(import.meta.env.VITE_REACT_PUSHER_APP_KEY, {
-            cluster: import.meta.env.VITE_REACT_PUSHER_APP_CLUSTER
+        const pusher = new Pusher(ENV.PUSHER_APP_KEY, {
+            cluster: ENV.PUSHER_APP_CLUSTER
         });
         const channel = pusher.subscribe( `chat-${currentUser.id}`);
         channel.bind('sendMessage', function(data:any) {

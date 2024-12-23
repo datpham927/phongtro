@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent, PostPackageComponent } from "../../../components";
+import { AddressComponent, ButtonComponent, MapComponent, NoticeListComponent, OverviewComponent, PostPackageComponent } from "../../../components";
 import validate from "../../../utils/validate";
 import { apiCreatePost } from "../../../services/apiPost";
 import {  IPostPayload } from "../../../interfaces/Post";
@@ -91,6 +91,7 @@ function CreatePost() {
       />}
         </div >
          <div className="flex flex-col gap-3 w-[40%] pb-20">
+            <MapComponent/>
            <NoticeListComponent/>
          </div>
       </div>

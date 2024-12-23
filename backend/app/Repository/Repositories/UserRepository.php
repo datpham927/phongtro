@@ -1,8 +1,11 @@
 <?php
 namespace App\Repository\Repositories;
 use App\Http\Resources\UserResource;
+use App\Models\Invoice;
 use App\Models\User;
 use App\Repository\Interfaces\UserRepositoryInterface;
+use App\Util;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -73,8 +76,21 @@ class UserRepository implements UserRepositoryInterface
     }
     public function findByIdAndDeposit($uid, $amount) {
         $user = $this->findById($uid); // Tìm người dùng theo ID
-        $user->account_balance += intval($amount); // Chuyển $amount thành số nguyên và cộng vào account_balance
-        $user->save(); // Lưu thay đổi vào cơ sở dữ liệu
+        $id= Util::uuid();
+        $invoiceData = [
+            'id' => $id,
+            'transaction_type' => 'deposit',
+            'user_id' => $user->id,
+            'amount' => $amount,
+            'start_balance' => $user->account_balance,
+            'end_balance' => $user->account_balance+$amount,
+            'description' => "Nạp tiền vào tài khoản",
+        ];
+        $invoice = Invoice::create($invoiceData);
+        if ($invoice) {
+            $user->account_balance += intval($amount); // Chuyển $amount thành số nguyên và cộng vào account_balance
+            $user->save(); // Lưu thay đổi vào cơ sở dữ liệu
+        }
         return $user; // Trả về đối tượng người dùng đã được cập nhật
     }
     

@@ -11,6 +11,7 @@ import { apiUploadImage } from "../../../../services/apiUploadPicture";
 import { FormControl, FormControlLabel,  Radio, RadioGroup } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../../utils/constant";
+import { ENV } from "../../../../utils/config/ENV";
 
 function CreateUser() {
   const [payload, setPayload] = useState<ICreateIUser>({
@@ -34,7 +35,7 @@ function CreateUser() {
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", import.meta.env.VITE_REACT_UPLOAD_PRESET);
+      formData.append("upload_preset", ENV.UPLOAD_PRESET);
       const response = await apiUploadImage(formData);
       if (response) {
         setPayload(prev => ({ ...prev, avatar: response.url }));

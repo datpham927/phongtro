@@ -34,6 +34,7 @@ export { default as PostPackageComponent } from  '../components/PostPackageCompo
 export { default as SkeletonPosts } from './skeleton/SkeletonPosts';
 export { default as SkeletonCategory } from './skeleton/SkeletonCategory';
 export { default as SkeLetonDetailPage } from './skeleton/SkeLetonDetailPage';
+export { default as MapComponent } from './MapComponent';
 
 
 
