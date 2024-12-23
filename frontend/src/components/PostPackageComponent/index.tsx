@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import SelectOption from '../SelectOption';
 import { apiGetAllPostType } from '../../services/apiPosType';
 import { IPostType } from '../../interfaces/PostType';
-import { POST_TYPE_COLOR } from '../../utils/constant';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setLoading } from '../../redux/action/actionSlice';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
