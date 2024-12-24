@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 // Route cho crawler
-Route::post('/crawler', [CrawlerController::class, 'crawler'])->name('crawler.index');
+Route::get('/crawler', [CrawlerController::class, 'crawler'])->name('crawler.index');
 
 // Nhóm các route liên quan đến xác thực người dùng
 Route::prefix('v1/auth')->group(function () {

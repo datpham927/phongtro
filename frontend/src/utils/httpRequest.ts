@@ -1,15 +1,16 @@
 import axios from 'axios';
 import { apiRefreshToken } from '../services/apiAuth';
+import { ENV } from './config/ENV';
 
 export const httpRequest = axios.create({
-    baseURL: import.meta.env.VITE_REACT_API_URL_BACKEND || 'http://localhost:8000/api/v1',
+    baseURL: ENV.API_URL_BACKEND || 'http://localhost:8000/api/v1',
 });
 export const axiosJWT = axios.create({
      withCredentials: true,// không có cái này thì tình duyệt sẽ không nhận được cookie
     //  được sử dụng để cho phép gửi cookie hoặc các thông tin xác thực (credentials)
     //  như token JWT, chứng chỉ HTTP, hoặc các thông tin khác khi gửi yêu cầu đến một
     //  máy chủ từ một miền khác (cross-origin request).
-     baseURL: import.meta.env.VITE_REACT_API_URL_BACKEND || 'http://localhost:8000/api/v1',
+     baseURL: ENV.API_URL_BACKEND || 'http://localhost:8000/api/v1',
 });
 
 axiosJWT.interceptors.request.use(

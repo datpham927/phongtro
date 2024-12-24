@@ -117,13 +117,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 4px;
+  height: 2px;
   background-color: #A7CAED;
   z-index: 9999;
 }
 .progress-bar {
   height: 100%;
-  background-color:#1266DD;
+  background-color:#E41B23;
   width: 0; /* Mặc định là 0 */
   transition: width 3s ease; /* Thêm hiệu ứng chuyển động mượt */
   animation: blinkEffect 0.8s infinite alternate; /* Áp dụng hiệu ứng nhấp nháy */

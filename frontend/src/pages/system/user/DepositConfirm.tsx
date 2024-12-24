@@ -7,6 +7,7 @@ import { calculateVnpSecureHash } from "../../../utils/calculateVnpSecureHash";
 import { PATH } from "../../../utils/constant";
 import { apiDeposit } from "../../../services/apiUser";  
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks"; 
+import { ENV } from "../../../utils/config/ENV";
 
 // Định nghĩa kiểu cho các tham số query
 interface VnpParams {
@@ -19,7 +20,7 @@ const DepositConfirm: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queries = queryString.parse(location.search) as VnpParams;
-  const vnp_HashSecret = import.meta.env.VITE_REACT_vnp_HashSecret || '';
+  const vnp_HashSecret = ENV.vnp_HashSecret || '';
   const dispatch=useAppDispatch();
  const  {checkDeposit}   = useAppSelector((state) => state.action);
 
@@ -33,7 +34,7 @@ const DepositConfirm: React.FC = () => {
       const { vnp_Amount, vnp_TransactionStatus } = vnp_Params;
       setLoading(true);
       setIsProcessing(true); // Set to processing state
-      if (vnp_TransactionStatus !== "00") {
+      if (vnp_TransactionStatus === "00") {
         const res = await apiDeposit(Number(vnp_Amount));
         setPaymentStatus(res.status);
         setIsProcessing(false);  
@@ -47,7 +48,6 @@ const DepositConfirm: React.FC = () => {
       setIsProcessing(false);
     }
   };
-
   useEffect(() => {
     if(!checkDeposit){
       navigate(`${PATH.SYSTEM}/${PATH.DEPOSIT}`)
@@ -56,32 +56,11 @@ const DepositConfirm: React.FC = () => {
       verifyPayment();
     }
   }, [vnp_HashSecret]);
-
-  const handleVNPayPaymentConfirm = async () => {
-    setIsProcessing(true); // Set to processing state
-    const res = await apiDeposit(1000); // Giả lập với giá trị 1000
-    setPaymentStatus(res.status);
-    setIsProcessing(false); // Stop processing after API response
-  };
-
   const renderPaymentStatus = () => {
     if (isProcessing) {
       return (
         <div className="text-center">
           <h1 className="text-2xl font-bold text-blue-600">Đang xử lý thanh toán...</h1>
-        </div>
-      );
-    }
-
-    if (paymentStatus === null) {
-      return (
-        <div className="text-center">
-          <button
-            onClick={handleVNPayPaymentConfirm}
-            className="px-6 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"
-          >
-            Xác nhận thanh toán
-          </button>
         </div>
       );
     }
@@ -92,7 +71,7 @@ const DepositConfirm: React.FC = () => {
           <h1 className="text-2xl font-bold text-green-600">Thanh toán thành công!</h1>
           <p className="mt-4 text-gray-600">Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
           <button
-            onClick={() => setPaymentStatus(null)}
+            onClick={() => navigate(`${PATH.SYSTEM}/${PATH.DEPOSIT}`)}
             className="mt-6 px-6 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"
           >
             Trở về
