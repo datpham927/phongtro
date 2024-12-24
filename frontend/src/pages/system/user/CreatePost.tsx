@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { AddressComponent, ButtonComponent, MapComponent, NoticeListComponent, OverviewComponent, PostPackageComponent } from "../../../components";
+import { AddressComponent, ButtonComponent,   NoticeListComponent, OverviewComponent, PostPackageComponent } from "../../../components";
 import validate from "../../../utils/validate";
 import { apiCreatePost } from "../../../services/apiPost";
 import {  IPostPayload } from "../../../interfaces/Post";

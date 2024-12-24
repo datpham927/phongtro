@@ -48,7 +48,6 @@ const DepositConfirm: React.FC = () => {
       setIsProcessing(false);
     }
   };
-
   useEffect(() => {
     if(!checkDeposit){
       navigate(`${PATH.SYSTEM}/${PATH.DEPOSIT}`)
@@ -57,14 +56,6 @@ const DepositConfirm: React.FC = () => {
       verifyPayment();
     }
   }, [vnp_HashSecret]);
-
-  const handleVNPayPaymentConfirm = async () => {
-    setIsProcessing(true); // Set to processing state
-    const res = await apiDeposit(1000); // Giả lập với giá trị 1000
-    setPaymentStatus(res.status);
-    setIsProcessing(false); // Stop processing after API response
-  };
-
   const renderPaymentStatus = () => {
     if (isProcessing) {
       return (
