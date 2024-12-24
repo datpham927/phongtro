@@ -20,7 +20,7 @@ const Deposit: React.FC = () => {
     const vnp_TmnCode =ENV.vnp_TmnCode;
     const vnp_HashSecret = ENV.vnp_HashSecret;
     const vnp_Url = ENV.vnp_Url;
-    const returnUrl = `http://localhost:5173${PATH.SYSTEM}/${PATH.DEPOSIT_CONFIRM}`;
+    const returnUrl = `${ENV.BASE_URL}${PATH.SYSTEM}/${PATH.DEPOSIT_CONFIRM}`;
     if (!vnp_HashSecret || !vnp_Url || !vnp_TmnCode || !returnUrl) {
       alert("Không thể thực hiện thanh toán, thiếu thông tin cấu hình.");
       return;

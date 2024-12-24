@@ -91,7 +91,6 @@ function CreatePost() {
       />}
         </div >
          <div className="flex flex-col gap-3 w-[40%] pb-20">
-            <MapComponent/>
            <NoticeListComponent/>
          </div>
       </div>
