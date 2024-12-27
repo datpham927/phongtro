@@ -8,7 +8,7 @@ import { apiAddMessage, apiGetMessages } from '../../../services/apiMessage';
 import { IConversation } from '../../../interfaces/conversation';
 import Pusher from 'pusher-js';
 import ButtonOutline from '../../ButtonComponent/ButtonOutline';
-import { ENV } from '../../../utils/config/ENV';
+import { ENV } from '../../../utils/config/ENV';import { v4 as uuidv4 } from 'uuid';
 interface Message {
     user_id: string;
     message: string;
@@ -83,7 +83,7 @@ const ChatRight: React.FC<{ conversation: IConversation |any; isOpen: boolean }>
                                     <div className="flex flex-col gap-4 h-auto justify-end w-full ">
                                         {messages?.length > 0 ? (
                                             messages?.map((message) => (
-                                                <div ref={scroll} >
+                                                <div ref={scroll} key={uuidv4()} >
                                                     <ItemMessage
                                                         own={message.user_id === currentUser.id}
                                                         message={message}

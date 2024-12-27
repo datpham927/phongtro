@@ -11,6 +11,7 @@ import { PATH } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../../redux/action/actionSlice";
 import { IPostType } from "../../../interfaces/PostType";
+import MapComponent from "../../../components/MapComponent";
 
 function CreatePost() {
   const [payload, setPayload] = useState<IPostPayload>({
@@ -90,7 +91,8 @@ function CreatePost() {
 
       />}
         </div >
-         <div className="flex flex-col gap-3 w-[40%] pb-20">
+         <div className="flex flex-col gap-3 w-[40%] pb-20 items-center">
+           <MapComponent width="80%" height="300px" placeName={payload?.address_detail}/>  
            <NoticeListComponent/>
          </div>
       </div>

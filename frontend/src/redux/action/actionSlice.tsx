@@ -45,7 +45,6 @@ export const actionSlice = createSlice({
             state.isLoadChat = !state.isLoadChat;
         },
         setCheckDeposit: (state, action: PayloadAction<boolean>) => {
-            console.log(' action.payload', action.payload)
             state.checkDeposit = action.payload;
             localStorage.setItem('checkDeposit', JSON.stringify(action.payload));
         },

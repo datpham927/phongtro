@@ -25,7 +25,6 @@ class PostDetailResource extends JsonResource
             'title'    => $this->title,
             'thumb'     => $this->thumb,
             'address_detail'  =>$this->address_detail,
-            'map'  =>$this->map,
             'images' => ImageResource::collection($this->whenLoaded('images')), 
             'slug'         => $this->slug,
             'description'         => $this->description,

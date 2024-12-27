@@ -1,15 +1,15 @@
 import { memo, useEffect, useState } from "react";
 import InputReadOnly from "../InputComponent/InputReadOnly";
 import { getApiPublicDistrict, getApiPublicProvince, getApiPublicWards } from "../../services/apiAddress";
-import {   IPostPayload } from "../../interfaces/Post";
+import { IPostPayload } from "../../interfaces/Post";
 import InputForm from "../InputComponent/InputForm";
 import SelectOption from "../SelectOption";
 
 interface AddressComponentProps {
-  payload: IPostPayload; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc payload của bạn
-  setPayload: React.Dispatch<React.SetStateAction<any>>; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc payload của bạn
-  invalidFields: any; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc invalidFields của bạn
-  setInvalidFields: React.Dispatch<React.SetStateAction<any>>; // Thay đổi kiểu dữ liệu này tùy theo cấu trúc invalidFields của bạn
+  payload: IPostPayload;
+  setPayload: React.Dispatch<React.SetStateAction<any>>;
+  invalidFields: any;
+  setInvalidFields: React.Dispatch<React.SetStateAction<any>>;
   isEdit?: boolean;
 }
 
@@ -22,10 +22,12 @@ interface IDistrict {
   code: number;
   name: string;
 }
+
 interface IWard {
   code: number;
   name: string;
 }
+
 function AddressComponent({
   payload,
   setPayload,
@@ -35,32 +37,34 @@ function AddressComponent({
   const [provinces, setProvinces] = useState<IProvince[]>([]);
   const [districts, setDistricts] = useState<IDistrict[]>([]);
   const [wards, setWards] = useState<IWard[]>([]);
-  const [provinceCode, setProvinceCode] = useState<number>();
-  const [districtCode, setDistrictCode] = useState<number>();
-  const [wardCode, setWardCode] = useState<number>();
+  const [provinceCode, setProvinceCode] = useState<number | any>(undefined);
+  const [districtCode, setDistrictCode] = useState<number | any>(undefined);
+  const [wardCode, setWardCode] = useState<number | any>(undefined);
 
+  // Fetch provinces on mount
   useEffect(() => {
     const fetchProvinces = async () => {
       const response = await getApiPublicProvince();
       setProvinces(response);
+     
     };
     fetchProvinces();
   }, []);
 
-
+  // Fetch districts when provinceCode changes
   useEffect(() => {
     if (provinceCode) {
       const fetchDistricts = async () => {
         const response = await getApiPublicDistrict(provinceCode);
-        setDistricts(response.districts);
+        setDistricts(response.districts); 
       };
       fetchDistricts();
-    } else {
-      setDistricts([]);
-    }
+      setDistrictCode('')
+      setWardCode('')
+    }  
   }, [provinceCode]);
 
-  
+  // Fetch wards when districtCode changes
   useEffect(() => {
     if (districtCode) {
       const fetchWards = async () => {
@@ -68,16 +72,18 @@ function AddressComponent({
         setWards(response.wards);
       };
       fetchWards();
-    } else {
-      setWards([]);
-    }
+      setWards([]); // Clear wards when no district is selected
+      setWardCode('')
+    } 
   }, [districtCode]);
 
+  // Update address_detail whenever provinces, districts, or wards change
   useEffect(() => {
-    const provinceName = provinces?.find(e => e.code === provinceCode)?.name ?? "";
-    const districtName = districts?.find(e => e.code === districtCode)?.name ?? "";
-    const wardName = wards?.find(e => e.code === wardCode)?.name ?? "";
-    const fullAddress = `${wardCode ?wardName + ", ": "" }${districtCode ? districtName +", " : ""}${provinceCode ?    provinceName : ""}`;
+    const provinceName = provinces?.find((e) => e.code === provinceCode)?.name ?? "";
+    const districtName = districts?.find((e) => e.code === districtCode)?.name ?? "";
+    const wardName = wards?.find((e) => e.code === wardCode)?.name ?? "";
+    const fullAddress = `${wardCode ? wardName + ", " : ""}${districtCode ? districtName + ", " : ""}${provinceCode ? provinceName : ""}`;
+    // Update payload with new address details
     setPayload((prev: any) => ({
       ...prev,
       province: provinceName,
@@ -85,14 +91,14 @@ function AddressComponent({
       ward: wardName,
       address_detail: fullAddress,
     }));
-  }, [provinceCode, districtCode, wardCode]);
-  
+  }, [provinces, districts, wards, provinceCode, districtCode, wardCode, setPayload]);
+
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-xl my-5 font-semibold">Địa chỉ cho thuê</h1>
       <div className="flex gap-4">
         <SelectOption
-          isLabel 
+          isLabel
           valueCode={provinceCode}
           label="Tỉnh/Thành phố"
           options={provinces}
@@ -111,7 +117,7 @@ function AddressComponent({
           setInvalidFields={setInvalidFields}
           type="district"
         />
-         <SelectOption
+        <SelectOption
           isLabel
           valueCode={wardCode}
           label="Phường/Xã"
@@ -122,18 +128,7 @@ function AddressComponent({
           type="ward"
         />
       </div>
-      <InputReadOnly 
-        label="Địa chỉ chính xác"
-        value={payload.address_detail}
-      />
-      <InputForm
-        label={"Bản đồ"}
-        value={payload?.map}
-        setValue={setPayload}
-        name={"map"}
-        invalidFields={invalidFields}
-        setInvalidFields={setInvalidFields}
-      />
+      <InputReadOnly label="Địa chỉ chính xác" value={payload.address_detail} />
     </div>
   );
 }

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
             $table->string('address_detail')->nullable();
-            $table->text('map')->nullable();
             $table->string('target')->nullable()->default('Tất cả');
             $table->uuid('address_id')->nullable(); // Change this from text to uuid
             $table->uuid('category_id');

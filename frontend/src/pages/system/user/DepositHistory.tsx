@@ -19,10 +19,8 @@ const DepositHistory:React.FC = () => {
        dispatch(setLoading(true)) 
         res = await apiGetAllDepositHistory({ limit: 10, page: currentPage, sort: "ctime" });
         dispatch(setLoading(false))  
-       
         setList(res?.data?.invoices);
         setTotalPage(res?.data?.totalPage);
-        console.log(res?.data)
     };
     fetchApi();
   }, [currentPage]);

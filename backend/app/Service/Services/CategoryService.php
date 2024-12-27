@@ -26,15 +26,15 @@ class CategoryService implements CategoryServiceInterface
         $filter = [];
         $cacheKey = "categories:" . $limit . ":" . $page . ":" . $sort; // Xây dựng key cho cache
         // Kiểm tra xem dữ liệu có trong Redis không
-        $cachedData = Redis::get($cacheKey);
-        if ($cachedData) {
-            // Nếu có cache, trả về dữ liệu đã giải mã
-            return json_decode($cachedData, true);
-        }
+        // $cachedData = Redis::get($cacheKey);
+        // if ($cachedData) {
+        //     // Nếu có cache, trả về dữ liệu đã giải mã
+        //     return json_decode($cachedData, true);
+        // }
         // Nếu không có cache, lấy từ repository
         $categories = $this->categoryRepository->findAll($limit, $sort, $page, $filter);
         // Lưu vào Redis với thời gian hết hạn 1 ngày (3600 * 24 giây)
-        Redis::setex($cacheKey, 3600 * 24, json_encode($categories));
+        // Redis::setex($cacheKey, 3600 * 24, json_encode($categories));
         return $categories;
     }
     public function create($request)

@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { setLoading } from '../../../redux/action/actionSlice';
 import StarIcon from '@mui/icons-material/Star';
 import { POST_TYPE_COLOR } from '../../../utils/constant';
+import MapComponent from '../../../components/MapComponent';
 
 const DetailPost: React.FC = () => {
     const [dataPost, setDataPost] = useState<IDetailPost | null>(null);
@@ -163,7 +164,9 @@ const DetailPost: React.FC = () => {
                             <div className="my-5">
                                 <h1 className="text-[20px] my-2 font-semibold">Bản đồ</h1>
                                 <span className="text-sm">Địa chỉ: {address_detail}</span>
-                                <div className="my-2">{parse(map)}</div>
+                                <div className="my-2">
+                                    <MapComponent width='80%' placeName={address_detail} />
+                                </div>
                             </div>
                         </div>
                     </div>

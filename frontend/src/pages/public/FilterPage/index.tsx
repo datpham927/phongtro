@@ -25,8 +25,6 @@ const FilterPage: React.FC = () => {
   const params = useParams();
   const queries = useMemo(() => queryString.parse(location.search), [location.search]);
   const category=categories?.find(e=>e.slug===params.category_slug||e.slug==="cho-thue-phong-tro")
-
-
   useEffect(() => {
     const fetchPosts = async () => {
       const { gia_tu, gia_den, dien_tich_tu, dien_tich_den, orderby, ...rest } = queries;

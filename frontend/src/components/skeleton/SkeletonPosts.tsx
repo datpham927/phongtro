@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 const SkeletonPosts: React.FC<{ index: number }> = ({ index }) => {
     return (
         <div className="w-full">
@@ -13,7 +13,7 @@ const SkeletonPosts: React.FC<{ index: number }> = ({ index }) => {
         <div className="h-6 bg-gray-300 rounded w-16"></div>
       </div>
             {[...Array(index)].map(() => (
-                 <div className="py-4 w-full bg-white border rounded-lg animate-pulse">
+                 <div key={uuidv4()} className="py-4 w-full bg-white border rounded-lg animate-pulse">
                  <div className="flex gap-4">
                    {/* Ảnh */}
                    <div className="w-1/3 h-40 bg-gray-300 rounded-md"></div>

@@ -5,8 +5,6 @@ const ProgressBar: React.FC = () => {
   const { loading } = useAppSelector((state) => state.action);
   const [progress, setProgress] = useState(0);
 
-  console.log(progress); // Xem giá trị progress để debug
-
   useEffect(() => {
     if (loading) {
       setProgress(0); // Reset thanh tiến trình khi bắt đầu loading

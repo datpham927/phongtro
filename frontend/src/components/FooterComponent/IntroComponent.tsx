@@ -2,6 +2,7 @@ import { textInfo } from "../../utils/constant";
 import { memo } from "react";
 import { starToArr } from "../../utils/starToArr";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
+import { v4 as uuidv4 } from 'uuid';
 const IntroComponent = () => {
   // const { categories } = useSelector((state) => state.category);
   return (
@@ -42,7 +43,7 @@ const IntroComponent = () => {
       <div className="flex items-center justify-center gap-1">
         <span className="text-yellow-400">
           <span className="text-yellow-400 text-sm flex shrink-0">
-            {starToArr(5).map(() => <ion-icon name="star"></ion-icon>)}
+            {starToArr(5).map(() => <ion-icon key={uuidv4()}name="star"></ion-icon>)}
           </span>
         </span>
       </div>

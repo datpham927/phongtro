@@ -21,7 +21,6 @@ const PaymentHistory:React.FC = () => {
         dispatch(setLoading(false))  
         setList(res?.data?.invoices);
         setTotalPage(res?.data?.totalPage);
-        console.log(res?.data)
     };
     fetchApi();
   }, [currentPage]);

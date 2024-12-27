@@ -206,7 +206,6 @@ class PostService implements PostServiceInterface
             "description" => $validatedData["description"],
             "category_id" => $validatedData["category_id"],
             "address_detail" => $validatedData["address_detail"],
-            "map" => $validatedData["map"],
             "post_type_id" => $validatedData["post_type_id"],
             "target" => $validatedData["target"]
         ];

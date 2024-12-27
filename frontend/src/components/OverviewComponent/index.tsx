@@ -9,7 +9,7 @@ import SelectOption from "../SelectOption";
 import { apiUploadImage } from "../../services/apiUploadPicture";
 import { Editor } from '@tinymce/tinymce-react';
 import { ENV } from "../../utils/config/ENV";
-
+import { v4 as uuidv4 } from 'uuid';
 interface OverviewComponentProps {
   payload: any;
   setPayload: React.Dispatch<React.SetStateAction<any>>;
@@ -182,7 +182,7 @@ function OverviewComponent({
       </div> 
       <div className="grid grid-cols-4 gap-3">
         {payload?.images?.map((e:any) => (
-          <div className="flex flex-col justify-center shadow-custom rounded-md overflow-hidden">
+          <div key={uuidv4()}className="flex flex-col justify-center shadow-custom rounded-md overflow-hidden">
             <img className="w-full h-[110px] object-cover " src={e} alt="" />
             <div
               className="w-full bg-white flex items-center justify-center py-2 cursor-pointer"
