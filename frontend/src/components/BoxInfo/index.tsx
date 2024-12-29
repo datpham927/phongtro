@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { apiAddConversation } from '../../services/apiConversation';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {  setIsOpenChat, setLoading, setOpenFeatureAuth } from '../../redux/action/actionSlice';
+import {  setIsOpenChat,  setOpenFeatureAuth } from '../../redux/action/actionSlice';
+import { iconLoad } from '../../assets';
 
 interface BoxInfoProps {
     userId?:string;
@@ -12,17 +13,18 @@ interface BoxInfoProps {
     status?: string;
 }
  const BoxInfo: React.FC<BoxInfoProps> = ({ userId ,avatar, name, phone, zalo, status }) => {
+      const [loading,setLoading]= useState<boolean>(false)
     const currentUser = useAppSelector((state) => state.user);
     const {isLogged} = useAppSelector((state) => state.auth);
    const dispatch=useAppDispatch();
     const handleCLickChat = async () => {
-        
         if (!isLogged) {
             dispatch(setOpenFeatureAuth(true));
             return;
         } 
+        setLoading(true)
         await apiAddConversation(userId);
-        dispatch(setLoading(false));
+        setLoading(false)
         dispatch(setIsOpenChat(true));
     };
     
@@ -41,10 +43,12 @@ interface BoxInfoProps {
                     <a href={`https://zalo.me/${zalo || phone}`}>Nhắn zalo</a>
                 </button>
                 {  userId !== currentUser.id&&
-                <button className='w-full font-medium border-solid border-[1px] py-1 rounded-md bg-primary-bg border-blue-custom text-base'
-                  onClick={handleCLickChat}
+                <button className='flex justify-center w-full font-medium border-solid border-[1px] py-1 rounded-md bg-primary-bg border-blue-custom text-base'
+                  onClick={()=>
+                    !loading&&handleCLickChat()
+                  }
                 >
-                    Nhắn tin
+               {    !loading? "Nhắn tin":    <img className='w-[24px]' src="https://cdn.pixabay.com/animation/2022/07/29/03/42/03-42-07-846_512.gif" />}
                 </button>}
             </div>
         </div>

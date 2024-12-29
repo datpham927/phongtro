@@ -165,7 +165,7 @@ const DetailPost: React.FC = () => {
                                 <h1 className="text-[20px] my-2 font-semibold">Bản đồ</h1>
                                 <span className="text-sm">Địa chỉ: {address_detail}</span>
                                 <div className="my-2">
-                                    <MapComponent width='80%' placeName={address_detail} />
+                                    <MapComponent placeName={address_detail} />
                                 </div>
                             </div>
                         </div>

@@ -28,7 +28,7 @@ const NavigateComponent = () => {
     <div
       className='bg-blue-custom w-full z-[999] top-0 sticky '
     >
-      <div className="w-[1100px] mx-auto  flex items-center pb-5">
+      <div className="w-[1100px] mx-auto  flex items-center">
         <NavLink
           end
           to={PATH.HOME}

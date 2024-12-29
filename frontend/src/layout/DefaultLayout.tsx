@@ -3,7 +3,7 @@ import FooterComponent from '../components/FooterComponent';
 import { Auth } from '../feature';
 import NavigateComponent from '../components/NavigateComponent';
 import { Outlet } from 'react-router-dom'; 
-import { ChatComponent  } from '../components'; 
+import { ChatComponent, GeolocationComponent  } from '../components'; 
 import ProgressBar from '../components/common/ProgressBar';
  
 const DefaultLayout = () => { 
@@ -15,7 +15,7 @@ const DefaultLayout = () => {
           <div className="w-[1100px] mx-auto pb-5"> 
               <Outlet/>
           </div>
-          {/* <GeolocationComponent/> */}
+          <GeolocationComponent/>
           <FooterComponent/>
           <Auth/>
           <ProgressBar/>

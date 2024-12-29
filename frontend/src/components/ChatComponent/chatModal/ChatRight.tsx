@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import ReactLoading from 'react-loading';
 import SendIcon from '@mui/icons-material/Send';
 import { useAppSelector } from '../../../redux/hooks';
 import NotExit from '../../common/NotExit';
@@ -9,6 +8,7 @@ import { IConversation } from '../../../interfaces/conversation';
 import Pusher from 'pusher-js';
 import ButtonOutline from '../../ButtonComponent/ButtonOutline';
 import { ENV } from '../../../utils/config/ENV';import { v4 as uuidv4 } from 'uuid';
+import { iconLoad } from '../../../assets';
 interface Message {
     user_id: string;
     message: string;
@@ -116,7 +116,7 @@ const ChatRight: React.FC<{ conversation: IConversation |any; isOpen: boolean }>
                         ) : (<NotExit label="Xin chào" />)
                     ) : (
                         <div className="w-full flex justify-center h-full items-center">
-                            <ReactLoading type="cylon" color="rgb(0, 136, 72)" />
+                             <img className='w-[50px]' src={iconLoad} />
                         </div>
                     )}
                 </div>

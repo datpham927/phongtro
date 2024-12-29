@@ -6,6 +6,8 @@ export { default as iconMessenger } from './logo/iconMessenger.svg';
 export { default as logoFb } from './logo/logoFb.png';
 export { default as imgLoading } from './image/hinh-anh-dong-de-thuong-cho-be.gif';
 export { default as notExit } from './image/notExit.png'; 
+export { default as iconLoad } from './logo/load-8510.gif'; 
+
 export const manageIcon =   (
     <svg
       xmlns="http://www.w3.org/2000/svg"

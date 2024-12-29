@@ -44,8 +44,7 @@ const ItemPostComponent:React.FC<{ props: IPost  }> =  ({props })=> {
         <Link  to={`/${params.category_slug?params.category_slug:"tinh-thanh"}/${address.city_slug}/${address.district_slug}`} className="text-sm hover:underline">{address?.district_name+", " +address?.city_name}</Link>
           <span className="text-sm text-[#aaa]">{timeAgo(created_at)}</span>
         </div>}
-
-        <p className={`${priority==1?"line-clamp-3":"line-clamp-2"} text-sm text-gray-500 truncate-trailing `}>{parse(description)}</p>
+        <div className={`${priority==1?"line-clamp-3":"line-clamp-2"} text-sm text-gray-500 truncate-trailing `}>{parse(description)}</div>
         <div className="flex justify-between  mt-3 ">
           <div className="flex gap-2 items-center">
             <img

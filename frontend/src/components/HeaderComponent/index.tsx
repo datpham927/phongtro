@@ -33,7 +33,7 @@ const HeaderComponent=()=> {
  
   return (
     <div>
-      <div className="flex justify-between w-[1100px] mx-auto pb-5">
+      <div className="flex justify-between w-[1100px] mx-auto">
         <div>
           <img
             className="w-[240px] h-[70px] object-contain"
