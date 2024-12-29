@@ -9,4 +9,7 @@ interface PostRepositoryInterface extends BaseRepositoryInterface
     public function findAllPostExpiredForShop($limit, $sort, $page, $shopId); 
     public function findAllUnapprovedPosts($limit,$sort, $page); 
     public function findByIdAndApprovePost($pid);
+    public function findAllForShop($shopId,$limit = 5, $sort = 'asc', $page = 1);
+    public function  findNewPosts();
+    public function  findLocationPosts($city_slug,$district_slug);
 }

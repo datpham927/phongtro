@@ -16,7 +16,7 @@ function ManageApprovedPost() {
   const dispatch= useAppDispatch() 
   useEffect(() => {
   
-    const fetchApi = async () => {   dispatch(setLoading(true)) 
+    const fetchApi = async () => {dispatch(setLoading(true)) 
         let res;
         res = await getAllUnapprovedPosts({ limit: 10, page: currentPage }); 
         if (!res?.status) return;

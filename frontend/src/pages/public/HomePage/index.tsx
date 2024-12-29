@@ -4,11 +4,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { IPost } from '../../../interfaces/Post';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { apiGetPost } from '../../../services/apiPost';
-import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter'; 
+import { IFilterDouble } from '../../../interfaces/filter'; 
 import { dataArea, dataPrice } from '../../../utils/data'; 
 import { convertToMillion } from '../../../utils/convertMillion';
-import { ItemNavbarComponent, ListNewPost, ListPostComponent,  PaginationComponent, ProvinceComponent, SearchComponent  } from '../../../components';
+import { ItemNavbarComponent, NewPostComponent, ListPostComponent,  PaginationComponent, ProvinceComponent, SearchComponent  } from '../../../components';
 import { setLoading } from '../../../redux/action/actionSlice';
+import LocationPostsComponent from '../../../components/LocationPostsComponent';
  
 
 const HomePage:React.FC = () => { 
@@ -16,7 +17,7 @@ const HomePage:React.FC = () => {
       const [totalPage, setTotalPage]=useState<number>(0)
       const [totalPost, setTotalPost]=useState<number>(0) 
       const [currentPage, setCurrentPage]=useState<number|any>(1)
-      const { categories } = useAppSelector((state) => state.category);
+      // const { categories } = useAppSelector((state) => state.category);
       const dispatch= useAppDispatch();
       const navigate=useNavigate()
       const params = useParams();
@@ -65,9 +66,9 @@ const handleCLickArea=(item: IFilterDouble)=>{
   const newQuery = queryString.stringify(updatedQueryParams, { sort: false });
   navigate(`?${newQuery}`);
 }
-const handleCLickCategory=(item: IFilterCategory)=>{
-  navigate(`/${item.slug}`);
-}
+// const handleCLickCategory=(item: IFilterCategory)=>{
+//   navigate(`/${item.slug}`);
+// }
 
   return (
     <>
@@ -84,8 +85,9 @@ const handleCLickCategory=(item: IFilterCategory)=>{
         <div className="w-[30%]">
           <ItemNavbarComponent isDouble title="Xem theo giá" content={dataPrice} handleOnClick={handleCLickPrice} />
           <ItemNavbarComponent isDouble title="Xem theo diện tích" content={dataArea} handleOnClick={handleCLickArea}/>
-          <ItemNavbarComponent title="Danh mục cho thuê"  content={categories} handleOnClick={handleCLickCategory}/>
-          <ListNewPost/>
+          {/* <ItemNavbarComponent title="Danh mục cho thuê"  content={categories} handleOnClick={handleCLickCategory}/> */}
+          <LocationPostsComponent/>
+          <NewPostComponent/>
         </div>
       </div>
     </>

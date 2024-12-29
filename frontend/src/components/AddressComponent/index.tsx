@@ -93,7 +93,7 @@ function AddressComponent({
   }, [provinces, districts, wards, provinceCode, districtCode, wardCode, setPayload]);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <h1 className="text-xl my-5 font-semibold">Địa chỉ cho thuê</h1>
       <div className="flex gap-4">
         <SelectOption

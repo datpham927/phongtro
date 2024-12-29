@@ -66,6 +66,22 @@ const getRelatedPosts = async (addressId: any): Promise<any> => {
     return Promise.reject(error); // Re-throw error for better handling upstream
   }
 };
+const getNewPosts = async ( )  => {
+  try {
+    const response = await httpRequest.get(`/post/new-post`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
+const getLocationPosts = async (city_slug:string ,district_slug:string )  => {
+  try {
+    const response = await httpRequest.get(`/post/location-post/${city_slug}/${district_slug}`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error); // Re-throw error for better handling upstream
+  }
+};
 
 const getAllUnapprovedPosts = async ( query: any): Promise<any> => {
   try {
@@ -84,6 +100,6 @@ const apiApprovedPost= async (postId:string): Promise<any> => {
   }
 };
 export { apiGetPost,getDetailPost,getRelatedPosts,apiCreatePost,apiGetPostForShop,
-  apiUpdatePost,apiDeletePost,apiGetExpiredPostForShop,getAllUnapprovedPosts,apiApprovedPost
+  apiUpdatePost,apiDeletePost,getNewPosts,getLocationPosts,apiGetExpiredPostForShop,getAllUnapprovedPosts,apiApprovedPost
   // , apiNewPost, apiCreatePost, apiapiGetPostAdmin, apiUpdatePost, apiDeletePost, apiDetailPost 
 };

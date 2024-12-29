@@ -51,8 +51,7 @@ export interface IDetailPost extends IPost {
     areaNumber: string;
     categoryCode: string;
     description: string;
-    images: string[];
-    map: string;
+    images: string[]; 
     priceNumber: string;
     province: string;
     target: string;

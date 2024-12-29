@@ -62,7 +62,9 @@ Route::prefix('v1/post')->group(function () {
     Route::get('/all', [PostControllers::class, 'getAll']);
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']);
     Route::get('/{address_id}/related-post', [PostControllers::class, 'getRelatedPost']);
-    // Các route yêu cầu đăng nhập
+    Route::get('/new-post', [PostControllers::class, 'getNewPosts']);
+    Route::get('/location-post/{city_slug}/{district_slug}', [PostControllers::class, 'getLocationPosts']);
+     // Các route yêu cầu đăng nhập
     Route::middleware(Login::class)->group(function () {
         Route::delete('/{pid}/delete', [PostControllers::class, 'destroy']);
         Route::post('/add', [PostControllers::class, 'create']);

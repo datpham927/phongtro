@@ -17,7 +17,8 @@ const RouterPage = () => {
       <Route path={PATH.HOME} element={  <IsUser><DefaultLayout /></IsUser> }>
           <Route path='*' element={<Navigate to={PATH.HOME} />} />
           <Route path={PATH.HOME} element={<HomePage />} />
-          <Route path={PATH.HOME__PAGE} element={<HomePage />} />
+          <Route path={PATH.HOME_PAGE} element={<HomePage />} />
+          <Route path={PATH.NEARBY_AREA} element={<HomePage />} />
           <Route path={PATH.FILTER__PAGE} element={<FilterPage />} />
           <Route path={PATH.CATEGORY_FILTER__PAGE} element={<FilterPage />} />
           <Route path={PATH.DETAIL_POST} element={<DetailPost />} />

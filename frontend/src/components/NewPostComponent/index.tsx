@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { apiGetPost } from '../../services/apiPost'
+import { apiGetPost, getNewPosts } from '../../services/apiPost'
 import { IPost } from '../../interfaces/Post'
 import ItemNewPost from '../ItemComponents/ItemNewPost'
 import { useAppSelector } from '../../redux/hooks'
 import { v4 as uuidv4 } from 'uuid';
-const ListNewPost: React.FC<{detailPostId?:string}> = ({detailPostId}) => {
+const NewPostComponent: React.FC<{detailPostId?:string}> = ({detailPostId}) => {
   const [listPost, setListPost] = useState<IPost[]>([])
   const { loading } = useAppSelector((state) => state.action);
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await apiGetPost({ sort: "ctime", limit: 10 })
+      const res = await getNewPosts()
       if (res.status) {
       let dataPost: IPost[] =res?.data?.posts;
       // Nếu có detailPostId, loại bỏ post trùng ID
@@ -33,4 +33,4 @@ const ListNewPost: React.FC<{detailPostId?:string}> = ({detailPostId}) => {
   )
 }
 
-export default ListNewPost
+export default NewPostComponent

@@ -32,8 +32,7 @@ class PostControllers extends Controller
         } catch (\Throwable $e) {
             return ResponseHelper::error("Failed to retrieve posts", $e);
         }
-    }
-    
+    } 
     public function getAllForShop(Request $request) {
         try {
             $response = $this->postService->findAllForShop($request);
@@ -50,9 +49,25 @@ class PostControllers extends Controller
             return ResponseHelper::error("Đã xảy ra lỗi", $th);
         }
     }
-    public function getRelatedPost(Request $request,$address_id) {
+    public function getRelatedPost( $address_id) {
         try {
             $response = $this->postService->findRelatedPost($address_id);
+            return ResponseHelper::success($response, "Thành công", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
+        }
+    }
+    public function getNewPosts() {
+        try {
+            $response = $this->postService->findNewPosts();
+            return ResponseHelper::success($response, "Thành công", 200);
+        }  catch (\Throwable $th) {
+            return ResponseHelper::error("Đã xảy ra lỗi", $th);
+        }
+    }
+    public function getLocationPosts($city_slug,$district_slug) {
+        try {
+            $response = $this->postService->findLocationPosts($city_slug,$district_slug);
             return ResponseHelper::success($response, "Thành công", 200);
         }  catch (\Throwable $th) {
             return ResponseHelper::error("Đã xảy ra lỗi", $th);

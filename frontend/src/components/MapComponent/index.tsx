@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
-import { getApiCodeLocation } from "../../services/apiAddress";
+import { getApiCodeLocation, getApiCurrentLocation } from "../../services/apiAddress";
 
 interface MapComponentProps {
-  placeName: string | any;
+  placeName?: string | any;
   height?:string;
   width?:string
 
@@ -12,7 +12,7 @@ interface MapComponentProps {
 
 const MapComponent: React.FC<MapComponentProps> = ({ placeName,  height= "400px", width="100%" }) => {
   const [position, setPosition] = useState<LatLngExpression | any>(null); // Lưu tọa độ của vị trí
-  
+  const [displayName  , setDisplayName] = useState<LatLngExpression | any>(placeName); // Lưu tọa độ của vị trí
   // Hàm lấy tọa độ từ tên địa điểm
   const geocodeLocation = async () => {
     const data = await getApiCodeLocation(placeName); 
@@ -23,7 +23,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ placeName,  height= "400px"
       setPosition([latitude, longitude]); // Cập nhật tọa độ vào state
     }  
   };
-
   // Hàm lấy tọa độ từ vị trí người dùng
   const handleGetLocationAndPlaceName = async () => {
     if (!navigator.geolocation) {
@@ -31,9 +30,15 @@ const MapComponent: React.FC<MapComponentProps> = ({ placeName,  height= "400px"
       return;
     }
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
-        setPosition([latitude, longitude]);
+        setPosition([latitude, longitude ]);
+        // Gọi API để lấy thông tin địa chỉ từ tọa độ
+        const res = await getApiCurrentLocation(latitude, longitude);
+        if (res && res.address) {
+          const address = res.display_name; 
+          setDisplayName(address)
+        }  
       },
       (error) => {
         console.error("Lỗi khi lấy vị trí:", error);
@@ -41,7 +46,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ placeName,  height= "400px"
       }
     );
   };
-
   useEffect(() => {
     if (placeName) {
       geocodeLocation(); // Gọi geocodeLocation khi placeName có giá trị
@@ -64,7 +68,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ placeName,  height= "400px"
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <Marker position={position}>
         <Popup>
-          {placeName ? placeName : "Vị trí không xác định"}
+          {placeName ? placeName : displayName}
         </Popup>
       </Marker>
     </MapContainer>

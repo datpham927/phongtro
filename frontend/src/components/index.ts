@@ -9,7 +9,7 @@ export { default as InputPassWordComponent } from  '../components/InputComponent
 export { default as ItemNavbarComponent } from  './ItemComponents/ItemNavbarComponent';
 export { default as ItemNewPost } from  './ItemComponents/ItemNewPost';
 export { default as ItemPostComponent } from  './ItemComponents/ItemPostComponent';
-export { default as ListNewPost } from  '../components/ListNewPost';
+export { default as NewPostComponent } from  './NewPostComponent';
 export { default as ListPostComponent } from  '../components/ListPostComponent';
 export { default as LocationComponent } from  '../components/LocationComponent';
 export { default as ModalComponent } from  '../components/ModalComponent/ModalRadioComponent';

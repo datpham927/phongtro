@@ -8,7 +8,7 @@ import { timeAgo } from '../../../utils/format/timeAgo';
 import { 
     BoxInfo, 
     BreadcrumbComponent, 
-    ListNewPost, 
+    NewPostComponent, 
     SkeLetonDetailPage, 
     SlideDetailPost 
 } from '../../../components';
@@ -181,7 +181,7 @@ const DetailPost: React.FC = () => {
                         zalo={user?.zalo}
                         status="Đang hoạt động"
                     />
-                    <ListNewPost detailPostId={postId} />
+                    <NewPostComponent detailPostId={postId} />
                 </div>
             </div>
         </>

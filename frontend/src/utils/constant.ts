@@ -1,6 +1,7 @@
 export const PATH = {
   HOME: "/",
-  HOME__PAGE: "/:category_slug",
+  HOME_PAGE: "/:category_slug",
+  NEARBY_AREA: "/khu-vuc-quanh-vi-tri-cua-ban/:city_slug/:district_slug?/:ward_slug",
   FILTER__PAGE: "/tinh-thanh/:city_slug/:district_slug?/:ward_slug?",
   CATEGORY_FILTER__PAGE: "/:category_slug/:city_slug/:district_slug?/:ward_slug?",
   RESET_PASSWORD: "/reset/:token",

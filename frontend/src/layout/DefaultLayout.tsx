@@ -15,7 +15,6 @@ const DefaultLayout = () => {
           <div className="w-[1100px] mx-auto pb-5"> 
               <Outlet/>
           </div>
-          {/* <GeolocationComponent/> */}
           <FooterComponent/>
           <Auth/>
           <ProgressBar/>

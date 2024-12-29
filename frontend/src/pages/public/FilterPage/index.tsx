@@ -7,7 +7,7 @@ import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter';
 import { IPost } from '../../../interfaces/Post';
 import { apiGetPost } from '../../../services/apiPost';
 import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../../services/apiAddress';
-import {   ItemNavbarComponent, ListNewPost, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
+import {   ItemNavbarComponent, NewPostComponent, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
 import { convertToMillion } from '../../../utils/convertMillion';
 import { setLoading } from '../../../redux/action/actionSlice';
 
@@ -76,6 +76,7 @@ const FilterPage: React.FC = () => {
       }
       if (res?.status) {
         setLocations(res.data.locations);
+        console.log(res.data.locations)
         if(category?.name&&category?.title){
           setTitleWelcome({
             title: `${category?.name} ${res.data?.district_name || res.data?.city_name}, ${category?.title}`,
@@ -120,13 +121,13 @@ const FilterPage: React.FC = () => {
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
           <ListPostComponent data={listPosts} totalPost={totalPost} />
-          { listPosts?.length>0&&  <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />}
+          { listPosts?.length>1&&  <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />}
         </div>
         <div className="w-[30%]">
           <ItemNavbarComponent isDouble title="Xem theo giá" content={dataPrice} handleOnClick={handleCLickPrice} />
           <ItemNavbarComponent isDouble title="Xem theo diện tích" content={dataArea} handleOnClick={handleCLickArea} />
           <ItemNavbarComponent title="Danh mục cho thuê" content={categories} handleOnClick={handleCLickCategory} />
-          <ListNewPost/>
+          <NewPostComponent/>
         </div>
       </div>
     </>

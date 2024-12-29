@@ -8,14 +8,14 @@ import { convertToSlug } from "../../../utils/format/convertToSlug";
 import { convertMillionToDecimal } from "../../../utils/format/convertMillionToDecimal";
 import {  useParams } from "react-router-dom";
 import { setLoading } from "../../../redux/action/actionSlice"; 
+import MapComponent from "../../../components/MapComponent";
 
 function UpdatePost() {
   const [payload, setPayload] = useState<IPostPayload>({
     areaNumber: "",
     categoryCode: "",
     description: "",
-    images: [],
-    map: "",
+    images: [], 
     priceNumber: "",
     province: "",
     district: "",
@@ -60,7 +60,7 @@ function UpdatePost() {
     dispatch(setLoading(true)) 
     const check = validate(payload, setInvalidFields);
     if (!check) return; 
-    const { areaNumber, priceNumber, images, categoryCode, district, province, ward, map, target, ...data } = payload;
+    const { areaNumber, priceNumber, images, categoryCode, district, province, ward, target, ...data } = payload;
     const postData = {
       thumb: images[0],
       images,
@@ -76,7 +76,6 @@ function UpdatePost() {
         district_name: convertToSlug(district),
         ward_name: convertToSlug(ward),
         address_detail: `${province}, ${district}, ${ward}`,
-        map,
       },
       ...data,
     }; 
@@ -88,7 +87,7 @@ function UpdatePost() {
 
   return (
     <div className="h-full px-7 flex flex-col">
-      <div className="w-full border-solid border-b-[1px] border-gray-300">
+      <div className="w-full border-gray-300">
         <h1 className="text-4xl py-3">Cập nhật bài viết</h1>
       </div>
       <div className="flex">
@@ -112,7 +111,8 @@ function UpdatePost() {
             onClick={handleSummit}
           />
         </div>
-        <div className="flex flex-col gap-3 w-[40%] pb-20">
+        <div className="flex flex-col gap-3 w-[40%] pb-20 items-center">
+        <MapComponent width="80%" height="300px" placeName={payload?.address_detail}/>  
           <NoticeListComponent />
         </div>
       </div>

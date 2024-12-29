@@ -10,7 +10,7 @@ const LocationComponent:React.FC<{data:any}> = ({data}) => {
                           {e?.district_name||e?.ward_name}
                     </Link>
                       <span className='text-sm text-[#999] ml-1'>({e?.quantity})</span>
-                  </div>
+            </div>
          })}
 
     </div>

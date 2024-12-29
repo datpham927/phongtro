@@ -40,10 +40,12 @@ class PostService implements PostServiceInterface
         $limit = $request['limit'];
         $page = $request['page'];
         $sort = $request['sort'];
-        unset($request['limit'], $request['page'], $request['sort']);
-        $filters = $request->all();
-        $filters['user_id'] = $request['user_id'];
-        return $this->postRepository->findAll($limit, $sort, $page, $filters);
+        $user_id = $request['user_id'];
+        return $this->postRepository->findAllForShop( $user_id,$limit, $sort, $page);
+    }
+    public function findNewPosts()
+    { 
+        return $this->postRepository->findNewPosts();
     }
 
     public function findAllPostExpiredForShop($request)
@@ -59,7 +61,10 @@ class PostService implements PostServiceInterface
     {
         return $this->postRepository->findRelatedPostByAddress($addressId);
     }
+    public function  findLocationPosts($city_slug,$district_slug){
+        return $this->postRepository->findLocationPosts($city_slug,$district_slug);
 
+    }
     public function create($request)
     {
         // Lấy dữ liệu đã được validate
@@ -149,16 +154,7 @@ class PostService implements PostServiceInterface
 
     public function findDetailPost($pid)
     {
-        $cacheKey = "posts:detail:{$pid}";
-        $cachedPost = Redis::get($cacheKey);
-
-        if ($cachedPost) {
-            return json_decode($cachedPost, true);
-        }
-
         $post = $this->postRepository->findPostDetailById($pid);
-        // Cache the post for 24 hours
-        Redis::setex($cacheKey, 3600 * 24, json_encode($post));
         return $post;
     }
 
