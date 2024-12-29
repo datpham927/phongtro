@@ -2,7 +2,6 @@ import { memo, useEffect, useState } from "react";
 import InputReadOnly from "../InputComponent/InputReadOnly";
 import { getApiPublicDistrict, getApiPublicProvince, getApiPublicWards } from "../../services/apiAddress";
 import { IPostPayload } from "../../interfaces/Post";
-import InputForm from "../InputComponent/InputForm";
 import SelectOption from "../SelectOption";
 
 interface AddressComponentProps {

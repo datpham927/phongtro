@@ -43,7 +43,7 @@ const DetailPost: React.FC = () => {
     if (loading||!dataPost) {
         return <SkeLetonDetailPage />;
     } 
-    const {title,images,address,price,area,description,id,category,post_type,address_detail,map,target,expire_at,created_at,user,
+    const {title,images,address,price,area,description,id,category,post_type,address_detail,target,expire_at,created_at,user,
     } = dataPost;
 
     const breadcrumbs = [
