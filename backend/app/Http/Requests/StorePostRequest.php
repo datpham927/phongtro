@@ -32,7 +32,6 @@ class StorePostRequest extends FormRequest
             'address.district_name' => 'required|string',
             'address.ward_name' => 'required|string',
             'address_detail' => 'required|string',
-            'map' => 'nullable|string',
             "target" => 'required|string',
             "post_type_id" => 'required|string'
         ];

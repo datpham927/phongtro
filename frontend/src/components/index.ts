@@ -2,14 +2,14 @@ export { default as BoxInfo } from  '../components/BoxInfo';
 export { default as BreadcrumbComponent } from  '../components/BreadcrumbComponent';
 export { default as ButtonComponent } from  '../components/ButtonComponent/ButtonComponent';
 export { default as EmptyComponent } from  '../components/EmptyComponent';
-export { default as FooterComponent } from  '../components/FooterComponent';
-export { default as HeaderComponent } from  '../components/HeaderComponent';
+export { default as FooterComponent } from  './FooterComponent';
+export { default as HeaderComponent } from  './HeaderComponent';
 export { default as InputComponent } from  '../components/InputComponent/InputComponent';
 export { default as InputPassWordComponent } from  '../components/InputComponent/InputPassWordComponent';
-export { default as ItemNavbarComponent } from  '../components/ItemNavbarComponent';
-export { default as ItemNewPost } from  '../components/ItemNewPost';
-export { default as ItemPostComponent } from  '../components/ItemPostComponent';
-export { default as ListNewPost } from  '../components/ListNewPost';
+export { default as ItemNavbarComponent } from  './ItemComponents/ItemNavbarComponent';
+export { default as ItemNewPost } from  './ItemComponents/ItemNewPost';
+export { default as ItemPostComponent } from  './ItemComponents/ItemPostComponent';
+export { default as NewPostComponent } from  './NewPostComponent';
 export { default as ListPostComponent } from  '../components/ListPostComponent';
 export { default as LocationComponent } from  '../components/LocationComponent';
 export { default as ModalComponent } from  '../components/ModalComponent/ModalRadioComponent';
@@ -31,8 +31,10 @@ export { default as OverviewComponent } from  '../components/OverviewComponent';
 export { default as NoticeListComponent } from  '../components/NoticeListComponent';
 export { default as ChatComponent } from  '../components/ChatComponent';
 export { default as PostPackageComponent } from  '../components/PostPackageComponent';
-
-
+export { default as SkeletonPosts } from './skeleton/SkeletonPosts';
+export { default as SkeletonCategory } from './skeleton/SkeletonCategory';
+export { default as SkeLetonDetailPage } from './skeleton/SkeLetonDetailPage';
+export { default as GeolocationComponent } from './GeolocationComponent';
 
 
 

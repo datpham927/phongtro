@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {  useAppSelector } from '../../../redux/hooks';
-import ReactLoading from 'react-loading';
-import ItemConversation from '../../ItemConversation';
+import ItemConversation from '../../ItemComponents/ItemConversation';
 import NotExit from '../../common/NotExit';
 import { IConversation } from '../../../interfaces/conversation';
 import { normalizeText } from '../../../utils/format/normalizeText';
+import { iconLoad } from '../../../assets';
 
 interface ChatLeftProps {
     setConversation: React.Dispatch<React.SetStateAction<any>>;
@@ -72,8 +72,8 @@ const ChatLeft: React.FC<ChatLeftProps> = ({
                     <NotExit label="Không có tin nhắn nào" />
                 )
             ) : (
-                <div className="w-full flex justify-center h-full items-center">
-                    <ReactLoading type="cylon" color="rgb(0, 136, 72)" />
+                <div className="w-full h-full flex justify-center   items-center"> 
+                    <img className='w-[50px]' src={iconLoad} />
                 </div>
             )}
         </div>

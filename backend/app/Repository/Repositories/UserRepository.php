@@ -1,8 +1,11 @@
 <?php
 namespace App\Repository\Repositories;
 use App\Http\Resources\UserResource;
+use App\Models\Invoice;
 use App\Models\User;
 use App\Repository\Interfaces\UserRepositoryInterface;
+use App\Util;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -13,23 +16,19 @@ class UserRepository implements UserRepositoryInterface
     {
         $this->user = $user;
     }
-    public function findAll($limit = 5, $sort = 'id:asc', $page = 1, array $filters = null)
+    function findAll($sort=null,array $filters=null){}
+    public function findAllUser()
     {
-
-        $query = $this->user->select('users.*', DB::raw('count(p.id) as post_quantity'))
+        $data = $this->user->select('users.*', DB::raw('count(p.id) as post_quantity'))
             ->leftJoin('posts as p', 'p.user_id', '=', 'users.id')
             ->groupBy('users.id')
-            ->where('users.type', '!=', 'admin');
-        // Tính tổng số người dùng và phân trang
-        $totalUsers = $query->get()->count();
-        $totalPage = ceil($totalUsers / $limit);
-        $offset = ($page - 1) * $limit;
-        $users = $query->limit($limit)->offset($offset)->get();
-        return [
-            'totalPage' => intval($totalPage), 
-            'currentPage' => intval($page),  
-            'totalUser' => intval($totalUsers),  
-            'users' =>$users,  
+            ->where('users.type', '!=', 'admin')
+            ->paginate(10); 
+        return [ 
+            'totalPage' =>  ceil($data->total()/10),
+            'currentPage' =>$data->currentPage(),
+            'totalUser' =>  $data->total(),
+            'users' =>  $data->items()  
         ];
     }
     
@@ -71,4 +70,24 @@ class UserRepository implements UserRepositoryInterface
             ->first();
         return $user;
     }
+    public function findByIdAndDeposit($uid, $amount) {
+        $user = $this->findById($uid); // Tìm người dùng theo ID
+        $id= Util::uuid();
+        $invoiceData = [
+            'id' => $id,
+            'transaction_type' => 'deposit',
+            'user_id' => $user->id,
+            'amount' => $amount,
+            'start_balance' => $user->account_balance,
+            'end_balance' => $user->account_balance+$amount,
+            'description' => "Nạp tiền vào tài khoản",
+        ];
+        $invoice = Invoice::create($invoiceData);
+        if ($invoice) {
+            $user->account_balance += intval($amount); // Chuyển $amount thành số nguyên và cộng vào account_balance
+            $user->save(); // Lưu thay đổi vào cơ sở dữ liệu
+        }
+        return $user; // Trả về đối tượng người dùng đã được cập nhật
+    }
+    
 }

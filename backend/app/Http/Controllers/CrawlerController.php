@@ -10,45 +10,57 @@ use App\Models\Post_area;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Models\PostType;
+use App\Models\Statistical;
 use App\Models\User;
 use App\Util;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\DomCrawler\Crawler;
 
 class CrawlerController  extends Controller
 {
    public  $categoryLinks = [
-        // [
-        //     'url' => 'https://phongtro123.com/cho-thue-phong-tro',
-        //     'name' => 'Cho Thuê Phòng Trọ',
-        //     'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
-        // ], 
-        //   [
-        //     'url' => 'https://phongtro123.com/nha-cho-thue',
-        //     'name' => 'Cho Thuê Nhà Nguyên Căn',
-        //     'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-        //     'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
-        // ],  
-      
-         [
-            'url' => 'https://phongtro123.com/cho-thue-mat-bang',
-            'name' => 'Cho Thuê Mặt Bằng',
-            'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
-            'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
-        ],  
         [
-            'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
-            'name' => 'Tìm Người Ở Ghép',
-            'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
-            'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
-        ],
+            'url' => 'https://phongtro123.com/cho-thue-phong-tro',
+            'name' => 'Phòng Trọ',
+            'title' => 'Cho Thuê Phòng Trọ, Giá Rẻ, Tiện Nghi, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê phòng trọ - Kênh thông tin số 1 về phòng trọ giá rẻ, phòng trọ sinh viên, phòng trọ cao cấp mới nhất năm 2024. Tất cả nhà trọ cho thuê giá tốt nhất tại Việt Nam.'
+        ], 
+          [
+            'url' => 'https://phongtro123.com/nha-cho-thue',
+            'name' => 'Nhà Nguyên Căn',
+            'title' => 'Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê nhà nguyên căn, nhà riêng: giá rẻ, chính chủ, đầy đủ tiện nghi. Tìm thuê nhà với nhiều mức giá khác nhau, đa dạng loại diện tích. Đăng tin cho thuê nhà nhanh, hiệu quả tại phongtro123.com'
+        ],    
         [
             'url' => 'https://phongtro123.com/cho-thue-can-ho',
-            'name' => 'Cho Thuê Căn Hộ',
+            'name' => 'Căn Hộ Chung Cư',
             'title' => 'Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, View Đẹp, Mới Nhất 2024',
             'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
         ], 
+        [
+            'url' => 'https://phongtro123.com/cho-thue-can-ho-chung-cu-mini',
+            'name' => 'Căn Hộ Mini',
+            'title' => 'Cho Thuê Căn Hộ Mini, Giá Rẻ, View Đẹp, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
+        ], [
+            'url' => 'https://phongtro123.com/cho-thue-can-ho-dich-vu',
+            'name' => 'Căn Hộ Dịch Vụ',
+            'title' => 'Cho Thuê Căn Hộ Dịch Vụ, Giá Rẻ, View Đẹp, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê căn hộ - Kênh đăng tin cho thuê căn hộ số 1: giá rẻ, chính chủ, đầy đủ tiện nghi. Cho thuê chung cư với nhiều mức giá, diện tích cho thuê khác nhau.'
+        ],   
+        [
+            'url' => 'https://phongtro123.com/tim-nguoi-o-ghep',
+            'name' => 'Ở Ghép',
+            'title' => 'Tìm Người Ở Ghép, Tìm Nam Ở Ghép, Tìm Nữ Ở Ghép, Mới Nhất 2024',
+            'sub_title' => 'Tìm người ở ghép, tìm nam ở ghép, tìm nữ ở ghép, share phòng trọ, tìm chỗ ở ghép cùng, tìm bạn ở ghép, xin ở ghép mới nhất 2024. Đăng tin ở ghép hiệu quả, nhanh chóng nhất...'
+        ],
+         [
+            'url' => 'https://phongtro123.com/cho-thue-mat-bang',
+            'name' => 'Mặt Bằng',
+            'title' => 'Cho Thuê Mặt Bằng, Giá Rẻ, Chính Chủ, Mới Nhất 2024',
+            'sub_title' => 'Cho thuê mặt bằng: giá rẻ, chính chủ, gần chợ, trường học, tiện mở quán ăn, cafe, kinh doanh mọi ngành nghề. Đăng tin cho thuê mặt bằng hiệu quả tại Phongtro123.com'
+        ],
     ];
     
     public $users=[
@@ -146,16 +158,16 @@ class CrawlerController  extends Controller
         // Remove trailing spaces and hyphens from the address detail
         $addressDetail = rtrim($addressDetail, ' -');
         // Split the address string into an array by commas
-        $addressArray = explode(',', $addressDetail);
+        $addressArray = explode(', ', $addressDetail);
             // Output the array for debugging
-        if( count($addressArray)>3){
+        if( count($addressArray)>3){ 
             $address["id"]=Util::uuid(); 
             $address["city_name"]=$addressArray[3];
             $address["district_name"]= $addressArray[2];
-            $address["ward_name"]= $addressArray[1]||""; 
+            $address["ward_name"]= $addressArray[1]; 
             $address["city_slug"]= Util::slug($addressArray[3]);
             $address["district_slug"]=Util::slug($addressArray[2]);
-            $address["ward_slug"]=Util::slug($addressArray[1])||""; 
+            $address["ward_slug"]=Util::slug($addressArray[1]); 
           
         }else{
             $address["id"]=Util::uuid(); 
@@ -182,7 +194,6 @@ class CrawlerController  extends Controller
          // ------------------ POST ------------------
 
          $postData["address_detail"]=$addressDetail; 
-         $postData["map"]= '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.5956177445114!2d108.24024507365495!3d16.034552740368213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142175ea43a1001%3A0x1b74ea0a2ed3227b!2zS8O9IHTDumMgeMOhIFNpbmggdmnDqm4gVFAgxJDDoCBO4bq1bmcgLSBQaMOtYSDEkMO0bmc!5e0!3m2!1svi!2s!4v1726499130448!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'; 
          $postData["id"]=Util::uuid();
          $postData["address_id"]=$addressId ;
          $postData["user_id"]= $this->users[rand(0, 3)];
@@ -283,6 +294,11 @@ class CrawlerController  extends Controller
         if ($invoice) {
             $user->account_balance -= $postType["price"];
             $user->save(); // Lưu lại thay đổi số dư
+            $today = Carbon::now()->toDateString();
+            $foundStatistical = Statistical::firstOrNew(['transaction_day' => $today]);
+            $foundStatistical->total_transactions += 1;
+            $foundStatistical->total_revenue += $postType->price;
+            $foundStatistical->save();
         }
     }
     

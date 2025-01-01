@@ -4,8 +4,8 @@ import { useAppSelector } from '../redux/hooks';
 import { DetailPost, FilterPage, HomePage, ResetPassword } from '../pages/public';
 import DefaultLayout from '../layout/DefaultLayout';
 import PrivateRoute from '../middleware/PrivateRoute';
-import { CreateCategory, CreatePost, CreateUser, DepositHistory, EditAccount, ManageApprovedPost, 
-  ManageCategory, ManagePost,  ManageUser,  PaymentHistory,  PriceList,  UpdateCategory,  UpdatePost, UpdateUser } from '../pages/system';
+import { CreateCategory, CreatePost, CreateUser, Deposit, DepositConfirm, DepositHistory, EditAccount, ManageApprovedPost, 
+  ManageCategory, ManagePost,  ManagePostType,  ManageStatistical,  ManageUser,  PaymentHistory,  PriceList,  UpdateCategory,  UpdatePost, UpdatePostType, UpdateUser } from '../pages/system';
 import LayoutSystem from '../layout/LayoutSystem';
 import IsUser from '../middleware/IsUser';
 
@@ -17,7 +17,8 @@ const RouterPage = () => {
       <Route path={PATH.HOME} element={  <IsUser><DefaultLayout /></IsUser> }>
           <Route path='*' element={<Navigate to={PATH.HOME} />} />
           <Route path={PATH.HOME} element={<HomePage />} />
-          <Route path={PATH.HOME__PAGE} element={<HomePage />} />
+          <Route path={PATH.HOME_PAGE} element={<HomePage />} />
+          <Route path={PATH.NEARBY_AREA} element={<HomePage />} />
           <Route path={PATH.FILTER__PAGE} element={<FilterPage />} />
           <Route path={PATH.CATEGORY_FILTER__PAGE} element={<FilterPage />} />
           <Route path={PATH.DETAIL_POST} element={<DetailPost />} />
@@ -41,8 +42,14 @@ const RouterPage = () => {
               {/* ------- invoice */}
               <Route path={PATH.DEPOSIT_HISTORY} element={<DepositHistory />} /> 
               <Route path={PATH.PAYMENT_HISTORY} element={<PaymentHistory />} />
-               
-              <Route path={PATH.PRICE_LIST} element={<PriceList />} /> 
+              {/* ------- post type  */}
+              <Route path={PATH.POST_TYPE_LIST} element={<PriceList />} /> 
+              <Route path={PATH.MANAGE_POST_TYPE_LIST} element={<ManagePostType />} /> 
+              <Route path={PATH.UPDATE_POST_TYPE} element={<UpdatePostType />} /> 
+              <Route path={PATH.MANAGE_STATISTICAL} element={<ManageStatistical  />} /> 
+              {/* -------- deposit  */}
+              <Route path={PATH.DEPOSIT_CONFIRM} element={<DepositConfirm/>} />  
+              <Route path={PATH.DEPOSIT} element={<Deposit/>} />  
       </Route>
     </Routes>
   );

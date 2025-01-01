@@ -60,15 +60,18 @@ class UserService implements UserServiceInterface
 
     // Tìm tất cả người dùng
     public function findAllUser($payload)
-    {
-        $limit = $payload['limit'];
-        $page = $payload['page']; 
-        return $this->userRepository->findAll($limit, null, $page);
+    { 
+        return $this->userRepository->findAllUser();
     }
 
     // Xóa người dùng
     public function findDeleteUser($uid)
     {
         $this->userRepository->findByIdAndDelete($uid);
+    }
+    // nạp tiền  
+    public function findUserAndDeposit($uid,$amount)
+    {
+       return $this->userRepository->findByIdAndDeposit($uid,$amount);
     }
 }

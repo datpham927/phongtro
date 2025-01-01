@@ -7,7 +7,7 @@ import { IFilterCategory, IFilterDouble } from '../../../interfaces/filter';
 import { IPost } from '../../../interfaces/Post';
 import { apiGetPost } from '../../../services/apiPost';
 import { getDistrictByCity, getAddress, getWardByCityAndDistrict, getWardBelongCategoryByCityAndDistrict, getDistrictBelongCategoryByCity } from '../../../services/apiAddress';
-import {   ItemNavbarComponent, ListNewPost, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
+import {   ItemNavbarComponent, NewPostComponent, ListPostComponent, LocationComponent, PaginationComponent, SearchComponent, WelcomeComponent } from '../../../components';
 import { convertToMillion } from '../../../utils/convertMillion';
 import { setLoading } from '../../../redux/action/actionSlice';
 
@@ -25,29 +25,25 @@ const FilterPage: React.FC = () => {
   const params = useParams();
   const queries = useMemo(() => queryString.parse(location.search), [location.search]);
   const category=categories?.find(e=>e.slug===params.category_slug||e.slug==="cho-thue-phong-tro")
-
-
   useEffect(() => {
-    dispatch(setLoading(true)) 
     const fetchPosts = async () => {
       const { gia_tu, gia_den, dien_tich_tu, dien_tich_den, orderby, ...rest } = queries;
+      dispatch(setLoading(true)) 
       const res = await apiGetPost({
         ...rest,
-        ...params,
-        limit: 10,
+        ...params, 
         price_from: gia_tu,
         price_to: gia_den,
         area_from: dien_tich_tu,
         area_to: dien_tich_den,
         sort: orderby,
       });
-
+      dispatch(setLoading(false))
       if (res.status) {
         setListPost(res.data.posts);
         setTotalPage(res.data.totalPage);
         setTotalPost(res.data.totalPosts);
       }
-      dispatch(setLoading(false))
     };
 
     fetchPosts();
@@ -79,6 +75,7 @@ const FilterPage: React.FC = () => {
       }
       if (res?.status) {
         setLocations(res.data.locations);
+        console.log(res.data.locations)
         if(category?.name&&category?.title){
           setTitleWelcome({
             title: `${category?.name} ${res.data?.district_name || res.data?.city_name}, ${category?.title}`,
@@ -123,13 +120,13 @@ const FilterPage: React.FC = () => {
       <div className="flex my-5 gap-4">
         <div className="w-[70%]">
           <ListPostComponent data={listPosts} totalPost={totalPost} />
-          { listPosts?.length>0&&  <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />}
+          { listPosts?.length>1&&  <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} totalPage={totalPage} />}
         </div>
         <div className="w-[30%]">
           <ItemNavbarComponent isDouble title="Xem theo giá" content={dataPrice} handleOnClick={handleCLickPrice} />
           <ItemNavbarComponent isDouble title="Xem theo diện tích" content={dataArea} handleOnClick={handleCLickArea} />
           <ItemNavbarComponent title="Danh mục cho thuê" content={categories} handleOnClick={handleCLickCategory} />
-          <ListNewPost/>
+          <NewPostComponent/>
         </div>
       </div>
     </>

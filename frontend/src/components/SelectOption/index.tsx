@@ -1,5 +1,5 @@
 import { memo, ChangeEvent } from "react";
-
+import { v4 as uuidv4 } from 'uuid';
 // Định nghĩa kiểu dữ liệu cho các option
  
 
@@ -55,7 +55,7 @@ function SelectOption({
         <option value="">{`--${label}--`}</option>
         {options?.map((e:any) => (
           <option
-            key={e.code||e.id}
+          key={uuidv4()}
             value={e.code||e.id}
           >
             {e.name}

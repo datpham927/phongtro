@@ -19,19 +19,18 @@ class InvoiceController extends Controller
         
         try {
             $response= $this->invoiceService->findAllPaymentHistory($request);
-            return ResponseHelper::success($response,"Successfully",200);
+            return ResponseHelper::success($response,"Thành công",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
     } 
     public function getAllDepositHistory(Request $request )
     { 
-        
         try {
             $response= $this->invoiceService->findAllDepositHistory($request);
-            return ResponseHelper::success($response,"Successfully",200);
+            return ResponseHelper::success($response,"Thành công",200);
         } catch (\Throwable $th) {
-            return ResponseHelper::error("Error",$th);
+            return ResponseHelper::error("Đã xảy ra lỗi",$th);
         }
-    } 
+    }  
 }

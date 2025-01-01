@@ -4,10 +4,12 @@ import { IPost } from "../../interfaces/Post";
 
 interface PostState {
   listPost: IPost[];
+  allPostAroundYourArea: IPost[];
 }
 
 const initialState: PostState = {
   listPost: [],
+  allPostAroundYourArea: [],
 };
 
 const postSlice = createSlice({
@@ -17,9 +19,12 @@ const postSlice = createSlice({
     setListPost: (state, action: PayloadAction<IPost[]>) => {
       state.listPost = action.payload;
     },
+    setAllPostAroundYourArea: (state, action: PayloadAction<IPost[]>) => {
+      state.listPost = action.payload;
+    },
   },
 });
 
-export const { setListPost } = postSlice.actions;
+export const { setListPost,setAllPostAroundYourArea } = postSlice.actions;
 
 export default postSlice.reducer;

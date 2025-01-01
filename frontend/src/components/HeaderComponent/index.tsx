@@ -1,10 +1,9 @@
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ButtonComponent from "../ButtonComponent/ButtonComponent"; 
 import { Link, useNavigate } from "react-router-dom";
 import {   useState } from "react";
 import UserComponent from "../UserComponent";
-import { setFeatureAuth, setOpenFeatureAuth } from "../../redux/action/actionSlice"; 
+import { setFeatureAuth, setLoading, setOpenFeatureAuth } from "../../redux/action/actionSlice"; 
 import { setDetailUser } from "../../redux/user/userSlice";
 import { setIsLoginSuccess } from "../../redux/auth/authSlice";
 import { apiLogout } from "../../services/apiAuth";
@@ -12,16 +11,18 @@ import { menuSidebar } from "../../utils/menuSidebar";
 import { menuSidebarAdmin } from "../../utils/menuSidebarAdmin";
 
 const HeaderComponent=()=> {
-  const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   // const { openFeatureAuth, featureAuth  } = useAppSelector((state) => state.action);
   const {  isLogged  } = useAppSelector((state) => state.auth);
   const user = useAppSelector((state) => state.user);
+  const dispatch= useAppDispatch();
 
   const navigate=useNavigate()
 
   const handleLogout = async () => {
+         dispatch(setLoading(true))
         const res = await apiLogout();
+        dispatch(setLoading(false))
         if (!res.status) return;
         localStorage.clear();
         dispatch(setDetailUser({}));

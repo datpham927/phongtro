@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import SelectOption from "../../../components/SelectOption"; 
 import { apiDeletePost, apiGetExpiredPostForShop, apiGetPostForShop } from "../../../services/apiPost"; 
 import { IPost } from "../../../interfaces/Post";
-import ItemManagePost from "../../../components/ItemManagePost";
+import ItemManagePost from "../../../components/ItemComponents/ItemManagePost";
 import { checkStatus } from "../../../utils/checkStatus";
 import { transformId } from "../../../utils/format/transformId";
 import { formatDate } from "../../../utils/format/formatDate";
@@ -20,18 +20,18 @@ function ManagePost() {
 
   const navigate=useNavigate()
   useEffect(() => {
-    dispatch(setLoading(true)) 
     const fetchApi = async () => {
         let res;
+        dispatch(setLoading(true)) 
         if (postFilter === 1) {
-          res = await apiGetPostForShop({ limit: 10, page: currentPage, sort: "ctime" });
+          res = await apiGetPostForShop({  page: currentPage, sort: "ctime" });
         } else  if (postFilter === 2) {
-          res = await apiGetExpiredPostForShop({ limit: 10, page: currentPage });
+          res = await apiGetExpiredPostForShop({ page: currentPage });
         }
+        dispatch(setLoading(false))  
         if (!res?.status) return;
         setPosts(res?.data?.posts);
         setTotalPage(res?.data?.totalPage);
-        dispatch(setLoading(false))  
     };
     fetchApi();
   }, [currentPage, postFilter]);
@@ -67,7 +67,7 @@ const handleDeletePost=async(pid:string)=>{
           <ButtonComponent text="Đăng tin mới" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}/>
         </div>
       </div>
-      <div className="w-full ">
+      <div className="w-full h-full">
         <ul className="grid grid-cols-8 divide-x  border-solid border-[1px] border-slate-2200">
           <li className="p-[10px] font-semibold text-sm">Mã tin</li>
           <li className="p-[10px] font-semibold text-sm">Ảnh đại diện</li>
@@ -78,7 +78,7 @@ const handleDeletePost=async(pid:string)=>{
           <li className="p-[10px] font-semibold text-sm">Xét duyệt</li>
           <li className="p-[10px] font-semibold text-sm">Tùy chọn</li>
         </ul>
-        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200">
+        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200 h-full">
           {posts?.map((e) => {
             return (
               <ItemManagePost

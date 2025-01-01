@@ -4,7 +4,7 @@ import {
 } from "../../utils/format/convertVietnamese";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import { roundNumber } from "../../utils/format/roundNumber";
-
+import { v4 as uuidv4 } from 'uuid';
 interface ModalRadioComponentProps {
     content: any;
     setOpenModal: (hide: boolean) => void;
@@ -200,6 +200,7 @@ const ModalRangeComponent: React.FC<ModalRadioComponentProps> = ({
                      <div className="flex flex-wrap gap-3">
                         {content?.map((e: any) => (
                            <span
+                           key={uuidv4()}
                               className={`text-[14px] flex justify-center py-1 px-4 rounded-md cursor-pointer ${
                                true
                                     ? "bg-blue-custom text-white"

@@ -6,7 +6,7 @@ import { PATH } from "../../../../utils/constant";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { apiDeleteCategory, apiGetAllCategory } from "../../../../services/apiCategory";
-import ItemManageCategory from "../../../../components/ItemManageCategory";
+import ItemManageCategory from "../../../../components/ItemComponents/ItemManageCategory";
 import { ICategory } from "../../../../interfaces/category";
 function ManageCategory() {
   const [categories, setCategories] = useState<ICategory[]>([]);  
@@ -16,9 +16,9 @@ function ManageCategory() {
 
   const navigate=useNavigate()
   useEffect(() => {
-    dispatch(setLoading(true)) 
-    const fetchApi = async () => {
-          const res=await apiGetAllCategory({ limit: 10, page: currentPage, sort: "ctime" });
+  
+    const fetchApi = async () => {   dispatch(setLoading(true)) 
+          const res=await apiGetAllCategory({    page: currentPage, sort: "ctime" });
         if (!res?.status) return;
         setCategories(res?.data?.categories);
         setTotalPage(res?.data?.totalPage-1);
@@ -49,7 +49,7 @@ const handleDeletePost=async(category:ICategory)=>{
           <ButtonComponent text="Thêm danh mục" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_CATEGORY}`)}/>
         </div>
       </div>
-      <div className="w-full ">
+      <div className="w-full h-full">
         <ul className=" grid grid-cols-6 divide-x  border-solid border-[1px] border-slate-2200">
           <li className="p-[10px] font-semibold text-sm">id</li>
           <li className="p-[10px] font-semibold text-sm">Tên danh mục</li>
@@ -58,7 +58,7 @@ const handleDeletePost=async(category:ICategory)=>{
           <li className="p-[10px] font-semibold text-sm">Số lượng bài viết</li>
           <li className="p-[10px] font-semibold text-sm">Tùy chọn</li>
         </ul>
-        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200">
+        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200 h-full">
           {categories?.map((e:ICategory) => {
             return (
               <ItemManageCategory

@@ -5,7 +5,7 @@ import { PATH } from "../../utils/constant";
 import { useEffect } from "react";
 import { setCategories } from "../../redux/category/categorySlice";
 import { apiGetAllCategory } from "../../services/apiCategory";
-
+import { v4 as uuidv4 } from 'uuid';
 const NavigateComponent = () => {
   const { categories } = useAppSelector((state) => state.category);
   const dispatch=useAppDispatch()
@@ -40,7 +40,7 @@ const NavigateComponent = () => {
           Trang chủ
         </NavLink>
         {categories?.map((e) => (
-          <NavLink to={`/${e.slug}`} className={({ isActive }) => (isActive ? active : notActive)}>
+          <NavLink key={uuidv4()}to={`/${e.slug}`} className={({ isActive }) => (isActive ? active : notActive)}>
             {e.name}
           </NavLink>
           ))}   

@@ -7,10 +7,12 @@ use App\Models\Post_area;
 use App\Models\Post_image;
 use App\Models\Post_price;
 use App\Models\PostType;
+use App\Models\Statistical;
 use App\Models\User;
 use App\Repository\Interfaces\PostRepositoryInterface;
 use App\Service\Interfaces\PostServiceInterface;
 use App\Util;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Redis;
 
@@ -24,40 +26,37 @@ class PostService implements PostServiceInterface
     }
 
     public function findAll($request)
-    {
-        $limit = $request['limit'];
-        $page = $request['page'];
+    { 
         $sort = $request['sort'];
-        unset($request['limit'], $request['page'], $request['sort']);
+        unset( $request['page'], $request['sort']);
         $filters = $request->all();
-        return $this->postRepository->findAll($limit, $sort, $page, $filters);
+        return $this->postRepository->findAll( $sort, $filters);
     }
 
     public function findAllForShop($request)
-    {
-        $limit = $request['limit'];
-        $page = $request['page'];
-        $sort = $request['sort'];
-        unset($request['limit'], $request['page'], $request['sort']);
-        $filters = $request->all();
-        $filters['user_id'] = $request['user_id'];
-        return $this->postRepository->findAll($limit, $sort, $page, $filters);
+    { 
+        $user_id = $request['user_id'];
+        return $this->postRepository->findAllForShop( $user_id );
+    }
+    public function findNewPosts()
+    { 
+        return $this->postRepository->findNewPosts();
     }
 
     public function findAllPostExpiredForShop($request)
-    {
-        $limit = $request['limit'];
-        $page = $request['page'];
-        $sort = 'desc';
+    { 
         $shopId = $request['user_id'];
-        return $this->postRepository->findAllPostExpiredForShop($limit, $sort, $page, $shopId);
+        return $this->postRepository->findAllPostExpiredForShop(    $shopId);
     }
 
     public function findRelatedPost($addressId)
     {
         return $this->postRepository->findRelatedPostByAddress($addressId);
     }
+    public function  findLocationPosts($city_slug,$district_slug){
+        return $this->postRepository->findLocationPosts($city_slug,$district_slug);
 
+    }
     public function create($request)
     {
         // Lấy dữ liệu đã được validate
@@ -105,6 +104,12 @@ class PostService implements PostServiceInterface
         if ($invoice) {
             $user->account_balance -= $postType->price;
             $user->save(); // Lưu lại thay đổi số dư
+            // thêm vào thống kê
+            $today = Carbon::now()->toDateString();
+            $foundStatistical = Statistical::firstOrNew(['transaction_day' => $today]);
+            $foundStatistical->total_transactions += 1;
+            $foundStatistical->total_revenue += $postType->price;
+            $foundStatistical->save();
         }
     }
 
@@ -141,25 +146,13 @@ class PostService implements PostServiceInterface
 
     public function findDetailPost($pid)
     {
-        $cacheKey = "posts:detail:{$pid}";
-        $cachedPost = Redis::get($cacheKey);
-
-        if ($cachedPost) {
-            return json_decode($cachedPost, true);
-        }
-
         $post = $this->postRepository->findPostDetailById($pid);
-        // Cache the post for 24 hours
-        Redis::setex($cacheKey, 3600 * 24, json_encode($post));
         return $post;
     }
 
     public function findAllUnapprovedPosts($request)
-    {
-        $limit = $request['limit'];
-        $page = $request['page'];
-        $sort = $request['sort'];
-        return $this->postRepository->findAllUnapprovedPosts($limit, $sort, $page);
+    { 
+        return $this->postRepository->findAllUnapprovedPosts();
     }
 
     public function findApprovePost($pid)
@@ -198,7 +191,6 @@ class PostService implements PostServiceInterface
             "description" => $validatedData["description"],
             "category_id" => $validatedData["category_id"],
             "address_detail" => $validatedData["address_detail"],
-            "map" => $validatedData["map"],
             "post_type_id" => $validatedData["post_type_id"],
             "target" => $validatedData["target"]
         ];

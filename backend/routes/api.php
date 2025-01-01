@@ -8,15 +8,17 @@ use App\Http\Controllers\api\InvoiceController;
 use App\Http\Controllers\api\MessageController;
 use App\Http\Controllers\api\PostControllers;
 use App\Http\Controllers\api\PostTypeController;
+use App\Http\Controllers\api\StatisticalController;
 use App\Http\Controllers\api\UserControllers;
 use App\Http\Controllers\CrawlerController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\Login;
+use App\Models\Statistical;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 // Route cho crawler
-Route::post('/crawler', [CrawlerController::class, 'crawler'])->name('crawler.index');
+Route::get('/crawler', [CrawlerController::class, 'crawler'])->name('crawler.index');
 
 // Nhóm các route liên quan đến xác thực người dùng
 Route::prefix('v1/auth')->group(function () {
@@ -34,6 +36,7 @@ Route::prefix('v1/auth')->group(function () {
 Route::middleware(Login::class)->prefix('v1/user')->group(function () {
     Route::get('/{uid}/detail', [UserControllers::class, 'getUser']);
     Route::put('/profile', [UserControllers::class, 'updateProfile']);
+    Route::put('/deposit', [UserControllers::class, 'deposit']);
     // Chỉ admin mới có quyền truy cập các route sau
     Route::middleware(IsAdmin::class)->group(function () {
         Route::post('/add', [UserControllers::class, 'addUser']);
@@ -59,7 +62,9 @@ Route::prefix('v1/post')->group(function () {
     Route::get('/all', [PostControllers::class, 'getAll']);
     Route::get('/{pid}/detail', [PostControllers::class, 'getDetailPost']);
     Route::get('/{address_id}/related-post', [PostControllers::class, 'getRelatedPost']);
-    // Các route yêu cầu đăng nhập
+    Route::get('/new-post', [PostControllers::class, 'getNewPosts']);
+    Route::get('/location-post/{city_slug}/{district_slug}', [PostControllers::class, 'getLocationPosts']);
+     // Các route yêu cầu đăng nhập
     Route::middleware(Login::class)->group(function () {
         Route::delete('/{pid}/delete', [PostControllers::class, 'destroy']);
         Route::post('/add', [PostControllers::class, 'create']);
@@ -91,10 +96,10 @@ Route::prefix('v1/post-type')->group(function () {
     Route::middleware([Login::class, IsAdmin::class])->group(function () {
         Route::put('/{ptid}/update', [PostTypeController::class, 'update']);
     });
-});
-Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
-    Route::get('/all-payment-history', [InvoiceController::class, 'getAllPaymentHistory']); 
-    Route::get('/all-deposit-history', [InvoiceController::class, 'getAllDepositHistory']); 
+    Route::middleware([Login::class, IsAdmin::class])->group(function () {
+        Route::get('/{ptid}', [PostTypeController::class, 'getPostType']);
+    });
+    
 });
 Route::middleware([Login::class])->prefix('v1/invoice')->group(function () {
     Route::get('/all-payment-history', [InvoiceController::class, 'getAllPaymentHistory']); 
@@ -105,6 +110,12 @@ Route::middleware(Login::class)->prefix('v1/message')->group(function () {
     Route::post('/{conversation_id}/add', [MessageController::class, 'sendMessage']);
     Route::get('/{conversation_id}/all', [MessageController::class, 'getAllMessage']);
 });
+Route::middleware(Login::class)->prefix('v1/conversation')->group(function () {
+    Route::post('/add', [ConversationControllers::class, 'create']);
+    Route::get('/all', [ConversationControllers::class, 'getAll']);
+});
+
+Route::middleware([Login::class,IsAdmin::class])->get('v1/statistical/all', [StatisticalController::class, 'getStatistical']); 
 
 Route::get('/test-redis', function () {
     try {

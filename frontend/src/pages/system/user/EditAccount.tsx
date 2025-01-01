@@ -9,6 +9,7 @@ import { apiUpdateProfile } from "../../../services/apiUser"
 import validate from "../../../utils/validate"
 import { setDetailUser } from "../../../redux/user/userSlice"
 import { setLoading } from "../../../redux/action/actionSlice"
+import { ENV } from "../../../utils/config/ENV"
 
 const EditAccount = () => {
   const dispatch = useAppDispatch()
@@ -28,7 +29,7 @@ const EditAccount = () => {
     if (files) {
       const formData = new FormData()
       formData.append("file", files)
-      formData.append("upload_preset", import.meta.env.VITE_REACT_UPLOAD_PRESET)
+      formData.append("upload_preset", ENV.UPLOAD_PRESET)
       const response = await apiUploadImage(formData)
       if (response) {
         setDataEditUser((prev: any) => ({

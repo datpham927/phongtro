@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { AddressComponent, ButtonComponent, NoticeListComponent, OverviewComponent, PostPackageComponent } from "../../../components";
+import { AddressComponent, ButtonComponent,   NoticeListComponent, OverviewComponent, PostPackageComponent } from "../../../components";
 import validate from "../../../utils/validate";
 import { apiCreatePost } from "../../../services/apiPost";
 import {  IPostPayload } from "../../../interfaces/Post";
@@ -11,6 +11,7 @@ import { PATH } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../../redux/action/actionSlice";
 import { IPostType } from "../../../interfaces/PostType";
+import MapComponent from "../../../components/MapComponent";
 
 function CreatePost() {
   const [payload, setPayload] = useState<IPostPayload>({
@@ -18,7 +19,6 @@ function CreatePost() {
     categoryCode: "",
     description: "",
     images: [],
-    map: "",
     priceNumber: "",
     province: "",
     district:'',
@@ -35,10 +35,9 @@ function CreatePost() {
   const navigate=useNavigate()
 
   const handleSummit = useCallback(async () => {
-
     const check = validate(payload, setInvalidFields);
+    
     if (!check) return;
-    dispatch(setLoading(true))
     const { areaNumber, priceNumber, images,categoryCode, district, province, ward,...data } = payload;
     const postData = {
       thumb: images[0],
@@ -55,6 +54,7 @@ function CreatePost() {
       },
       ...data,
     };
+    dispatch(setLoading(true))
     const response = await apiCreatePost(postData);
     dispatch(setLoading(false)) 
     if(response.status) {alert("Thêm thành công");navigate(`${PATH.SYSTEM}/${PATH.MANAGE_POST}`)}
@@ -84,14 +84,15 @@ function CreatePost() {
             setInvalidFields={setInvalidFields}
             /> 
 
-{postType&&   <ButtonComponent
+       {postType&& <ButtonComponent
         text={`${postType?.price > 0 ? `Thanh toán ${new Intl.NumberFormat('vi-VN').format(postType?.price)}₫` : "Miễn phí"}`}
         className={ `${postType?.price>user?.account_balance ?"opacity-80":"hover:bg-[#D61117]"} bg-[#E51F40] text-white text-sm`}
         onClick={()=> postType&&handleSummit()}
 
       />}
         </div >
-         <div className="flex flex-col gap-3 w-[40%] pb-20">
+         <div className="flex flex-col gap-3 w-[40%] pb-20 items-center">
+           <MapComponent width="80%" height="300px" placeName={payload?.address_detail}/>  
            <NoticeListComponent/>
          </div>
       </div>

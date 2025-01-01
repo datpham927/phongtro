@@ -6,7 +6,7 @@ import { PATH } from "../../../../utils/constant";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { apiDeleteUser, apiGetAllUser } from "../../../../services/apiUser";
-import ItemManageUser from "../../../../components/ItemManageUser";
+import ItemManageUser from "../../../../components/ItemComponents/ItemManageUser";
 import { IUserDetail } from "../../../../interfaces/User";
 function ManageUser() {
   const [users, setUsers] = useState<IUserDetail[]>([]);  
@@ -16,13 +16,14 @@ function ManageUser() {
 
   const navigate=useNavigate()
   useEffect(() => {
-    dispatch(setLoading(true)) 
-    const fetchApi = async () => {
-          const res=await apiGetAllUser({ limit: 10, page: currentPage, sort: "ctime" });
-        if (!res?.status) return;
+  
+    const fetchApi = async () => {   
+           dispatch(setLoading(true)) 
+          const res=await apiGetAllUser({   page: currentPage, sort: "ctime" });
+          dispatch(setLoading(false))  
+          if (!res?.status) return;
         setUsers(res?.data?.users);
         setTotalPage(res?.data?.totalPage);
-        dispatch(setLoading(false))  
     };
     fetchApi();
   }, [currentPage ]);
@@ -50,7 +51,7 @@ const handleDeletePost=async(uid:any)=>{
           <ButtonComponent text="Thêm người dùng" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_USER}`)}/>
         </div>
       </div>
-      <div className="w-full ">
+      <div className="w-full h-full">
         <ul className=" grid grid-cols-7 divide-x  border-solid border-[1px] border-slate-2200">
           <li className="p-[10px] font-semibold text-sm">id</li>
           <li className="p-[10px] font-semibold text-sm">Ảnh đại diện</li>
@@ -60,7 +61,7 @@ const handleDeletePost=async(uid:any)=>{
           <li className="p-[10px] font-semibold text-sm">Số lượng bài viết</li>
           <li className="p-[10px] font-semibold text-sm">Tùy chọn</li>
         </ul>
-        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200">
+        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200 h-full">
           {users?.map((e) => {
              
             return (

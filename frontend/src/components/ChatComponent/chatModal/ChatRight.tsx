@@ -1,13 +1,14 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import ReactLoading from 'react-loading';
 import SendIcon from '@mui/icons-material/Send';
 import { useAppSelector } from '../../../redux/hooks';
 import NotExit from '../../common/NotExit';
-import ButtonOutline from '../../ButtonOutline';
-import ItemMessage from '../../ItemMessage';
+import ItemMessage from '../../ItemComponents/ItemMessage';
 import { apiAddMessage, apiGetMessages } from '../../../services/apiMessage';
 import { IConversation } from '../../../interfaces/conversation';
 import Pusher from 'pusher-js';
+import ButtonOutline from '../../ButtonComponent/ButtonOutline';
+import { ENV } from '../../../utils/config/ENV';import { v4 as uuidv4 } from 'uuid';
+import { iconLoad } from '../../../assets';
 interface Message {
     user_id: string;
     message: string;
@@ -27,8 +28,8 @@ const ChatRight: React.FC<{ conversation: IConversation |any; isOpen: boolean }>
     }, [isOpen]);   
     
     useEffect(() => {
-        const pusher = new Pusher(import.meta.env.VITE_REACT_PUSHER_APP_KEY, {
-            cluster: import.meta.env.VITE_REACT_PUSHER_APP_CLUSTER
+        const pusher = new Pusher(ENV.PUSHER_APP_KEY, {
+            cluster: ENV.PUSHER_APP_CLUSTER
         });
         const channel = pusher.subscribe( `chat-${currentUser.id}`);
         channel.bind('sendMessage', function(data:any) {
@@ -82,7 +83,7 @@ const ChatRight: React.FC<{ conversation: IConversation |any; isOpen: boolean }>
                                     <div className="flex flex-col gap-4 h-auto justify-end w-full ">
                                         {messages?.length > 0 ? (
                                             messages?.map((message) => (
-                                                <div ref={scroll} >
+                                                <div ref={scroll} key={uuidv4()} >
                                                     <ItemMessage
                                                         own={message.user_id === currentUser.id}
                                                         message={message}
@@ -115,7 +116,7 @@ const ChatRight: React.FC<{ conversation: IConversation |any; isOpen: boolean }>
                         ) : (<NotExit label="Xin chào" />)
                     ) : (
                         <div className="w-full flex justify-center h-full items-center">
-                            <ReactLoading type="cylon" color="rgb(0, 136, 72)" />
+                             <img className='w-[50px]' src={iconLoad} />
                         </div>
                     )}
                 </div>

@@ -1,6 +1,7 @@
 export const PATH = {
   HOME: "/",
-  HOME__PAGE: "/:category_slug",
+  HOME_PAGE: "/:category_slug",
+  NEARBY_AREA: "/khu-vuc-quanh-vi-tri-cua-ban/:city_slug/:district_slug?/:ward_slug",
   FILTER__PAGE: "/tinh-thanh/:city_slug/:district_slug?/:ward_slug?",
   CATEGORY_FILTER__PAGE: "/:category_slug/:city_slug/:district_slug?/:ward_slug?",
   RESET_PASSWORD: "/reset/:token",
@@ -11,7 +12,14 @@ export const PATH = {
   MANAGE_POST: "quan-ly-bai-dang",
   EDIT_ACCOUNT:"thong-tin-tai-khoan",
   DETAIL:"/chi-tiet/",
-  // ------------------
+  // ------- Người cho thuê----------- 
+  DEPOSIT_HISTORY:'lich-su-nap-tien',
+  PAYMENT_HISTORY:'lich-su-thanh-toan',
+  POST_TYPE_LIST:'bang-gia-dich-vu',
+  UPDATE_POST_TYPE:'cap-nhat-bang-gia-dich-vu/:ptypeid',
+
+  // -------- Admin ---------- 
+  MANAGE_STATISTICAL:"thong-ke-doanh-thu",
   MANAGE_USER: "quan-ly-nguoi-dung",
   UPDATE_USER: "chinh-sua-thong-tin-nguoi-dung/:uid",
   CREATE_USER: "them-nguoi-dung",
@@ -20,9 +28,10 @@ export const PATH = {
   MANAGE_CATEGORY: "quan-ly-danh-muc",
   UPDATE_CATEGORY: "chinh-sua-danh-muc/:cid",
   CREATE_CATEGORY: "them--danh-muc",
-  DEPOSIT_HISTORY:'lich-su-nap-tien',
-  PAYMENT_HISTORY:'lich-su-thanh-toan',
-  PRICE_LIST:'bang-gia-dich-vu'
+  MANAGE_POST_TYPE_LIST:'quan-ly-bang-gia-dich-vu',
+  UPDATE_POST_TYPE_LIST: "chinh-sua-gia-dich-vu/:id",
+  DEPOSIT:'nap-tien',
+  DEPOSIT_CONFIRM:'nap-tien/xu-ly-giao-dich'
 };
 
 export const titleHomePage = {

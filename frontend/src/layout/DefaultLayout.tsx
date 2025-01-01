@@ -2,21 +2,22 @@ import HeaderComponent from '../components/HeaderComponent';
 import FooterComponent from '../components/FooterComponent';
 import { Auth } from '../feature';
 import NavigateComponent from '../components/NavigateComponent';
-import { Outlet } from 'react-router-dom';
-import LoadingComponent from '../components/LoadingComponent';
-import { ChatComponent } from '../components';
+import { Outlet } from 'react-router-dom'; 
+import { ChatComponent  } from '../components'; 
+import ProgressBar from '../components/common/ProgressBar';
  
 const DefaultLayout = () => { 
+
   return (
-      <div className='w-full h-full  overflow-scroll'>
+      <div className='w-full h-full overflow-scroll bg-[#FDF5ED] pb-4'>
           <HeaderComponent />
           <NavigateComponent/>
-          <div className="w-[1100px] mx-auto"> 
+          <div className="w-[1100px] mx-auto pb-5"> 
               <Outlet/>
           </div>
           <FooterComponent/>
           <Auth/>
-          <LoadingComponent/> 
+          <ProgressBar/>
           <ChatComponent/>
           </div>
   )

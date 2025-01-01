@@ -1,10 +1,12 @@
 import { memo } from "react";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
-import ItemPostComponent from "../ItemPostComponent";
+import ItemPostComponent from "../ItemComponents/ItemPostComponent";
 import { IPost } from "../../interfaces/Post";
 import queryString from "query-string";
 import { useLocation, useNavigate } from "react-router-dom";
 import EmptyComponent from "../EmptyComponent";
+import SkeletonPosts from "../skeleton/SkeletonPosts";
+import { useAppSelector } from "../../redux/hooks";
 
 interface ListComponentProps {
   data: IPost[];
@@ -29,7 +31,11 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost  }) =
     const newQuery = queryString.stringify(updatedQueryParams, { sort: false });
     navigate(`?${newQuery}`);
   };
-   const active=location.search.includes("orderby")
+   
+   const { loading } = useAppSelector((state) => state.action);
+   if (loading) {return <SkeletonPosts index={3}/>}
+
+  const active=location.search.includes("orderby")
   return (
     data?.length>0?<div className="bg-white py-4 rounded-md shadow-custom ">
       <div className="px-4">
@@ -41,7 +47,6 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost  }) =
             className={`bg-primary-bg !py-1 text-sm ${!active&&"font-medium underline"}`}
             onClick={handleDefaultPost}
           />
-
           <ButtonComponent
             text="Mới nhất"
             className={`bg-primary-bg !py-1 text-sm ${active&&"font-medium underline"}`}
@@ -49,7 +54,6 @@ const ListPostComponent: React.FC<ListComponentProps> = ({ data, totalPost  }) =
           />
         </div>
       </div>
-
       <div className="mt-3">
         {data?.map((post) => (
           <ItemPostComponent key={post.id} props={post} />

@@ -17,11 +17,11 @@ function SidebarComponent() {
   const handleLogout = async () => {
     dispatch(setLoading(true))
     const res = await apiLogout();
+    dispatch(setLoading(false))
     if (!res.status) return;
     localStorage.clear();
     dispatch(setDetailUser({}));
     dispatch(setIsLoginSuccess(false));
-    dispatch(setLoading(false))
     window.location.reload();
     navigate("/")
 } 
@@ -61,7 +61,7 @@ function SidebarComponent() {
         </span>
         <div className="flex gap-3 my-2 justify-center">
        <ButtonComponent text="Nạp tiền" className="!text-[12px] bg-[#ffc107]  !px-2 "
-       onClick={()=>navigate("/nop-tien")}
+       onClick={()=>navigate(PATH.DEPOSIT)}
        />
        <ButtonComponent text="Đăng tin" className="!text-[12px] bg-red-600  !px-2 text-white" 
           onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}
@@ -72,7 +72,7 @@ function SidebarComponent() {
       </div>
       <ul className="flex flex-col mt-5">
         {(user.type=='admin'?menuManageAdmin:menuManage).map((e) => (
-          <li className=" flex text-center gap-2 text-[13px]  hover:bg-[#f1f1f1] py-2">
+          <li key={e.id} className=" flex text-center gap-2 text-[13px]  hover:bg-[#f1f1f1] py-2">
              {e.icon}
             <NavLink
               key={e.id}

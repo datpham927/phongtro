@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { setLoading } from "../../../../redux/action/actionSlice";
 import { apiApprovedPost, apiDeletePost,  getAllUnapprovedPosts } from "../../../../services/apiPost";
 import { PaginationComponent  } from "../../../../components";
-import ItemManagePost from "../../../../components/ItemManagePost";
+import ItemManagePost from "../../../../components/ItemComponents/ItemManagePost";
 import { transformId } from "../../../../utils/format/transformId";
 import { formatDate } from "../../../../utils/format/formatDate";
 import { checkStatus } from "../../../../utils/checkStatus";
@@ -15,10 +15,10 @@ function ManageApprovedPost() {
   // const [postFilter, SetPostFilter]=useState<number|any>(1)
   const dispatch= useAppDispatch() 
   useEffect(() => {
-    dispatch(setLoading(true)) 
-    const fetchApi = async () => {
+  
+    const fetchApi = async () => {dispatch(setLoading(true)) 
         let res;
-        res = await getAllUnapprovedPosts({ limit: 10, page: currentPage }); 
+        res = await getAllUnapprovedPosts({   page: currentPage }); 
         if (!res?.status) return;
         setPosts(res?.data?.posts);
         setTotalPage(res?.data?.totalPage);
@@ -70,7 +70,7 @@ const handleApprovalPost=async(pid:string)=>{
           <ButtonComponent text="Đăng tin mới" className="bg-[#dc3545] text-white text-sm "  onClick={()=>navigate(`${PATH.SYSTEM}/${PATH.CREATE_POST}`)}/>
         </div> */}
       </div>
-      <div className="w-full ">
+      <div className="w-full h-full">
         <ul className="grid grid-cols-8 divide-x  border-solid border-[1px] border-slate-2200">
           <li className="p-[10px] font-semibold text-sm">Mã tin</li>
           <li className="p-[10px] font-semibold text-sm">Ảnh đại diện</li>
@@ -81,7 +81,7 @@ const handleApprovalPost=async(pid:string)=>{
           <li className="p-[10px] font-semibold text-sm">Xét duyệt</li>
           <li className="p-[10px] font-semibold text-sm">Tùy chọn</li>
         </ul>
-        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200">
+        <div className=" border-[1px] border-t-[2px] border-solid border-slate-200 h-full">
           {posts?.map((e) => {
             return (
               <ItemManagePost

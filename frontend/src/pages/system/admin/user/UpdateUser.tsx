@@ -10,6 +10,7 @@ import { apiGetDetailUser,  apiUpdateUser } from "../../../../services/apiUser";
 import validate from "../../../../utils/validate";
 import { apiUploadImage } from "../../../../services/apiUploadPicture";
 import { FormControl, FormControlLabel,  Radio, RadioGroup } from "@mui/material";
+import { ENV } from "../../../../utils/config/ENV";
 
 function UpdateUser() {
   const [payload, setPayload] = useState<IUserDetail>({
@@ -47,7 +48,7 @@ function UpdateUser() {
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", import.meta.env.VITE_REACT_UPLOAD_PRESET);
+      formData.append("upload_preset", ENV.UPLOAD_PRESET);
       
       const response = await apiUploadImage(formData);
       if (response) {
@@ -58,18 +59,18 @@ function UpdateUser() {
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    dispatch(setLoading(true));
     if (validate(payload, setInvalidFields)) {
       const {id,...data}=payload
+      dispatch(setLoading(true));
       const response = await apiUpdateUser(data, uid);
+      dispatch(setLoading(false));
+
       if (!response.status) {
         alert("Cập nhật không thành công");
-        dispatch(setLoading(false));
         return;
       }
       alert("Cập nhật thành công");
     }
-    dispatch(setLoading(false));
   }, [payload, uid]);
 
   return (

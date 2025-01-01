@@ -1,11 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
 import { NavigateComponent, SidebarComponent } from "../components";
-import LoadingComponent from "../components/LoadingComponent";
 import { useAppSelector } from "../redux/hooks";
+import LoadingComponent from "../components/LoadingComponent";
 
 function LayoutSystem() { 
   const { type } = useAppSelector((state ) => state.user);
-
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex w-full bg-blue-custom top-0 sticky ">
@@ -21,7 +20,7 @@ function LayoutSystem() {
         <div className="w-1/6 bg-primary-bg h-auto">
           <SidebarComponent />
         </div>
-        <div className="w-5/6 h-screen  py-10  bg-white overflow-scroll">
+        <div className="w-5/6 h-screen bg-white overflow-scroll">
           <Outlet />
         </div>
       </div>

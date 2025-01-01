@@ -1,6 +1,6 @@
 import React, { memo } from "react";
-import { IFilterCategory, IFilterDouble } from "../../interfaces/filter";
-
+import { IFilterCategory, IFilterDouble } from "../../../interfaces/filter";
+import { v4 as uuidv4 } from 'uuid';
  
 interface ItemNavbarComponentProps {
   title: string;
@@ -20,7 +20,7 @@ const ItemNavbarComponent: React.FC<ItemNavbarComponentProps> = ({
       <div className={isDouble ? "grid grid-cols-2" : ""}>
         {content?.map((item) => (
           <div
-            key={"value" in item ? item.value : item.name}
+          key={uuidv4()}
             onClick={() => handleOnClick(item)}
             className="flex items-center text-neutral-700 text-sm py-2 border-solid border-b-[1px] border-gray-100"
           >

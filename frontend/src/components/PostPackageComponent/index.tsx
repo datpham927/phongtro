@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import SelectOption from '../SelectOption';
 import { apiGetAllPostType } from '../../services/apiPosType';
 import { IPostType } from '../../interfaces/PostType';
-import { POST_TYPE_COLOR } from '../../utils/constant';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setLoading } from '../../redux/action/actionSlice';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import { formatNumber } from '../../utils/format/formatNumber';
+import parse from 'html-react-parser';
 
 interface PostPackageComponentProps {
   setPostType: React.Dispatch<React.SetStateAction<IPostType | any>>;
@@ -21,17 +21,14 @@ const PostPackageComponent: React.FC<PostPackageComponentProps> = ({ setPostType
 
   useEffect(() => {
     const fetchPostTypes = async () => {
-      dispatch(setLoading(true));
-      try {
+        dispatch(setLoading(true));
         const res = await apiGetAllPostType();
+        dispatch(setLoading(false));
         if (res?.status) {
           setPostList(res.data);
         }
-      } catch (error) {
-        console.error('Failed to fetch post types:', error);
-      } finally {
-        dispatch(setLoading(false));
-      }
+     
+       
     };
 
     fetchPostTypes();
@@ -72,10 +69,9 @@ const PostPackageComponent: React.FC<PostPackageComponentProps> = ({ setPostType
                     <p className="text-xs font-normal">Hạn: {postType?.expiration_time} tháng</p>
                   </div>
                   <span
-                    style={{ color: POST_TYPE_COLOR[postType?.priority - 1] }}
                     className="text-xs mt-1"
                   >
-                    {postType?.description}
+                    {parse(postType?.description)}
                   </span>
                 </div>
               ))}

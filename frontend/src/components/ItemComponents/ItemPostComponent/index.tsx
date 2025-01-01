@@ -1,16 +1,16 @@
 import React, { memo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { IPost } from "../../interfaces/Post";
+import { IPost } from "../../../interfaces/Post";
 import parse from 'html-react-parser';
-import { timeAgo } from "../../utils/format/timeAgo";
-import { POST_TYPE_COLOR } from "../../utils/constant";
+import { timeAgo } from "../../../utils/format/timeAgo";
+import { POST_TYPE_COLOR } from "../../../utils/constant";
 const ItemPostComponent:React.FC<{ props: IPost  }> =  ({props })=> {
   const {address,area,description,id,price,images,priority,thumb,title,user,slug,created_at}=props
   const [hoverHeart, setHoverHeart] = useState(false);
   const params=useParams() 
   return (
       // style={{ backgroundColor: POST_TYPE_COLOR[post_type.priority - 1] }}>
-    <div className={`${priority==1?"bg-[#fff9f3] border-red-custom":""} flex border-solid border-t-[1px]  p-4 `}>
+    <div className={`${priority==1?" border-red-custom":""} flex border-solid border-t-[1px]  p-4 `}>
       <div className={`${priority==1?"w-[280px] h-[240px]":"w-[170px] h-[160px]"} block  relative  shrink-0 rounded-md overflow-hidden cursor-pointer`}>
         <Link  to={`/chi-tiet/${slug}/${id}`}>
           <img className="w-full h-full" src={thumb} alt="" />
@@ -44,8 +44,7 @@ const ItemPostComponent:React.FC<{ props: IPost  }> =  ({props })=> {
         <Link  to={`/${params.category_slug?params.category_slug:"tinh-thanh"}/${address.city_slug}/${address.district_slug}`} className="text-sm hover:underline">{address?.district_name+", " +address?.city_name}</Link>
           <span className="text-sm text-[#aaa]">{timeAgo(created_at)}</span>
         </div>}
-
-        <p className={`${priority==1?"line-clamp-3":"line-clamp-2"} text-sm text-gray-500 truncate-trailing `}>{parse(description)}</p>
+        <div className={`${priority==1?"line-clamp-3":"line-clamp-2"} text-sm text-gray-500 truncate-trailing `}>{parse(description)}</div>
         <div className="flex justify-between  mt-3 ">
           <div className="flex gap-2 items-center">
             <img
