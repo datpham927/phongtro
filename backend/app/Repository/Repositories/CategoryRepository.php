@@ -14,9 +14,8 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $this->category = $category;
     }    
-    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null, $select = null)
-    {
-        $skip = ($page - 1) * $limit;
+    public function findAll($sort = 'asc',   array $filters = null)
+    { 
         $sortby = $sort === "ctime" ? 'desc' : 'asc';
         $query = $this->category->select(
             'categories.id',
@@ -30,18 +29,14 @@ class CategoryRepository implements CategoryRepositoryInterface
         ->orderBy('categories.created_at', $sortby)
         ->distinct();
         if ($filters) {  
-            $query->where($filters);  
-        }
-        $totalCategories = (clone $query)->count();
-        if ($limit > 0) {  
-            $query->skip($skip)->take($limit); 
-        }
-        $totalPage = $limit > 0 ? ceil($totalCategories / $limit) : 1; 
+            $query->where($filters)  ;  
+        } 
+        $data= $query->paginate(5);
         return [
-            'totalPage' => intval($totalPage),
-            'currentPage' => intval($page),
-            'totalCategories' => intval($totalCategories),
-            'categories' => $query->get() ?: null,
+            'totalPage' =>  ceil($data->total()/5),
+            'currentPage' =>$data->currentPage(),
+            'totalCategories' =>  $data->total(),
+            'categories' => $data->items()  
         ];  
     }
     

@@ -18,7 +18,7 @@ function ManageCategory() {
   useEffect(() => {
   
     const fetchApi = async () => {   dispatch(setLoading(true)) 
-          const res=await apiGetAllCategory({ limit: 10, page: currentPage, sort: "ctime" });
+          const res=await apiGetAllCategory({    page: currentPage, sort: "ctime" });
         if (!res?.status) return;
         setCategories(res?.data?.categories);
         setTotalPage(res?.data?.totalPage-1);

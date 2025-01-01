@@ -17,7 +17,7 @@ const PaymentHistory:React.FC = () => {
     const fetchApi = async () => {
         let res;
         dispatch(setLoading(true)) 
-        res = await apiGetAllPaymentHistory({ limit: 10, page: currentPage, sort: "ctime" });
+        res = await apiGetAllPaymentHistory({  page: currentPage, sort: "ctime" });
         dispatch(setLoading(false))  
         setList(res?.data?.invoices);
         setTotalPage(res?.data?.totalPage);

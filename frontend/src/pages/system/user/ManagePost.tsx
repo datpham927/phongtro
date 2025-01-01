@@ -24,9 +24,9 @@ function ManagePost() {
         let res;
         dispatch(setLoading(true)) 
         if (postFilter === 1) {
-          res = await apiGetPostForShop({ limit: 10, page: currentPage, sort: "ctime" });
+          res = await apiGetPostForShop({  page: currentPage, sort: "ctime" });
         } else  if (postFilter === 2) {
-          res = await apiGetExpiredPostForShop({ limit: 10, page: currentPage });
+          res = await apiGetExpiredPostForShop({ page: currentPage });
         }
         dispatch(setLoading(false))  
         if (!res?.status) return;

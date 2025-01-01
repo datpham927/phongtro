@@ -18,7 +18,7 @@ function ManageApprovedPost() {
   
     const fetchApi = async () => {dispatch(setLoading(true)) 
         let res;
-        res = await getAllUnapprovedPosts({ limit: 10, page: currentPage }); 
+        res = await getAllUnapprovedPosts({   page: currentPage }); 
         if (!res?.status) return;
         setPosts(res?.data?.posts);
         setTotalPage(res?.data?.totalPage);

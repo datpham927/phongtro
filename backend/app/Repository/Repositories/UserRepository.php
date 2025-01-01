@@ -16,23 +16,19 @@ class UserRepository implements UserRepositoryInterface
     {
         $this->user = $user;
     }
-    public function findAll($limit = 5, $sort = 'id:asc', $page = 1, array $filters = null)
+    function findAll($sort=null,array $filters=null){}
+    public function findAllUser()
     {
-
-        $query = $this->user->select('users.*', DB::raw('count(p.id) as post_quantity'))
+        $data = $this->user->select('users.*', DB::raw('count(p.id) as post_quantity'))
             ->leftJoin('posts as p', 'p.user_id', '=', 'users.id')
             ->groupBy('users.id')
-            ->where('users.type', '!=', 'admin');
-        // Tính tổng số người dùng và phân trang
-        $totalUsers = $query->get()->count();
-        $totalPage = ceil($totalUsers / $limit);
-        $offset = ($page - 1) * $limit;
-        $users = $query->limit($limit)->offset($offset)->get();
-        return [
-            'totalPage' => intval($totalPage), 
-            'currentPage' => intval($page),  
-            'totalUser' => intval($totalUsers),  
-            'users' =>$users,  
+            ->where('users.type', '!=', 'admin')
+            ->paginate(10); 
+        return [ 
+            'totalPage' =>  ceil($data->total()/10),
+            'currentPage' =>$data->currentPage(),
+            'totalUser' =>  $data->total(),
+            'users' =>  $data->items()  
         ];
     }
     

@@ -27,7 +27,7 @@ const HomePage:React.FC = () => {
        const { gia_tu, gia_den,dien_tich_tu,dien_tich_den,orderby, ...rest } = queries;
        dispatch(setLoading(true))
        const fetchApi= async()=>{
-           const res = await apiGetPost({...rest,category_slug:params.category_slug, limit:10,
+           const res = await apiGetPost({...rest,category_slug:params.category_slug, 
             price_from:gia_tu,
             price_to:gia_den,
             area_from:dien_tich_tu,

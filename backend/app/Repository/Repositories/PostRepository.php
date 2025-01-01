@@ -16,7 +16,7 @@ class PostRepository implements PostRepositoryInterface
     public function __construct(Post $post) {
         $this->post = $post;
     }
-    public function findAll($limit = 5, $sort = 'asc', $page = 1, array $filters = null)
+    public function findAll( $sort = 'asc', array $filters = null)
 {
     // Khởi tạo query builder với join bảng post_type
     $query = $this->post->newQuery();
@@ -59,45 +59,30 @@ class PostRepository implements PostRepositoryInterface
         });
         unset($filters['area_from'],$filters['area_to']);
     }
-    $query->where($filters);
-    // Tính tổng sản phẩm trước khi phân trang
-    $totalPosts = $query->clone()->count(); // Sử dụng clone tránh lặp lại truy vấn
-    $totalPage = ceil($totalPosts / $limit);
-    $query = $query->join('post_types', 'posts.post_type_id', '=', 'post_types.id')
+    $query->where($filters); 
+    $data = $query->join('post_types', 'posts.post_type_id', '=', 'post_types.id')
              ->select('posts.*', 'post_types.priority')
              ->orderBy('post_types.priority', 'asc')
-             ->orderBy('posts.updated_at', $sort === 'ctime' ? 'desc' : 'asc');
-    // Áp dụng phân trang
-    $skip = ($page - 1) * $limit;
-    $query->skip($skip)->take($limit); 
-    // Trả về kết quả
-    return [
-        'totalPage' => $totalPage,
-        'currentPage' => intval($page),
-        'totalPosts' => $totalPosts,
-        'posts' => PostResource::collection($query->get()),
+             ->orderBy('posts.updated_at', $sort === 'ctime' ? 'desc' : 'asc')
+             ->paginate(10);
+    return [ 
+            'totalPage' =>  ceil($data->total()/10),
+            'currentPage' =>$data->currentPage(),
+            'totalPosts' =>  $data->total(),
+            'posts' =>PostResource::collection($data->items())   
     ];
 }
-
-
-public function findAllForShop($shopId,$limit = 5, $sort = 'asc', $page = 1)
+public function findAllForShop($shopId)
 {
-    $query = $this->post->newQuery();
-    $query->where("user_id",$shopId);
-    // Tính tổng sản phẩm trước khi phân trang
-    $totalPosts = $query->clone()->count(); // Sử dụng clone tránh lặp lại truy vấn
-    $totalPage = ceil($totalPosts / $limit);
-    $query = $query->orderBy('posts.updated_at', $sort === 'ctime' ? 'desc' : 'asc');
-    // Áp dụng phân trang
-    $skip = ($page - 1) * $limit;
-    $query->skip($skip)->take($limit);
-
-    // Trả về kết quả
-    return [
-        'totalPage' => $totalPage,
-        'currentPage' => intval($page),
-        'totalPosts' => $totalPosts,
-        'posts' => PostResource::collection($query->get()),
+    $data = $this->post->where("user_id",$shopId)
+            ->orderBy('posts.updated_at',  'desc' )
+            ->paginate(10);
+    
+    return [ 
+        'totalPage' =>  ceil($data->total()/10),
+        'currentPage' =>$data->currentPage(),
+        'totalPosts' =>  $data->total(),
+        'posts' => PostResource::collection($data->items()),  
     ];
 }
 public function findNewPosts()
@@ -124,40 +109,29 @@ public function findLocationPosts( $city_slug,   $district_slug)
 
 
 
-    public function findAllPostExpiredForShop($limit, $sort, $page, $shopId)
+    public function findAllPostExpiredForShop( $shopId)
     {
         // Truy vấn lấy các bài viết hết hạn
-        $expiredPostsQuery = $this->post::where('user_id', $shopId)
-            ->where('expire_at', '<', now());
-        // Lấy tổng số bài viết hết hạn (clone query để không ảnh hưởng đến pagination)
-        $totalPosts = (clone $expiredPostsQuery)->count();
-        // Tính tổng số trang
-        $totalPage = $limit > 0 ? ceil($totalPosts / $limit) : 1;
-        // Áp dụng sắp xếp, skip và take (limit)
-        $expiredPostsQuery->orderBy('updated_at', $sort);
-        // Xử lý phân trang
-        $skip = ($page - 1) * $limit;
-        if ($limit > 0) {
-            $expiredPostsQuery->skip($skip)->take($limit);
-        }
-        // Lấy kết quả
-        $posts = $expiredPostsQuery->get();
+        $data = $this->post::where('user_id', $shopId)
+            ->where('expire_at', '<', now())
+            ->orderBy('updated_at', "desc")
+            ->paginate(10);
         return [
-            'totalPage' => intval($totalPage),
-            'currentPage' => intval($page),
-            'totalPosts' => intval($totalPosts),
-            'posts' => PostResource::collection($posts), // Assuming PostResource is used for formatting
+            'totalPage' =>  ceil($data->total()/10),
+            'currentPage' =>$data->currentPage(),
+            'totalPosts' =>  $data->total(),
+            'posts' => PostResource::collection($data->items())   
         ];
     }
     
 
-    public function findRelatedPostByAddress($addressId, $sort = 'ctime')
+    public function findRelatedPostByAddress($addressId, )
     {
         $relatedPost = Post::where(['address_id' => $addressId, 'is_approved' => true])
             ->join('post_types', 'posts.post_type_id', '=', 'post_types.id')
             ->select('posts.*', 'post_types.priority')
             ->orderBy('post_types.priority', 'asc')
-            ->orderBy('posts.updated_at', $sort === 'ctime' ? 'desc' : 'asc')
+            ->orderBy('posts.updated_at',  'desc'  )
             ->limit(10)
             ->get();
         return PostResource::collection($relatedPost);
@@ -203,24 +177,16 @@ public function findLocationPosts( $city_slug,   $district_slug)
     // Trả về resource mới với bài post đã load các mối quan hệ
     return new PostDetailResource($post);
 } 
-public function findAllUnapprovedPosts($limit,$sort, $page){
-     // Truy vấn lấy các bài viết hết hạn
-     $expiredPostsQuery = $this->post::where('is_approved',false); 
-    // Lấy tổng số bài viết hết hạn (clone query để không ảnh hưởng đến pagination)
-    $sortby = $sort === 'ctime' ? 'desc' : 'asc';
-    $expiredPostsQuery->orderBy('posts.updated_at', $sortby);
-    $totalPosts = (clone $expiredPostsQuery)->count();
-    // Tính tổng số trang
-    $totalPage = $limit > 0 ? ceil($totalPosts / $limit) : 1;  
-    $skip = ($page - 1) * $limit;
-    if ($limit > 0) {$expiredPostsQuery->skip($skip)->take($limit);}
-    // Lấy kết quả
-    $posts = $expiredPostsQuery->get();
+public function findAllUnapprovedPosts(){
+     // Truy vấn lấy các bài viết hết hạn 
+     $data = $this->post::where('is_approved',false)
+     ->orderBy('posts.updated_at', "desc")
+     ->paginate(10); 
  return [
-     'totalPage' => intval($totalPage),
-     'currentPage' => intval($page),
-     'totalPosts' => intval($totalPosts),
-     'posts' => PostResource::collection($posts), // Assuming PostResource is used for formatting
+    'totalPage' =>  ceil($data->total()/10),
+    'currentPage' =>$data->currentPage(),
+    'totalPosts' =>  $data->total(),
+    'posts' => PostResource::collection($data->items()) 
  ];
 }
   public function findByIdAndApprovePost($pid){

@@ -31,8 +31,7 @@ const FilterPage: React.FC = () => {
       dispatch(setLoading(true)) 
       const res = await apiGetPost({
         ...rest,
-        ...params,
-        limit: 10,
+        ...params, 
         price_from: gia_tu,
         price_to: gia_den,
         area_from: dien_tich_tu,

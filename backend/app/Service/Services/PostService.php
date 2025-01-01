@@ -26,22 +26,17 @@ class PostService implements PostServiceInterface
     }
 
     public function findAll($request)
-    {
-        $limit = $request['limit'];
-        $page = $request['page'];
+    { 
         $sort = $request['sort'];
-        unset($request['limit'], $request['page'], $request['sort']);
+        unset( $request['page'], $request['sort']);
         $filters = $request->all();
-        return $this->postRepository->findAll($limit, $sort, $page, $filters);
+        return $this->postRepository->findAll( $sort, $filters);
     }
 
     public function findAllForShop($request)
-    {
-        $limit = $request['limit'];
-        $page = $request['page'];
-        $sort = $request['sort'];
+    { 
         $user_id = $request['user_id'];
-        return $this->postRepository->findAllForShop( $user_id,$limit, $sort, $page);
+        return $this->postRepository->findAllForShop( $user_id );
     }
     public function findNewPosts()
     { 
@@ -49,12 +44,9 @@ class PostService implements PostServiceInterface
     }
 
     public function findAllPostExpiredForShop($request)
-    {
-        $limit = $request['limit'];
-        $page = $request['page'];
-        $sort = 'desc';
+    { 
         $shopId = $request['user_id'];
-        return $this->postRepository->findAllPostExpiredForShop($limit, $sort, $page, $shopId);
+        return $this->postRepository->findAllPostExpiredForShop(    $shopId);
     }
 
     public function findRelatedPost($addressId)
@@ -159,11 +151,8 @@ class PostService implements PostServiceInterface
     }
 
     public function findAllUnapprovedPosts($request)
-    {
-        $limit = $request['limit'];
-        $page = $request['page'];
-        $sort = $request['sort'];
-        return $this->postRepository->findAllUnapprovedPosts($limit, $sort, $page);
+    { 
+        return $this->postRepository->findAllUnapprovedPosts();
     }
 
     public function findApprovePost($pid)

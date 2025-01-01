@@ -15,46 +15,32 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     {
         $this->invoice = $invoice;
     }    
-    public function findAllPaymentHistory($limit = 5, $sort = 'asc', $page = 1, array $filters = null, $select = null)
-    {
-        $skip = ($page - 1) * $limit;
-        $sortby = $sort === "ctime" ? 'desc' : 'asc';
-        $query = $this->invoice->where([
-            "user_id"=>$filters['user_id'],
+    public function findAllPaymentHistory(  $userId)
+    {  
+        $data = $this->invoice->where([
+            "user_id"=> $userId,
             "transaction_type"=>"withdraw",
         ])
-        ->orderBy('created_at', $sortby);
-        $totalInvoices = (clone $query)->count();
-        if ($limit > 0) {  
-            $query->skip($skip)->take($limit); 
-        }
-        $totalPage = $limit > 0 ? ceil($totalInvoices / $limit) : 1; 
+        ->orderBy('created_at', 'desc')->paginate(5); 
         return [
-            'totalPage' => intval($totalPage),
-            'currentPage' => intval($page),
-            'totalInvoices' => intval($totalInvoices),
-            'invoices' => $query->get() ?: null,
+            'totalPage' =>  ceil($data->total()/5),
+            'currentPage' =>$data->currentPage(),
+            'totalInvoices' =>  $data->total(),
+            'invoices' => $data->items()  
         ];  
     }
-    public function findAllDepositHistory($limit = 5, $sort = 'asc', $page = 1, array $filters = null, $select = null)
+    public function findAllDepositHistory( $userId)
     {
-        $skip = ($page - 1) * $limit;
-        $sortby = $sort === "ctime" ? 'desc' : 'asc';
-        $query = $this->invoice->where([
-            "user_id"=>$filters['user_id'],
+        $data = $this->invoice->where([
+            "user_id"=> $userId,
             "transaction_type"=>"deposit",
         ])
-        ->orderBy('created_at', $sortby);
-        $totalInvoices = (clone $query)->count();
-        if ($limit > 0) {  
-            $query->skip($skip)->take($limit); 
-        }
-        $totalPage = $limit > 0 ? ceil($totalInvoices / $limit) : 1; 
+        ->orderBy('created_at', 'desc')->paginate(5); 
         return [
-            'totalPage' => intval($totalPage),
-            'currentPage' => intval($page),
-            'totalInvoices' => intval($totalInvoices),
-            'invoices' => $query->get() ?: null,
+            'totalPage' =>  ceil($data->total()/5),
+            'currentPage' =>$data->currentPage(),
+            'totalInvoices' =>  $data->total(),
+            'invoices' => $data->items()  
         ];  
     }
 }

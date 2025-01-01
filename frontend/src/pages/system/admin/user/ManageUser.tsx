@@ -19,7 +19,7 @@ function ManageUser() {
   
     const fetchApi = async () => {   
            dispatch(setLoading(true)) 
-          const res=await apiGetAllUser({ limit: 10, page: currentPage, sort: "ctime" });
+          const res=await apiGetAllUser({   page: currentPage, sort: "ctime" });
           dispatch(setLoading(false))  
           if (!res?.status) return;
         setUsers(res?.data?.users);
