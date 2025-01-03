@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import queryString from 'query-string';
 import { useNavigate, useParams } from 'react-router-dom'
 import { IPost } from '../../../interfaces/Post';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { useAppDispatch } from '../../../redux/hooks';
 import { apiGetPost } from '../../../services/apiPost';
 import { IFilterDouble } from '../../../interfaces/filter'; 
 import { dataArea, dataPrice } from '../../../utils/data'; 
