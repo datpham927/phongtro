@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { apiGetPost, getNewPosts } from '../../services/apiPost'
+import {  getNewPosts } from '../../services/apiPost'
 import { IPost } from '../../interfaces/Post'
 import ItemNewPost from '../ItemComponents/ItemNewPost'
 import { useAppSelector } from '../../redux/hooks'
